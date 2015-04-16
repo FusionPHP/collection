@@ -1,0 +1,16 @@
+{
+    "name" : "crackertastic/fusion.collection",
+    "require":
+    {
+        "php" : ">=5.4"
+    },
+    "license" : "MIT",
+    "autoload":
+    {
+        "psr-4" :
+        {
+            "Fusion\\Utilities\\Collection\\" : "src/",
+            "Fusion\\Utilities\\Collection\\Tests\\" : "tests/"
+        }
+    }
+}
