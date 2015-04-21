@@ -8,6 +8,7 @@
 
 namespace Fusion\Utilities\Collection;
 
+use InvalidArgumentException;
 use Fusion\Utilities\Collection\Library\CollectionInterface;
 
 class Collection implements CollectionInterface
@@ -21,11 +22,18 @@ class Collection implements CollectionInterface
     protected $collectables = [];
 
     /**
-     * An array of restrictions
+     * An array of restrictions.
      *
      * @var array
      */
     protected $restrictions = [];
+
+    /**
+     * Specifies if strict mode is on.
+     *
+     * When strict mode is on exceptions are thrown when the collection restrictions are violated.
+     * When strict mode is off the class will silently fail at certain operations.
+     */
 
     /**
      * Adds an object to a collections
@@ -100,9 +108,10 @@ class Collection implements CollectionInterface
     /**
      * Adds a restriction to the collection.
      *
-     * Will inform the collection that is will now restrict itself to the type defined.  This
+     * Will inform the collection that it will now restrict itself to the type defined.  This
      * method may be invoked multiple times to allow multiple value types to be added to the
-     * collection.
+     * collection. Restrictions can define scalar and non-scalar PHP types.  When defining specific
+     * class types the fully qualified name must be used. E.g.: "\Foo\Bar\Baz"
      *
      * @param string $restriction
      * @return self

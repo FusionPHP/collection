@@ -68,9 +68,10 @@ interface CollectionInterface
     /**
      * Adds a restriction to the collection.
      *
-     * Will inform the collection that is will now restrict itself to the type defined.  This
+     * Will inform the collection that it will now restrict itself to the type defined.  This
      * method may be invoked multiple times to allow multiple value types to be added to the
-     * collection.
+     * collection. Restrictions can define scalar and non-scalar PHP types.  When defining specific
+     * class types the fully qualified name must be used. E.g.: "\Foo\Bar\Baz"
      *
      * @param string $restriction
      * @return self
