@@ -9,6 +9,10 @@
 namespace Fusion\Utilities\Collection\Library;
 
 
+/**
+ * Basic class with predefined constants to add known restrictions to a collection.
+ *
+ */
 class Restriction
 {
 
@@ -22,5 +26,6 @@ class Restriction
     const ARR = "array";
     const OBJECT = "object";
     const RESOURCE = "resource";
+    const CALLBACK = "callback";
 
 }

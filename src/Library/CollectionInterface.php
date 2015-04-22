@@ -14,9 +14,12 @@ namespace Fusion\Utilities\Collection\Library;
 interface CollectionInterface
 {
     /**
-     * Adds an object to a collections
+     * Adds an object to a collection.
+     *
+     * Will throw an InvalidArgumentException if strict mode is on and restrictions are violated.
      *
      * @param mixed $collectable
+     * @throws \InvalidArgumentException
      * @return self
      */
     public function add($collectable);
@@ -24,7 +27,10 @@ interface CollectionInterface
     /**
      * Searches the collection for a particular object and removes it.
      *
+     *  Will throw an InvalidArgumentException if strict mode is on and restrictions are violated.
+     *
      * @param mixed $collectable
+     * @throws \InvalidArgumentException
      * @return self
      */
     public function remove($collectable);
@@ -32,31 +38,22 @@ interface CollectionInterface
     /**
      * Removes an object at the specified index.
      *
-     * Checks for an item at the specified index and removes it if it exists.
+     * Checks for an item at the specified index and removes it if it exists.  Throws an
+     * OutOfBoundsException if strict mode is on and the index doesn't exist.
      *
      * @param int $id
+     * @throws \OutOfBoundsException
      * @return self
      */
     public function removeAt($id);
 
     /**
-     * Checks if a particular object exists.
+     * Checks if a particular object exists and returns it or false if it does not.
      *
      * @param mixed $collectable
-     * @return bool
+     * @return int|bool
      */
     public function has($collectable);
-
-    /**
-     * Gets an item in the collection at the specified index.
-     *
-     * Looks in the collection at the specified index, if it exists, and returns the item.  If
-     * no item is present or the index does not exist null is returned.
-     *
-     * @param int $id
-     * @return mixed
-     */
-    public function find($id);
 
     /**
      * Indicates if a collection has more items in it.
@@ -64,6 +61,19 @@ interface CollectionInterface
      * @return bool
      */
     public function hasMore();
+
+    /**
+     * Gets an item in the collection at the specified index.
+     *
+     * Looks in the collection at the specified index, if it exists, and returns the item.  If
+     * no item is present or the index does not exist null is returned.  Throws an
+     * OutOfBoundsException if strict mode is on and the index doesn't exist.
+     *
+     * @param int $id
+     * @throws \OutOfBoundsException
+     * @return mixed
+     */
+    public function find($id);
 
     /**
      * Adds a restriction to the collection.
@@ -77,4 +87,18 @@ interface CollectionInterface
      * @return self
      */
     public function addRestriction($restriction);
+
+    /**
+     * Enables or disables strict mode.
+     *
+     * @param bool $mode
+     */
+    public function strictMode($mode);
+
+    /**
+     * Gets a count of the items in a collection.
+     *
+     * @return int
+     */
+    public function size();
 }

@@ -8,9 +8,11 @@
 
 namespace Fusion\Utilities\Collection;
 
-use InvalidArgumentException;
 use Fusion\Utilities\Collection\Library\CollectionInterface;
 
+/**
+ * The basic collection class.
+ */
 class Collection implements CollectionInterface
 {
 
@@ -33,12 +35,30 @@ class Collection implements CollectionInterface
      *
      * When strict mode is on exceptions are thrown when the collection restrictions are violated.
      * When strict mode is off the class will silently fail at certain operations.
+     *
+     * @var bool
      */
+    protected $strictMode = false;
 
     /**
-     * Adds an object to a collections
+     * Constructor.
+     *
+     * Creates a collection with an optional set of initial starter items.
+     *
+     * @param array $items
+     */
+    public function __construct(array $items = [])
+    {
+        // TODO: Implement constructor method.
+    }
+
+    /**
+     * Adds an object to a collection.
+     *
+     * Will throw an InvalidArgumentException if strict mode is on and restrictions are violated.
      *
      * @param mixed $collectable
+     * @throws \InvalidArgumentException
      * @return self
      */
     public function add($collectable)
@@ -49,7 +69,10 @@ class Collection implements CollectionInterface
     /**
      * Searches the collection for a particular object and removes it.
      *
+     *  Will throw an InvalidArgumentException if strict mode is on and restrictions are violated.
+     *
      * @param mixed $collectable
+     * @throws \InvalidArgumentException
      * @return self
      */
     public function remove($collectable)
@@ -60,9 +83,11 @@ class Collection implements CollectionInterface
     /**
      * Removes an object at the specified index.
      *
-     * Checks for an item at the specified index and removes it if it exists.
+     * Checks for an item at the specified index and removes it if it exists.  Throws an
+     * OutOfBoundsException if strict mode is on and the index doesn't exist.
      *
      * @param int $id
+     * @throws \OutOfBoundsException
      * @return self
      */
     public function removeAt($id)
@@ -74,25 +99,11 @@ class Collection implements CollectionInterface
      * Checks if a particular object exists.
      *
      * @param mixed $collectable
-     * @return bool
+     * @return int|bool
      */
     public function has($collectable)
     {
         // TODO: Implement has() method.
-    }
-
-    /**
-     * Gets an item in the collection at the specified index.
-     *
-     * Looks in the collection at the specified index, if it exists, and returns the item.  If
-     * no item is present or the index does not exist null is returned.
-     *
-     * @param int $id
-     * @return mixed
-     */
-    public function find($id)
-    {
-        // TODO: Implement find() method.
     }
 
     /**
@@ -103,6 +114,22 @@ class Collection implements CollectionInterface
     public function hasMore()
     {
         // TODO: Implement hasMore() method.
+    }
+
+    /**
+     * Gets an item in the collection at the specified index.
+     *
+     * Looks in the collection at the specified index, if it exists, and returns the item.  If
+     * no item is present or the index does not exist null is returned.  Throws an
+     * OutOfBoundsException if strict mode is on and the index doesn't exist.
+     *
+     * @param int $id
+     * @throws \OutOfBoundsException
+     * @return mixed|null
+     */
+    public function find($id)
+    {
+        // TODO: Implement find() method.
     }
 
     /**
@@ -119,5 +146,26 @@ class Collection implements CollectionInterface
     public function addRestriction($restriction)
     {
         // TODO: Implement addRestriction() method.
+    }
+
+    /**
+     * Enables or disables strict mode.
+     *
+     * @param bool $mode
+     * @return self
+     */
+    public function strictMode($mode)
+    {
+        // TODO: Implement strictMode() method.
+    }
+
+    /**
+     * Gets a count of the items in a collection.
+     *
+     * @return int
+     */
+    public function size()
+    {
+        // TODO: Implement size() method.
     }
 }
