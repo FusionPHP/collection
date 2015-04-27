@@ -9,6 +9,7 @@
 namespace Fusion\Utilities\Collection;
 
 use Fusion\Utilities\Collection\Library\CollectionInterface;
+use Fusion\Utilities\Collection\Library\Restriction;
 
 /**
  * The basic collection class.
@@ -50,7 +51,14 @@ class Collection implements CollectionInterface
      */
     public function __construct(array $items = [], array $restrictions = [])
     {
-        // TODO: Implement constructor method.
+        foreach ($restrictions as $restriction)
+        {
+            $this->addRestriction($restriction);
+        }
+        foreach ($items as $item)
+        {
+            $this->add($item);
+        }
     }
 
     /**
@@ -64,7 +72,19 @@ class Collection implements CollectionInterface
      */
     public function add($collectable)
     {
-        // TODO: Implement add() method.
+        if ($this->verifyRestrictions($collectable))
+        {
+            array_push($this->collection, $collectable);
+        }
+        else
+        {
+            if ($this->strictMode)
+            {
+                $message = "Unable to add item to the collection. A restriction was violated";
+                throw new \InvalidArgumentException($message);
+            }
+        }
+        return $this;
     }
 
     /**
@@ -78,7 +98,12 @@ class Collection implements CollectionInterface
      */
     public function remove($collectable)
     {
-        // TODO: Implement remove() method.
+        $position = $this->has($collectable);
+        if ($position !== false)
+        {
+            $this->removeAt($position);
+        }
+        return $this;
     }
 
     /**
@@ -93,7 +118,18 @@ class Collection implements CollectionInterface
      */
     public function removeAt($id)
     {
-        // TODO: Implement removeAt() method.
+        if (array_key_exists($id, $this->collection))
+        {
+            array_splice($this->collection, $id, 1);
+        }
+        else
+        {
+            if ($this->strictMode)
+            {
+                throw new \OutOfBoundsException("Failed removing collection element. Invalid ID.");
+            }
+        }
+        return $this;
     }
 
     /**
@@ -107,7 +143,14 @@ class Collection implements CollectionInterface
      */
     public function has($collectable)
     {
-        // TODO: Implement has() method.
+        foreach ($this->collection as $key => $item)
+        {
+            if ($collectable === $item)
+            {
+                return $key;
+            }
+        }
+        return false;
     }
 
     /**
@@ -117,7 +160,7 @@ class Collection implements CollectionInterface
      */
     public function hasMore()
     {
-        // TODO: Implement hasMore() method.
+        return ($this->size() > 0);
     }
 
     /**
@@ -133,7 +176,18 @@ class Collection implements CollectionInterface
      */
     public function find($id)
     {
-        // TODO: Implement find() method.
+        if (array_key_exists($id, $this->collection))
+        {
+            return $this->collection[$id];
+        }
+        else
+        {
+            if ($this->strictMode)
+            {
+                throw new \OutOfBoundsException("Failed getting collection element. Invalid ID.");
+            }
+        }
+        return null;
     }
 
     /**
@@ -149,7 +203,7 @@ class Collection implements CollectionInterface
      */
     public function addRestriction($restriction)
     {
-        // TODO: Implement addRestriction() method.
+        $this->restrictions[] = $restriction;
     }
 
     /**
@@ -160,7 +214,11 @@ class Collection implements CollectionInterface
      */
     public function strictMode($mode)
     {
-        // TODO: Implement strictMode() method.
+        if (is_bool($mode))
+        {
+            $this->strictMode = $mode;
+        }
+        return $this;
     }
 
     /**
@@ -170,6 +228,55 @@ class Collection implements CollectionInterface
      */
     public function size()
     {
-        // TODO: Implement size() method.
+        return count($this->collection);
+    }
+
+    /**
+     * Verifies that restrictions are not being violated.
+     *
+     * @param mixed $collectable
+     * @return bool
+     */
+    protected function verifyRestrictions($collectable)
+    {
+        $valid = true;
+        foreach ($this->restrictions as $restriction)
+        {
+            switch ($restriction)
+            {
+                case Restriction::INT:
+                    $valid = is_int($collectable);
+                    break;
+
+                case Restriction::STRING:
+                    $valid = is_string($collectable);
+                    break;
+
+                case Restriction::FLOAT:
+                    $valid = is_float($collectable);
+                    break;
+
+                case Restriction::BOOL:
+                    $valid = is_bool($collectable);
+                    break;
+
+                case Restriction::ARR:
+                    $valid = is_array($collectable);
+                    break;
+
+                case Restriction::OBJECT:
+                    $valid = is_object($collectable);
+                    break;
+
+                case Restriction::CALLBACK:
+                    $valid = ($collectable instanceof \Closure);
+                    break;
+
+                default:
+                    $valid = ($collectable instanceof $restriction);
+                    break;
+            }
+        }
+        return $valid;
     }
 }
