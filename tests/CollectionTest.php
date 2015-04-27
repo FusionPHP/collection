@@ -125,4 +125,15 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf("Closure", $this->collection->find(0));
         $this->assertInternalType("callable", $this->collection->find(1));
     }
+
+    public function testRestrictToType()
+    {
+        $dummy = new CrashTestDummy();
+        $this->collection->addRestriction('\Fusion\Utilities\Collection\Tests\CrashTestDummy');
+        $this->collection->add($dummy);
+        $this->collection->add(new CrashTestDummy());
+        $this->assertInstanceOf('\Fusion\Utilities\Collection\Tests\CrashTestDummy',
+                                $this->collection->find(1));
+        $this->assertEquals($dummy, $this->collection->find(0));
+    }
 }
