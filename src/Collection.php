@@ -17,11 +17,11 @@ class Collection implements CollectionInterface
 {
 
     /**
-     * An array holding all collectable items.
+     * An array holding all collection items.
      *
      * @var array
      */
-    protected $collectables = [];
+    protected $collection = [];
 
     /**
      * An array of restrictions.
@@ -43,11 +43,12 @@ class Collection implements CollectionInterface
     /**
      * Constructor.
      *
-     * Creates a collection with an optional set of initial starter items.
+     * Creates a collection with an optional set of initial starter items and restrictions.
      *
      * @param array $items
+     * @param array $restrictions
      */
-    public function __construct(array $items = [])
+    public function __construct(array $items = [], array $restrictions = [])
     {
         // TODO: Implement constructor method.
     }
@@ -97,6 +98,9 @@ class Collection implements CollectionInterface
 
     /**
      * Checks if a particular object exists.
+     *
+     * Iterates over the collections looking for an identical of the item provided.  Returns the
+     * index of the item or false if it cannot be found.
      *
      * @param mixed $collectable
      * @return int|bool

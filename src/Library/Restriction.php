@@ -25,7 +25,6 @@ class Restriction
     //Non-scalar Types
     const ARR = "array";
     const OBJECT = "object";
-    const RESOURCE = "resource";
     const CALLBACK = "callback";
 
 }
