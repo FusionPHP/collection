@@ -8,7 +8,7 @@ namespace Fusion\Utilities\Collection\Tests;
 use Fusion\Utilities\Collection\Collection;
 use Fusion\Utilities\Collection\Library\Restriction;
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -135,5 +135,19 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Fusion\Utilities\Collection\Tests\CrashTestDummy',
                                 $this->collection->find(1));
         $this->assertEquals($dummy, $this->collection->find(0));
+    }
+
+    /*
+     * Test various failures - no strict mode
+     */
+
+    public function testAddWrongRestrictedType()
+    {
+        $this->collection->addRestriction(Restriction::INT);
+        $this->collection->add("can't add this");
+        $this->collection->add(50.0);
+        $this->assertEquals(0, $this->collection->size());
+        $this->collection->add(50);
+        $this->assertEquals(1, $this->collection->size());
     }
 }

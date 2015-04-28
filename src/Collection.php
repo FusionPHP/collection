@@ -237,7 +237,7 @@ class Collection implements CollectionInterface
      * @param mixed $collectable
      * @return bool
      */
-    protected function verifyRestrictions($collectable)
+    public function verifyRestrictions($collectable)
     {
         $valid = true;
         foreach ($this->restrictions as $restriction)

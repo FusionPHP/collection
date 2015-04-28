@@ -48,7 +48,10 @@ interface CollectionInterface
     public function removeAt($id);
 
     /**
-     * Checks if a particular object exists and returns it or false if it does not.
+     * Checks if a particular object exists.
+     *
+     * Iterates over the collections looking for an identical of the item provided.  Returns the
+     * index of the item or false if it cannot be found.
      *
      * @param mixed $collectable
      * @return int|bool
@@ -101,4 +104,12 @@ interface CollectionInterface
      * @return int
      */
     public function size();
+
+    /**
+     * Verifies that restrictions are not being violated.
+     *
+     * @param mixed $collectable
+     * @return bool
+     */
+    public function verifyRestrictions($collectable);
 }
