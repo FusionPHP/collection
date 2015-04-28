@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-namespace Fusion\Utilities\Collection\Library;
+namespace Fusion\Collection\Library;
 
 
 /**

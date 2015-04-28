@@ -3,7 +3,7 @@
  * Crash test dummy, for use in the test cases
  */
 
-namespace Fusion\Utilities\Collection\Tests;
+namespace Fusion\Collection\Tests;
 
 
 class CrashTestDummy

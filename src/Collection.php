@@ -6,10 +6,10 @@
  * @license MIT
  */
 
-namespace Fusion\Utilities\Collection;
+namespace Fusion\Collection;
 
-use Fusion\Utilities\Collection\Library\CollectionInterface;
-use Fusion\Utilities\Collection\Library\Restriction;
+use Fusion\Collection\Library\CollectionInterface;
+use Fusion\Collection\Library\Restriction;
 
 /**
  * The basic collection class.
@@ -80,7 +80,7 @@ class Collection implements CollectionInterface
         {
             if ($this->strictMode)
             {
-                $message = "Unable to add item to the collection. A restriction was violated";
+                $message = "Restriction violation, unable to add item.";
                 throw new \InvalidArgumentException($message);
             }
         }
@@ -101,7 +101,18 @@ class Collection implements CollectionInterface
         $position = $this->has($collectable);
         if ($position !== false)
         {
-            $this->removeAt($position);
+            if ($this->verifyRestrictions($collectable))
+            {
+                $this->removeAt($position);
+            }
+            else
+            {
+                if ($this->strictMode)
+                {
+                    $message = "Restriction violation, unable to remove item.";
+                    throw new \InvalidArgumentException($message);
+                }
+            }
         }
         return $this;
     }
@@ -204,6 +215,7 @@ class Collection implements CollectionInterface
     public function addRestriction($restriction)
     {
         $this->restrictions[] = $restriction;
+        return $this;
     }
 
     /**
@@ -265,7 +277,7 @@ class Collection implements CollectionInterface
                     break;
 
                 case Restriction::OBJECT:
-                    $valid = is_object($collectable);
+                    $valid = (is_object($collectable) && !$collectable instanceof \Closure);
                     break;
 
                 case Restriction::CALLBACK:
@@ -275,6 +287,10 @@ class Collection implements CollectionInterface
                 default:
                     $valid = ($collectable instanceof $restriction);
                     break;
+            }
+            if ($valid)
+            {
+                break;
             }
         }
         return $valid;

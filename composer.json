@@ -9,8 +9,8 @@
     {
         "psr-4" :
         {
-            "Fusion\\Utilities\\Collection\\" : "src/",
-            "Fusion\\Utilities\\Collection\\Tests\\" : "tests/"
+            "Fusion\\Collection\\" : "src/",
+            "Fusion\\Collection\\Tests\\" : "tests/"
         }
     }
 }

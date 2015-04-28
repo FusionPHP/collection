@@ -3,10 +3,10 @@
  * Test case class for the Collection Test.
  */
 
-namespace Fusion\Utilities\Collection\Tests;
+namespace Fusion\Collection\Tests;
 
-use Fusion\Utilities\Collection\Collection;
-use Fusion\Utilities\Collection\Library\Restriction;
+use Fusion\Collection\Collection;
+use Fusion\Collection\Library\Restriction;
 
 require '../vendor/autoload.php';
 
@@ -16,7 +16,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test collection instance
      *
-     * @var \Fusion\Utilities\Collection\Collection
+     * @var \Fusion\Collection\Collection
      */
     protected $collection;
 
@@ -39,6 +39,15 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /*
      * Basic collection manipulation tests.
      */
+
+    public function testSetupOnConstruct()
+    {
+        $this->collection = new Collection(
+            [15, "foo", 29, "bar", PHP_INT_MAX],
+            [Restriction::INT, Restriction::STRING]
+        );
+        $this->assertEquals(5, $this->collection->size());
+    }
     public function testAddItems()
     {
         $this->addFooBarBaz();
@@ -90,6 +99,15 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(42, $this->collection->find(0));
     }
 
+    public function testRestrictToBool()
+    {
+        $this->collection->addRestriction(Restriction::BOOL);
+        $this->collection->add(true);
+        $this->collection->add(false);
+        $this->assertEquals(1, $this->collection->has(false));
+        $this->assertTrue($this->collection->find(0));
+    }
+
     public function testRestrictToFloat()
     {
         $this->collection->addRestriction(Restriction::FLOAT);
@@ -129,25 +147,124 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testRestrictToType()
     {
         $dummy = new CrashTestDummy();
-        $this->collection->addRestriction('\Fusion\Utilities\Collection\Tests\CrashTestDummy');
+        $this->collection->addRestriction('\Fusion\Collection\Tests\CrashTestDummy');
         $this->collection->add($dummy);
         $this->collection->add(new CrashTestDummy());
-        $this->assertInstanceOf('\Fusion\Utilities\Collection\Tests\CrashTestDummy',
+        $this->assertInstanceOf('\Fusion\Collection\Tests\CrashTestDummy',
                                 $this->collection->find(1));
         $this->assertEquals($dummy, $this->collection->find(0));
+    }
+
+    public function restrictionValues()
+    {
+        return
+        [
+            [Restriction::INT, 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()],
+            [Restriction::FLOAT, 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()],
+            [Restriction::STRING, 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()],
+            [Restriction::BOOL, 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()],
+            [Restriction::ARR, 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()],
+            [Restriction::CALLBACK, 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()],
+            [Restriction::OBJECT, 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()],
+            ['\Fusion\Collection\Tests\CrashTestDummy', 50, 50.0, "foobar", false, ['a stands for ' => 'array'], function () {}, new CrashTestDummy()]
+        ];
     }
 
     /*
      * Test various failures - no strict mode
      */
 
-    public function testAddWrongRestrictedType()
+    /**
+     * @dataProvider restrictionValues
+     */
+    public function testAddWrongRestrictedType($restriction, $int, $float, $string, $bool, $array, $callback, $object)
     {
-        $this->collection->addRestriction(Restriction::INT);
-        $this->collection->add("can't add this");
-        $this->collection->add(50.0);
-        $this->assertEquals(0, $this->collection->size());
-        $this->collection->add(50);
+        $this->collection->addRestriction($restriction);
+        $this->collection->add($int);
+        $this->collection->add($float);
+        $this->collection->add($string);
+        $this->collection->add($bool);
+        $this->collection->add($array);
+        $this->collection->add($callback);
+        $this->collection->add($object);
         $this->assertEquals(1, $this->collection->size());
+    }
+
+    public function testItemNotPresent()
+    {
+        $this->collection->add(new CrashTestDummy());
+        $this->assertFalse($this->collection->has("foobar"));
+    }
+
+    public function testItemNotFound()
+    {
+        $this->collection->add(new CrashTestDummy());
+        $this->assertNull($this->collection->find(6));
+    }
+
+    /*
+     * Test various failures - no strict mode
+     */
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @dataProvider restrictionValues
+     */
+    public function testAddWrongRestrictionTypeWithExceptions($restriction, $int, $float, $string, $bool, $array, $callback, $object)
+    {
+        $this->collection->strictMode(true);
+        $this->collection->addRestriction($restriction)
+                         ->add($int)
+                         ->add($float)
+                         ->add($string)
+                         ->add($bool)
+                         ->add($array)
+                         ->add($callback)
+                         ->add($object);
+        $this->assertEquals(1, $this->collection->size());
+    }
+
+    /**
+     * @expectedException \OutOfBoundsException
+     */
+    public function testLookForItemOutOfCollectionBounds()
+    {
+        $this->collection->strictMode(true);
+        $this->collection->add(new CrashTestDummy())->find(30);
+    }
+
+    /**
+     * @expectedException \OutOfBoundsException
+     */
+    public function testRemoveItemNotInCollectionBounds()
+    {
+        $this->collection->strictMode(true);
+        $this->collection->add(new CrashTestDummy())->removeAt(30);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @dataProvider restrictionValues
+     */
+    public function testAddRemoveWrongRestrictionTypeWithExceptions($restriction, $int, $float, $string, $bool, $array, $callback, $object)
+    {
+        $this->collection->strictMode(false);
+        $this->collection->add($int)
+                         ->add($float)
+                         ->add($string)
+                         ->add($bool)
+                         ->add($array)
+                         ->add($callback)
+                         ->add($object);
+        $this->collection->strictMode(true);
+        $this->collection->addRestriction($restriction)
+                         ->remove($int)
+                         ->remove($float)
+                         ->remove($string)
+                         ->remove($bool)
+                         ->remove($array)
+                         ->remove($callback)
+                         ->remove($object);
+        $this->assertEquals(6, $this->collection->size());
     }
 }

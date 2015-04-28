@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-namespace Fusion\Utilities\Collection\Library;
+namespace Fusion\Collection\Library;
 
 /**
  * Defines the interface for a class that can store and traverse a collection of objects.
@@ -74,7 +74,7 @@ interface CollectionInterface
      *
      * @param int $id
      * @throws \OutOfBoundsException
-     * @return mixed
+     * @return mixed|null
      */
     public function find($id);
 
@@ -106,7 +106,7 @@ interface CollectionInterface
     public function size();
 
     /**
-     * Verifies that restrictions are not being violated.
+     * Verifies that restrictions are not being violated for a given item.
      *
      * @param mixed $collectable
      * @return bool
