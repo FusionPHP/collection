@@ -202,6 +202,16 @@ class Collection implements CollectionInterface
     }
 
     /**
+     * Gets the last array key in the collection.
+     *
+     * @return int
+     */
+    public function lastId()
+    {
+        return array_pop(array_keys($this->collection));
+    }
+
+    /**
      * Adds a restriction to the collection.
      *
      * Will inform the collection that it will now restrict itself to the type defined.  This
