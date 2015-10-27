@@ -1,6 +1,9 @@
 <?php
 /**
- * Test case class for the Collection Test.
+ * Part of the Fusion.Collection utility package.
+ *
+ * @author Jason L. Walker
+ * @license MIT
  */
 
 namespace Fusion\Collection\Tests;
