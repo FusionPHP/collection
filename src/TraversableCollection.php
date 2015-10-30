@@ -8,10 +8,12 @@
 
 namespace Fusion\Collection;
 
+use Fusion\Collection\Library\TraversableCollectionInterface;
+
 /**
  * Extension of the Collection class to allow the collection to become traversable.
  */
-class TraversableCollection extends Collection implements \Iterator
+class TraversableCollection extends Collection implements TraversableCollectionInterface
 {
     /**
      * Position in the collection.
