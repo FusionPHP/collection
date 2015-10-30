@@ -9,7 +9,7 @@
 namespace Fusion\Collection\Library;
 
 
-interface TraversableCollectionInterface extends \Iterator
+interface TraversableCollectionInterface extends \Iterator, CollectionInterface
 {
 
 }
