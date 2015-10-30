@@ -20,7 +20,7 @@ class TraversableCollection extends Collection implements TraversableCollectionI
      *
      * @var int
      */
-    private $position = 0;
+    protected $position = 0;
 
     /**
      * Rewinds the collection, sets the position at 0.
