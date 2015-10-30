@@ -83,6 +83,12 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->collection->add("baz");
     }
 
+    public function testGetLastId()
+    {
+        $this->addFooBarBaz();
+        $this->assertEquals(2, $this->collection->lastId());
+    }
+
     /*
      * Interrogation tests with restrictions
      */
