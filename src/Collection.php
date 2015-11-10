@@ -208,7 +208,8 @@ class Collection implements CollectionInterface
      */
     public function lastId()
     {
-        return array_pop(array_keys($this->collection));
+        $keys = array_keys($this->collection);
+        return array_pop($keys);
     }
 
     /**
