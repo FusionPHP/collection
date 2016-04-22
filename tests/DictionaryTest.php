@@ -79,6 +79,21 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('qux', $this->dictionary->getItem(5));
     }
 
+    public function testRemoveOnlyRemoveOneReference()
+    {
+        $value = null;
+        for($i = 0; $i < 5; ++$i)
+        {
+            $value = new \stdClass();
+            $this->dictionary->insert($i, $value);
+        }
+        $this->assertEquals(5, $this->dictionary->getSize());
+        $this->dictionary->remove($value);
+        $this->assertEquals(4, $this->dictionary->getSize());
+        $this->setExpectedException('\OutOfBoundsException');
+        $this->dictionary->getItem(4);
+    }
+
     public function testTraversingDictionary()
     {
         $this->dictionary->insert('foo', 'bar')
