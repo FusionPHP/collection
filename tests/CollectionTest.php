@@ -15,31 +15,18 @@ class CollectionTest extends TestCase
 {
 
     /**
-     * Test collection instance
-     *
      * @var \Fusion\Collection\Contracts\CollectionInterface
      */
     protected $collection;
 
-    /*
-     * Setup
-     */
     public function setUp()
     {
         $this->collection = new Collection();
     }
-
-    /*
-     * Tear down
-     */
     public function tearDown()
     {
         $this->collection = null;
     }
-
-    /*
-     * Basic collection manipulation tests.
-     */
 
     public function testSetupOnConstruct()
     {
@@ -72,6 +59,21 @@ class CollectionTest extends TestCase
         }
 
         $this->assertEquals(0, $this->collection->size());
+    }
+
+    public function testRemoveItemNotInCollectionDoesNothing()
+    {
+        $this->addFooBarBaz();
+        $this->collection->remove("quam");
+
+        $this->assertEquals(3, $this->collection->size());
+    }
+
+    public function testFindingItemAtId()
+    {
+        $expected = "foo";
+        $this->collection->add($expected);
+        $this->assertEquals($expected, $this->collection->findAt(0));
     }
 
     /**
