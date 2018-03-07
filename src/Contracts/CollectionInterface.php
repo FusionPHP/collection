@@ -81,44 +81,9 @@ interface CollectionInterface
     public function find($id);
 
     /**
-     * Gets the last array key in the collection.
-     *
-     * @return int
-     */
-    public function lastId();
-
-    /**
-     * Adds a restriction to the collection.
-     *
-     * Will inform the collection that it will now restrict itself to the type defined.  This
-     * method may be invoked multiple times to allow multiple value types to be added to the
-     * collection. Restrictions can define scalar and non-scalar PHP types.  When defining specific
-     * class types the fully qualified name must be used. E.g.: "\Foo\Bar\Baz"
-     *
-     * @param string $restriction
-     * @return self
-     */
-    public function addRestriction($restriction);
-
-    /**
-     * Enables or disables strict mode.
-     *
-     * @param bool $mode
-     */
-    public function strictMode($mode);
-
-    /**
      * Gets a count of the items in a collection.
      *
      * @return int
      */
     public function size();
-
-    /**
-     * Verifies that restrictions are not being violated for a given item.
-     *
-     * @param mixed $collectable
-     * @return bool
-     */
-    public function verifyRestrictions($collectable);
 }
