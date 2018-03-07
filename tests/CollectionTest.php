@@ -79,7 +79,7 @@ class CollectionTest extends TestCase
      */
     public function testLookForItemOutOfCollectionBounds()
     {
-        $this->collection->find(30);
+        $this->collection->findAt(30);
     }
 
     /**

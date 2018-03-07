@@ -62,7 +62,7 @@ interface DictionaryInterface extends \Iterator
      * This method MUST throw an `InvalidArgumentException` when the item to
      * remove is null.
      *
-     * @param mixed $item The item(s) to find and remove.
+     * @param mixed $item The item(s) to findAt and remove.
      *
      * @return self
      *

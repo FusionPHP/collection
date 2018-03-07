@@ -69,7 +69,7 @@ class Collection implements CollectionInterface
      * @throws \InvalidArgumentException
      * @return self
      */
-    public function add($collectable)
+    public function add($collectable): CollectionInterface
     {
         array_push($this->collection, $collectable);
         return $this;
@@ -84,7 +84,7 @@ class Collection implements CollectionInterface
      * @throws \InvalidArgumentException
      * @return self
      */
-    public function remove($collectable)
+    public function remove($collectable): CollectionInterface
     {
         $position = $this->has($collectable);
 
@@ -166,7 +166,7 @@ class Collection implements CollectionInterface
      * @throws \OutOfBoundsException
      * @return mixed|null
      */
-    public function find($id)
+    public function findAt($id)
     {
         $this->throwExceptionIfIdDoesNotExist($id);
         return $this->collection[$id];
@@ -210,7 +210,7 @@ class Collection implements CollectionInterface
      *
      * @return int
      */
-    public function size()
+    public function size(): int
     {
         return count($this->collection);
     }
