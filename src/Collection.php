@@ -71,18 +71,7 @@ class Collection implements CollectionInterface
      */
     public function add($collectable)
     {
-        if ($this->verifyRestrictions($collectable))
-        {
-            array_push($this->collection, $collectable);
-        }
-        else
-        {
-            if ($this->strictMode)
-            {
-                $message = "Restriction violation, unable to add item.";
-                throw new \InvalidArgumentException($message);
-            }
-        }
+        array_push($this->collection, $collectable);
         return $this;
     }
 
@@ -98,21 +87,13 @@ class Collection implements CollectionInterface
     public function remove($collectable)
     {
         $position = $this->has($collectable);
+
         if ($position !== false)
         {
-            if ($this->verifyRestrictions($collectable))
-            {
-                $this->removeAt($position);
-            }
-            else
-            {
-                if ($this->strictMode)
-                {
-                    $message = "Restriction violation, unable to remove item.";
-                    throw new \InvalidArgumentException($message);
-                }
-            }
+            $this->removeAt($position);
+
         }
+
         return $this;
     }
 
@@ -128,18 +109,18 @@ class Collection implements CollectionInterface
      */
     public function removeAt(int $id): CollectionInterface
     {
-        if (array_key_exists($id, $this->collection))
-        {
-            array_splice($this->collection, $id, 1);
-        }
-        else
-        {
-            if ($this->strictMode)
-            {
-                throw new \OutOfBoundsException("Failed removing collection element. Invalid ID.");
-            }
-        }
+        $this->throwExceptionIfIdDoesNotExist($id);
+
+        array_splice($this->collection, $id, 1);
         return $this;
+    }
+
+    private function throwExceptionIfIdDoesNotExist(int $id)
+    {
+        if ($this->idExists($id) === false)
+        {
+            throw new \OutOfBoundsException("The id '$id' doesn't exist in the collection.");
+        }
     }
 
     /**
@@ -160,6 +141,7 @@ class Collection implements CollectionInterface
                 return $key;
             }
         }
+
         return false;
     }
 
@@ -186,18 +168,13 @@ class Collection implements CollectionInterface
      */
     public function find($id)
     {
-        if (array_key_exists($id, $this->collection))
-        {
-            return $this->collection[$id];
-        }
-        else
-        {
-            if ($this->strictMode)
-            {
-                throw new \OutOfBoundsException("Failed getting collection element. Invalid ID.");
-            }
-        }
-        return null;
+        $this->throwExceptionIfIdDoesNotExist($id);
+        return $this->collection[$id];
+    }
+
+    private function idExists(int $id): bool
+    {
+        return array_key_exists($id, $this->collection);
     }
 
     /**
@@ -229,21 +206,6 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Enables or disables strict mode.
-     *
-     * @param bool $mode
-     * @return self
-     */
-    public function strictMode($mode)
-    {
-        if (is_bool($mode))
-        {
-            $this->strictMode = $mode;
-        }
-        return $this;
-    }
-
-    /**
      * Gets a count of the items in a collection.
      *
      * @return int
@@ -251,21 +213,5 @@ class Collection implements CollectionInterface
     public function size()
     {
         return count($this->collection);
-    }
-
-    /**
-     * Verifies that restrictions are not being violated.
-     *
-     * @param mixed $collectable
-     * @return bool
-     */
-    public function verifyRestrictions($collectable)
-    {
-        $valid = true;
-        foreach ($this->restrictions as $restriction)
-        {
-
-        }
-        return $valid;
     }
 }
