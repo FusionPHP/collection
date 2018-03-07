@@ -9,7 +9,6 @@
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionInterface;
-use Fusion\Collection\Library\Restriction;
 
 /**
  * The basic collection class.
@@ -265,44 +264,7 @@ class Collection implements CollectionInterface
         $valid = true;
         foreach ($this->restrictions as $restriction)
         {
-            switch ($restriction)
-            {
-                case Restriction::INT:
-                    $valid = is_int($collectable);
-                    break;
 
-                case Restriction::STRING:
-                    $valid = is_string($collectable);
-                    break;
-
-                case Restriction::FLOAT:
-                    $valid = is_float($collectable);
-                    break;
-
-                case Restriction::BOOL:
-                    $valid = is_bool($collectable);
-                    break;
-
-                case Restriction::ARR:
-                    $valid = is_array($collectable);
-                    break;
-
-                case Restriction::OBJECT:
-                    $valid = (is_object($collectable) && !$collectable instanceof \Closure);
-                    break;
-
-                case Restriction::CALLBACK:
-                    $valid = ($collectable instanceof \Closure);
-                    break;
-
-                default:
-                    $valid = ($collectable instanceof $restriction);
-                    break;
-            }
-            if ($valid)
-            {
-                break;
-            }
         }
         return $valid;
     }
