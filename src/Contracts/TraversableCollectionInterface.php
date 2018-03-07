@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-namespace Fusion\Collection\Library;
+namespace Fusion\Collection\Contracts;
 
 
 interface TraversableCollectionInterface extends \Iterator, CollectionInterface

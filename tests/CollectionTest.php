@@ -18,7 +18,7 @@ class CollectionTest extends TestCase
     /**
      * Test collection instance
      *
-     * @var \Fusion\Collection\Collection
+     * @var \Fusion\Collection\Contracts\CollectionInterface
      */
     protected $collection;
 

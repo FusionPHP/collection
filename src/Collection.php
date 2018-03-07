@@ -8,7 +8,7 @@
 
 namespace Fusion\Collection;
 
-use Fusion\Collection\Library\CollectionInterface;
+use Fusion\Collection\Contracts\CollectionInterface;
 use Fusion\Collection\Library\Restriction;
 
 /**

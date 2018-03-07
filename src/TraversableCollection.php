@@ -8,7 +8,7 @@
 
 namespace Fusion\Collection;
 
-use Fusion\Collection\Library\TraversableCollectionInterface;
+use Fusion\Collection\Contracts\TraversableCollectionInterface;
 
 /**
  * Extension of the Collection class to allow the collection to become traversable.

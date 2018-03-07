@@ -8,7 +8,7 @@
 
 namespace Fusion\Collection;
 
-use Fusion\Collection\Library\DictionaryInterface;
+use Fusion\Collection\Contracts\DictionaryInterface;
 
 class Dictionary implements DictionaryInterface
 {

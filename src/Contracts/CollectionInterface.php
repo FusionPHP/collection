@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-namespace Fusion\Collection\Library;
+namespace Fusion\Collection\Contracts;
 
 /**
  * Defines the interface for a class that can store and traverse a collection of objects.

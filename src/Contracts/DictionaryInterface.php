@@ -6,7 +6,7 @@
  * Time: 9:23 AM
  */
 
-namespace Fusion\Collection\Library;
+namespace Fusion\Collection\Contracts;
 
 
 interface DictionaryInterface extends \Iterator
