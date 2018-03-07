@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Part of the Fusion.Collection utility package.
  *
@@ -45,7 +47,7 @@ interface CollectionInterface
      * @throws \OutOfBoundsException
      * @return self
      */
-    public function removeAt($id);
+    public function removeAt(int $id): CollectionInterface;
 
     /**
      * Checks if a particular object exists.
@@ -56,14 +58,14 @@ interface CollectionInterface
      * @param mixed $collectable
      * @return int|bool
      */
-    public function has($collectable);
+    public function has($collectable): bool;
 
     /**
      * Indicates if a collection has more items in it.
      *
      * @return bool
      */
-    public function hasMore();
+    public function hasMore(): bool;
 
     /**
      * Gets an item in the collection at the specified index.

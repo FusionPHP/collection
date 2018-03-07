@@ -126,7 +126,7 @@ class Collection implements CollectionInterface
      * @throws \OutOfBoundsException
      * @return self
      */
-    public function removeAt($id)
+    public function removeAt(int $id): CollectionInterface
     {
         if (array_key_exists($id, $this->collection))
         {
@@ -151,7 +151,7 @@ class Collection implements CollectionInterface
      * @param mixed $collectable
      * @return int|bool
      */
-    public function has($collectable)
+    public function has($collectable): bool
     {
         foreach ($this->collection as $key => $item)
         {
@@ -168,7 +168,7 @@ class Collection implements CollectionInterface
      *
      * @return bool
      */
-    public function hasMore()
+    public function hasMore(): bool
     {
         return ($this->size() > 0);
     }
