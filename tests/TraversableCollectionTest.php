@@ -9,10 +9,9 @@
 namespace Fusion\Collection\Tests;
 
 use Fusion\Collection\TraversableCollection;
+use PHPUnit\Framework\TestCase;
 
-require '../vendor/autoload.php';
-
-class TraversableCollectionTest extends \PHPUnit_Framework_TestCase
+class TraversableCollectionTest extends TestCase
 {
     /**
      * Test collection instance

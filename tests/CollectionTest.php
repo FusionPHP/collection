@@ -10,10 +10,9 @@ namespace Fusion\Collection\Tests;
 
 use Fusion\Collection\Collection;
 use Fusion\Collection\Library\Restriction;
+use PHPUnit\Framework\TestCase;
 
-require '../vendor/autoload.php';
-
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends TestCase
 {
 
     /**

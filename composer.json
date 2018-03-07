@@ -2,7 +2,10 @@
     "name" : "crackertastic/fusion.collection",
     "require":
     {
-        "php" : ">=5.4"
+        "php" : ">=7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
     },
     "license" : "MIT",
     "autoload":

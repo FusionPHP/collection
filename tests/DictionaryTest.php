@@ -10,10 +10,9 @@ namespace Fusion\Collection\Tests;
 
 
 use Fusion\Collection\Dictionary;
+use PHPUnit\Framework\TestCase;
 
-require '../vendor/autoload.php';
-
-class DictionaryTest extends \PHPUnit_Framework_TestCase
+class DictionaryTest extends TestCase
 {
     /** @var  Dictionary */
     private $dictionary;
@@ -90,8 +89,9 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(5, $this->dictionary->getSize());
         $this->dictionary->remove($value);
         $this->assertEquals(4, $this->dictionary->getSize());
-        $this->setExpectedException('\OutOfBoundsException');
+        $this->expectException('\OutOfBoundsException');
         $this->dictionary->getItem(4);
+        
     }
 
     public function testTraversingDictionary()
@@ -136,7 +136,7 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInsertWithBadKey($data)
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         $this->dictionary->insert($data, 'foo');
     }
 
@@ -145,19 +145,19 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInsertAtWithBadKey($data)
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         $this->dictionary->insert($data, 'foo');
     }
 
     public function testInsertWithBadItem()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         $this->dictionary->insert('foo', null);
     }
 
     public function testInsertAtWithBadItem()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         $this->dictionary->insertAt('foo', null);
     }
 
@@ -166,19 +166,19 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveAtWithBadKey($data)
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         $this->dictionary->removeAt($data);
     }
 
     public function testRemoveWithBadItem()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         $this->dictionary->remove(null);
     }
 
     public function testExceptionOnInsertOverwrite()
     {
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException('\RuntimeException');
         $this->dictionary->insert('foo', 'bar');
         $this->dictionary->insert('foo', 'bar');
         $this->assertEquals(1, $this->dictionary->getSize());
@@ -186,7 +186,7 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionKeyNotExists()
     {
-        $this->setExpectedException('\OutOfBoundsException');
+        $this->expectException('\OutOfBoundsException');
         $this->dictionary->getItem('foo');
     }
 }
