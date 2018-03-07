@@ -61,13 +61,6 @@ interface CollectionInterface
     public function has($collectable): bool;
 
     /**
-     * Indicates if a collection has more items in it.
-     *
-     * @return bool
-     */
-    public function hasMore(): bool;
-
-    /**
      * Gets an item in the collection at the specified index.
      *
      * Looks in the collection at the specified index, if it exists, and returns the item.  If
