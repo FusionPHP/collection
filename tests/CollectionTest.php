@@ -32,14 +32,14 @@ class CollectionTest extends TestCase
 
     public function addFooBarBaz()
     {
-        $this->collection->add("foo");
-        $this->collection->add("bar");
-        $this->collection->add("baz");
+        $this->collection->add('foo');
+        $this->collection->add('bar');
+        $this->collection->add('baz');
     }
 
     public function testSetupOnConstruct()
     {
-        $this->collection = new Collection([15, "foo", 29, "bar", PHP_INT_MAX]);
+        $this->collection = new Collection([15, 'foo', 29, 'bar', PHP_INT_MAX]);
         $this->assertEquals(5, $this->collection->size());
     }
 
@@ -73,44 +73,40 @@ class CollectionTest extends TestCase
     public function testRemoveItemNotInCollectionDoesNothing()
     {
         $this->addFooBarBaz();
-        $this->collection->remove("quam");
+        $this->collection->remove('quam');
 
         $this->assertEquals(3, $this->collection->size());
     }
 
     public function testFindingItemAtId()
     {
-        $expected = "foo";
+        $expected = 'foo';
         $this->collection->add($expected);
         $this->assertEquals($expected, $this->collection->findAt(0));
     }
 
-    /**
-     * @expectedException \OutOfBoundsException
-     */
     public function testLookForItemOutOfCollectionBounds()
     {
+        $this->expectException('\OutOfBoundsException');
         $this->collection->findAt(30);
     }
 
-    /**
-     * @expectedException \OutOfBoundsException
-     */
     public function testRemoveItemNotInCollectionBounds()
     {
+        $this->expectException('\OutOfBoundsException');
         $this->collection->removeAt(30);
     }
 
     public function testAccessCurrentElementPosition()
     {
-        $expected = "foo";
+        $expected = 'foo';
         $this->addFooBarBaz();
         $this->assertEquals($expected, $this->collection->current());
     }
 
     public function testAccessNextElementPosition()
     {
-        $expected = "bar";
+        $expected = 'bar';
         $this->addFooBarBaz();
         $this->collection->next();
         $this->assertEquals($expected, $this->collection->current());
