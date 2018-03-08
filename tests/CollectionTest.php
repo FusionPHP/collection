@@ -6,6 +6,8 @@
  * @license MIT
  */
 
+declare(strict_types=1);
+
 namespace Fusion\Collection\Tests;
 
 use Fusion\Collection\Collection;

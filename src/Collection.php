@@ -6,6 +6,8 @@
  * @license MIT
  */
 
+declare(strict_types=1);
+
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionInterface;
