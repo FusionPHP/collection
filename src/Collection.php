@@ -73,7 +73,7 @@ class Collection implements CollectionInterface
         return $this;
     }
 
-    private function throwExceptionIfIdDoesNotExist(int $id)
+    private function throwExceptionIfIdDoesNotExist(int $id): void
     {
         if ($this->idExists($id) === false)
         {
