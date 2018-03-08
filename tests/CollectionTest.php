@@ -15,7 +15,7 @@ class CollectionTest extends TestCase
 {
 
     /**
-     * @var \Fusion\Collection\Contracts\CollectionInterface
+     * @var \Fusion\Collection\Collection
      */
     protected $collection;
 
@@ -26,6 +26,13 @@ class CollectionTest extends TestCase
     public function tearDown()
     {
         $this->collection = null;
+    }
+
+    public function addFooBarBaz()
+    {
+        $this->collection->add("foo");
+        $this->collection->add("bar");
+        $this->collection->add("baz");
     }
 
     public function testSetupOnConstruct()
@@ -92,10 +99,67 @@ class CollectionTest extends TestCase
         $this->collection->removeAt(30);
     }
 
-    public function addFooBarBaz()
+    public function testAccessCurrentElementPosition()
     {
-        $this->collection->add("foo");
-        $this->collection->add("bar");
-        $this->collection->add("baz");
+        $expected = "foo";
+        $this->addFooBarBaz();
+        $this->assertEquals($expected, $this->collection->current());
+    }
+
+    public function testAccessNextElementPosition()
+    {
+        $expected = "bar";
+        $this->addFooBarBaz();
+        $this->collection->next();
+        $this->assertEquals($expected, $this->collection->current());
+    }
+
+    public function testAccessCurrentKey()
+    {
+        $expected = 1;
+        $this->addFooBarBaz();
+        $this->collection->next();
+        $this->assertEquals($expected, $this->collection->key());
+    }
+
+    public function testCurrentElementIsValidReturnsTrue()
+    {
+        $this->addFooBarBaz();
+        $this->assertTrue($this->collection->valid());
+    }
+
+    public function testCurrentElementIsValidReturnsFalse()
+    {
+        $this->assertFalse($this->collection->valid());
+    }
+
+    public function testRewindingElementPosition()
+    {
+        $expected = 'bar';
+        $this->addFooBarBaz();
+        $this->collection->next();
+        $this->assertEquals($expected, $this->collection->current());
+
+        $expected = 'foo';
+        $this->collection->rewind();
+        $this->assertEquals($expected, $this->collection->current());
+    }
+
+    public function testExceptionThrownTraversingEmptyCollection()
+    {
+        $this->expectException('\OutOfBoundsException');
+        $this->collection->current();
+    }
+
+    public function testExceptionThrownMovingToNextElementInEmptyCollection()
+    {
+        $this->expectException('\OutOfBoundsException');
+        $this->collection->next();
+    }
+
+    public function testExceptionThrownWhenAccessingCurrentKeyOfEmptyCollection()
+    {
+        $this->expectException('\OutOfBoundsException');
+        $this->collection->key();
     }
 }

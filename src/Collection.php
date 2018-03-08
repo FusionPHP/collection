@@ -9,11 +9,13 @@
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionInterface;
+use Iterator;
+use OutOfBoundsException;
 
 /**
  * The basic collection class.
  */
-class Collection implements CollectionInterface
+class Collection implements CollectionInterface, Iterator
 {
 
     /**
@@ -22,6 +24,13 @@ class Collection implements CollectionInterface
      * @var array
      */
     protected $collection = [];
+
+    /**
+     * An integer holding he current element index for iterating purposes.
+     *
+     * @var int
+     */
+    private $currentIndex;
 
     /**
      * Constructor.
@@ -36,6 +45,8 @@ class Collection implements CollectionInterface
         {
             $this->add($item);
         }
+
+        $this->currentIndex = 0;
     }
 
     /**
@@ -77,7 +88,7 @@ class Collection implements CollectionInterface
     {
         if ($this->idExists($id) === false)
         {
-            throw new \OutOfBoundsException("The id '$id' doesn't exist in the collection.");
+            throw new OutOfBoundsException("The id '$id' doesn't exist in the collection.");
         }
     }
 
@@ -114,5 +125,69 @@ class Collection implements CollectionInterface
     public function size(): int
     {
         return count($this->collection);
+    }
+
+    /**
+     * Return the current element.
+     *
+     * @link http://php.net/manual/en/iterator.current.php
+     * @return mixed Can return any type.
+     */
+    public function current()
+    {
+        $this->throwExceptionIfCollectionIsEmpty();
+        return $this->collection[$this->currentIndex];
+    }
+
+    /**
+     * Move forward to next element.
+     *
+     * @link http://php.net/manual/en/iterator.next.php
+     */
+    public function next(): void
+    {
+        $this->throwExceptionIfCollectionIsEmpty();
+        $this->currentIndex++;
+    }
+
+    /**
+     * Return the key of the current element.
+     *
+     * @link http://php.net/manual/en/iterator.key.php
+     * @return int
+     */
+    public function key(): int
+    {
+        $this->throwExceptionIfCollectionIsEmpty();
+        return $this->currentIndex;
+    }
+
+    /**
+     * Checks if current position is valid.
+     *
+     * @link http://php.net/manual/en/iterator.valid.php
+     * @return bool
+     */
+    public function valid(): bool
+    {
+        return $this->idExists($this->currentIndex);
+    }
+
+    /**
+     * Rewind the collection's position to the first element.
+     *
+     * @link http://php.net/manual/en/iterator.rewind.php
+     */
+    public function rewind(): void
+    {
+        $this->currentIndex = 0;
+    }
+
+    private function throwExceptionIfCollectionIsEmpty()
+    {
+        if ($this->size() == 0)
+        {
+            throw new OutOfBoundsException("Unable to traverse or access items in an empty collection.");
+        }
     }
 }
