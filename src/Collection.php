@@ -54,7 +54,7 @@ class Collection implements CollectionInterface
     {
         $position = $this->has($collectable);
 
-        if ($position !== false)
+        if ($position >= 0)
         {
             $this->removeAt($position);
         }
@@ -86,7 +86,7 @@ class Collection implements CollectionInterface
         return array_key_exists($id, $this->collection);
     }
 
-    private function has($collectable): bool
+    private function has($collectable): int
     {
         foreach ($this->collection as $key => $item)
         {
@@ -96,7 +96,7 @@ class Collection implements CollectionInterface
             }
         }
 
-        return false;
+        return -1;
     }
 
     /**
