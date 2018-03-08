@@ -128,10 +128,10 @@ class Collection implements CollectionInterface, Iterator
     }
 
     /**
-     * Return the current element.
+     * Returns the current element.
      *
      * @link http://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * @return mixed
      */
     public function current()
     {
@@ -140,7 +140,7 @@ class Collection implements CollectionInterface, Iterator
     }
 
     /**
-     * Move forward to next element.
+     * Move forward to the next element.
      *
      * @link http://php.net/manual/en/iterator.next.php
      */
@@ -163,7 +163,7 @@ class Collection implements CollectionInterface, Iterator
     }
 
     /**
-     * Checks if current position is valid.
+     * Checks if the current position is valid.
      *
      * @link http://php.net/manual/en/iterator.valid.php
      * @return bool
