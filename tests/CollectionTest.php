@@ -22,6 +22,7 @@ class CollectionTest extends TestCase
     protected $collection;
 
     private $oobExceptionString = '\OutOfBoundsException';
+    private $runtimeExceptionString = '\RuntimeException';
 
     public function setUp()
     {
@@ -197,5 +198,115 @@ class CollectionTest extends TestCase
         $expected = 0;
         $this->collection->clear();
         $this->assertEquals($expected, $this->collection->size());
+    }
+
+    public function testOffsetExistsInCollection()
+    {
+        $targetOffset = 2;
+        $this->assertTrue(isset($this->collection[$targetOffset]));
+    }
+
+    public function testExceptionThrownIfNonIntegerGivenAsOffsetExistsValue()
+    {
+        $this->expectException($this->runtimeExceptionString);
+        $targetOffset = 'foo';
+
+        $this->collection->offsetExists($targetOffset);
+    }
+
+    public function testExceptionThrownIfAccessingOffsetAndCollectionIsEmpty()
+    {
+        $this->expectException($this->oobExceptionString);
+        $this->makeEmptyCollection();
+        $targetOffset = 0;
+
+        $this->collection->offsetExists($targetOffset);
+    }
+
+    public function testExceptionThrownIfAccessingOffsetThatDoesNotExist()
+    {
+        $this->expectException($this->oobExceptionString);
+        $targetOffset = 3;
+
+        $this->collection[$targetOffset];
+    }
+
+    public function testRetrievingOffsetFromCollection()
+    {
+        $expected = 'foo';
+        $targetOffset = 0;
+
+        $this->assertEquals($expected, $this->collection[$targetOffset]);
+    }
+
+    public function testRetrievingOffsetViaArrayAccessNotation()
+    {
+        $expected = 'bar';
+        $targetOffset = 1;
+
+        $this->assertEquals($expected, $this->collection[$targetOffset]);
+    }
+
+    public function testExceptionThrownIfNonIntegerGivenAsOffsetGetValue()
+    {
+        $this->expectException($this->runtimeExceptionString);
+        $targetOffset = 'foo';
+
+        $this->collection->offsetGet($targetOffset);
+    }
+
+    public function testExceptionThrownIfGettingOffsetAndCollectionIsEmpty()
+    {
+        $this->expectException($this->oobExceptionString);
+        $this->makeEmptyCollection();
+        $targetOffset = 0;
+
+        $this->collection->offsetGet($targetOffset);
+    }
+
+    public function testExceptionThrownIfGettingOffsetThatDoesNotExist()
+    {
+        $this->expectException($this->oobExceptionString);
+        $targetOffset = 3;
+
+        $this->collection->offsetGet($targetOffset);
+    }
+
+    public function testSettingOffsetValueInCollection()
+    {
+        $expected = 'baz';
+        $targetOffset = 2;
+        $this->assertEquals($expected, $this->collection[$targetOffset]);
+
+        $expected = 'quam';
+        $this->collection[$targetOffset] = $expected;
+        $this->assertEquals($expected, $this->collection[$targetOffset]);
+    }
+
+    public function testExceptionThrownSettingOffsetValueAndOffsetIsNotAnInteger()
+    {
+        $this->expectException($this->runtimeExceptionString);
+        $newValue = 'quam';
+        $targetOffset = 'qux';
+
+        $this->collection[$targetOffset] = $newValue;
+    }
+
+    public function testExceptionThrownSettingOffsetValueWhenCollectionIsEmpty()
+    {
+        $this->expectException($this->oobExceptionString);
+        $this->makeEmptyCollection();
+        $newValue = 'quam';
+        $targetOffset = 1;
+
+        $this->collection[$targetOffset] = $newValue;
+    }
+
+    public function testUnsettingElementAtGivenOffset()
+    {
+        $targetOffset = 2;
+        unset($this->collection[$targetOffset]);
+
+        $this->assertNull($this->collection[$targetOffset]);
     }
 }

@@ -12,13 +12,15 @@ declare(strict_types=1);
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionInterface;
+use ArrayAccess;
 use Iterator;
 use OutOfBoundsException;
+use RuntimeException;
 
 /**
  * The basic collection class.
  */
-class Collection implements CollectionInterface, Iterator
+class Collection implements CollectionInterface, Iterator, ArrayAccess
 {
     /**
      * An array holding all collection items.
@@ -202,5 +204,83 @@ class Collection implements CollectionInterface, Iterator
         $this->currentIndex = 0;
 
         return $this;
+    }
+
+    /**
+     * Checks if an index exists in the collection
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     *
+     * @param int The numerical index to confirm.
+     *
+     * @return bool
+     *
+     * @throws \RuntimeException When `$offset` given is not an integer.
+     * @throws \OutOfBoundsException When accessing any offset of an empty collection
+     */
+    public function offsetExists($offset): bool
+    {
+        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
+        $this->throwExceptionIfIdDoesNotExist($offset);
+        $this->throwExceptionIfCollectionIsEmpty();
+
+        return $this->idExists($offset);
+    }
+
+    private function throwExceptionIfOffsetIsNotAnInteger($offset): void
+    {
+        if (is_int($offset) === false)
+        {
+            $message = sprintf('Collection offset type must be an integer. %s given.', gettype($offset));
+            throw new RuntimeException($message);
+        }
+    }
+
+    /**
+     * Retrieves a value at the given offset in the collection.
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     *
+     * @param int $offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
+        $this->throwExceptionIfIdDoesNotExist($offset);
+        $this->throwExceptionIfCollectionIsEmpty();
+
+        return $this->collection[$offset];
+    }
+
+    /**
+     * Sets a new value in the collection at the given offset.
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     *
+     * @param mixed $offset The offset location in the collection.
+     * @param mixed $value The value to set.
+     * @throws \RuntimeException When `$offset` given is not an integer.
+     * @throws \OutOfBoundsException When accessing any offset of an empty collection
+     */
+    public function offsetSet($offset, $value): void
+    {
+        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
+        $this->throwExceptionIfCollectionIsEmpty();
+
+        $this->collection[$offset] = $value;
+    }
+
+    /**
+     * Unset a value in the collection at the given offset.
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+     *
+     * @param mixed The offset to unset.
+     */
+    public function offsetUnset($offset): void
+    {
+        $this->offsetSet($offset, null);
     }
 }
