@@ -192,4 +192,15 @@ class Collection implements CollectionInterface, Iterator
             throw new OutOfBoundsException("Unable to traverse or access items in an empty collection.");
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function empty(): CollectionInterface
+    {
+        $this->collection = [];
+        $this->currentIndex = 0;
+
+        return $this;
+    }
 }

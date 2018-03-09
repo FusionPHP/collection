@@ -160,4 +160,13 @@ class CollectionTest extends TestCase
         $this->expectException('\OutOfBoundsException');
         $this->collection->key();
     }
+
+    public function testEmptyingCollection()
+    {
+        $this->addFooBarBaz();
+        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->empty());
+
+        $expected = 0;
+        $this->assertEquals($expected, $this->collection->size());
+    }
 }
