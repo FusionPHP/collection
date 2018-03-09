@@ -45,7 +45,16 @@ class CollectionTest extends TestCase
 
     public function testAddItems()
     {
-        $this->addFooBarBaz();
+        $foo = 'foo';
+        $bar = 'bar';
+        $baz = 'baz';
+
+        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->add($foo));
+
+        $this->collection
+            ->add($bar)
+            ->add($baz);
+
         $this->assertEquals(3, $this->collection->size());
     }
 
@@ -53,7 +62,7 @@ class CollectionTest extends TestCase
     {
         $this->addFooBarBaz();
         $this->assertEquals(3, $this->collection->size());
-        $this->collection->remove("bar");
+        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->remove("bar"));
         $this->assertEquals(2, $this->collection->size());
     }
 
@@ -64,7 +73,7 @@ class CollectionTest extends TestCase
 
         while($this->collection->size() > 0)
         {
-            $this->collection->removeAt(0);
+            $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->removeAt(0));
         }
 
         $this->assertEquals(0, $this->collection->size());
@@ -164,7 +173,7 @@ class CollectionTest extends TestCase
     public function testEmptyingCollection()
     {
         $this->addFooBarBaz();
-        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->empty());
+        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->clear());
 
         $expected = 0;
         $this->assertEquals($expected, $this->collection->size());

@@ -18,7 +18,7 @@ interface DictionaryInterface extends \Iterator
      *
      * This method MUST throw a `RuntimeException` if the key already exists.
      * This method MUST throw an `InvalidArgumentException` if the key given
-     * is empty or is not a string or integer. This method MUST throw an
+     * is clear or is not a string or integer. This method MUST throw an
      * `InvalidArgumentException` when the item to insert is null.
      *
      * @param string|int $key The specified index insert at.
@@ -28,7 +28,7 @@ interface DictionaryInterface extends \Iterator
      *
      * @throws \RuntimeException When given key already exists in the dictionary.
      * @throws \InvalidArgumentException When `$key` is not an integer or
-     *      non-empty string.
+     *      non-clear string.
      * @throws \InvalidArgumentException When `$item` is null;
      */
     public function insert($key, $item);
@@ -42,7 +42,7 @@ interface DictionaryInterface extends \Iterator
      * standard insert.
      *
      * This method MUST throw an `InvalidArgumentException` if the key given
-     * is empty or is not a string or integer. This method MUST throw an
+     * is clear or is not a string or integer. This method MUST throw an
      * `InvalidArgumentException` when the item to insert is null.
      *
      * @param string|int $key The specified index insert at.
@@ -51,7 +51,7 @@ interface DictionaryInterface extends \Iterator
      * @return self
      *
      * @throws \InvalidArgumentException When `$key` is not an integer or
-     *      non-empty string.
+     *      non-clear string.
      * @throws \InvalidArgumentException When `$item` is null;
      */
     public function insertAt($key, $item);
@@ -74,14 +74,14 @@ interface DictionaryInterface extends \Iterator
      * Removes an item from the dictionary at the specified key.
      *
      * This method MUST throw an `InvalidArgumentException` if the key given
-     * is empty or is not a string or integer.
+     * is clear or is not a string or integer.
      *
      * @param string|int $key The key of the item in the dictionary to remove.
      *
      * @return self
      *
      * @throws \InvalidArgumentException When `$key` is not an integer or
-     *      non-empty string.
+     *      non-clear string.
      */
     public function removeAt($key);
 

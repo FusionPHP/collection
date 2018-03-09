@@ -15,7 +15,7 @@ class Dictionary implements DictionaryInterface
     /**
      * Key/Value pairs of all items in the dictionary.
      *
-     * Keys MUST be non-empty strings or integers and values MUST NOT be null.
+     * Keys MUST be non-clear strings or integers and values MUST NOT be null.
      *
      * @var array
      */
@@ -159,7 +159,7 @@ class Dictionary implements DictionaryInterface
      * @return bool
      *
      * @throws \InvalidArgumentException When `$key` is not an integer or
-     *      non-empty string.
+     *      non-clear string.
      */
     protected function validateKey($key)
     {
@@ -167,7 +167,7 @@ class Dictionary implements DictionaryInterface
         {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Key must be a non-empty string or integer. %s given.',
+                    'Key must be a non-clear string or integer. %s given.',
                     is_object($key) ? get_class($key) : gettype($key)
                 )
             );

@@ -64,9 +64,9 @@ interface CollectionInterface
     public function size(): int;
 
     /**
-     * Empties all items from the collection.
+     * Clears all items from the collection.
      *
      * @return CollectionInterface
      */
-    public function empty(): CollectionInterface;
+    public function clear(): CollectionInterface;
 }

@@ -189,14 +189,14 @@ class Collection implements CollectionInterface, Iterator
     {
         if ($this->size() == 0)
         {
-            throw new OutOfBoundsException("Unable to traverse or access items in an empty collection.");
+            throw new OutOfBoundsException("Unable to traverse or access items in an clear collection.");
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function empty(): CollectionInterface
+    public function clear(): CollectionInterface
     {
         $this->collection = [];
         $this->currentIndex = 0;
