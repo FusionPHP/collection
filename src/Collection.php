@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Fusion.Collection utility package.
  *
@@ -19,7 +20,6 @@ use OutOfBoundsException;
  */
 class Collection implements CollectionInterface, Iterator
 {
-
     /**
      * An array holding all collection items.
      *

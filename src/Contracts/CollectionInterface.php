@@ -1,17 +1,18 @@
 <?php
-declare(strict_types=1);
 
 /**
- * Part of the Fusion.Collection utility package.
+ * Part of the Fusion.Collection package.
  *
  * @author Jason L. Walker
  * @license MIT
  */
 
+declare(strict_types=1);
+
 namespace Fusion\Collection\Contracts;
 
 /**
- * Defines the interface for a class that can store and traverse a collection of objects.
+ * Defines the interface for a class that can store and traverse a collection of values.
  */
 interface CollectionInterface
 {

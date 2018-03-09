@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Part of the Fusion.Collection utility package.
+ * Part of the Fusion.Collection package test suite.
  *
  * @author Jason L. Walker
  * @license MIT
@@ -15,22 +16,29 @@ use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
 {
-
     /**
      * @var \Fusion\Collection\Collection
      */
     protected $collection;
 
+    private $oobExceptionString = '\OutOfBoundsException';
+
     public function setUp()
     {
-        $this->collection = new Collection();
+        $this->makeEmptyCollection();
+        $this->addFooBarBaz();
     }
     public function tearDown()
     {
         $this->collection = null;
     }
 
-    public function addFooBarBaz()
+    private function makeEmptyCollection()
+    {
+        $this->collection = new Collection();
+    }
+
+    private function addFooBarBaz()
     {
         $this->collection->add('foo');
         $this->collection->add('bar');
@@ -39,8 +47,10 @@ class CollectionTest extends TestCase
 
     public function testSetupOnConstruct()
     {
-        $this->collection = new Collection([15, 'foo', 29, 'bar', PHP_INT_MAX]);
-        $this->assertEquals(5, $this->collection->size());
+        $this->collection = new Collection([15, 'foo', 3.14, [], PHP_INT_MAX, new \stdClass()]);
+
+        $expected = 6;
+        $this->assertEquals($expected, $this->collection->size());
     }
 
     public function testAddItems()
@@ -49,42 +59,50 @@ class CollectionTest extends TestCase
         $bar = 'bar';
         $baz = 'baz';
 
-        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->add($foo));
+        $this->makeEmptyCollection();
 
         $this->collection
+            ->add($foo)
             ->add($bar)
             ->add($baz);
 
-        $this->assertEquals(3, $this->collection->size());
+        $expected = 3;
+        $this->assertEquals($expected, $this->collection->size());
     }
 
     public function testRemoveItems()
     {
-        $this->addFooBarBaz();
-        $this->assertEquals(3, $this->collection->size());
-        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->remove("bar"));
-        $this->assertEquals(2, $this->collection->size());
+        $expected = 3;
+        $this->assertEquals($expected, $this->collection->size());
+
+        $removed = 'bar';
+        $this->collection->remove($removed);
+
+        $expected = 2;
+        $this->assertEquals($expected, $this->collection->size());
     }
 
     public function testAddAndEmptyItems()
     {
-        $this->addFooBarBaz();
-        $this->assertEquals(3, $this->collection->size());
+        $expected = 3;
+        $this->assertEquals($expected, $this->collection->size());
 
         while($this->collection->size() > 0)
         {
-            $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->removeAt(0));
+            $this->collection->removeAt(0);
         }
 
-        $this->assertEquals(0, $this->collection->size());
+        $expected = 0;
+        $this->assertEquals($expected, $this->collection->size());
     }
 
     public function testRemoveItemNotInCollectionDoesNothing()
     {
-        $this->addFooBarBaz();
-        $this->collection->remove('quam');
+        $removed = 'quam';
+        $this->collection->remove($removed);
 
-        $this->assertEquals(3, $this->collection->size());
+        $expected = 3;
+        $this->assertEquals($expected, $this->collection->size());
     }
 
     public function testFindingItemAtId()
@@ -94,15 +112,15 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->findAt(0));
     }
 
-    public function testLookForItemOutOfCollectionBounds()
+    public function testExceptionThrowLookingForItemOutOfCollectionBounds()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->expectException($this->oobExceptionString);
         $this->collection->findAt(30);
     }
 
-    public function testRemoveItemNotInCollectionBounds()
+    public function testExceptionThrownRemovingItemNotInCollectionBounds()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->expectException($this->oobExceptionString);
         $this->collection->removeAt(30);
     }
 
@@ -137,6 +155,7 @@ class CollectionTest extends TestCase
 
     public function testCurrentElementIsValidReturnsFalse()
     {
+        $this->makeEmptyCollection();
         $this->assertFalse($this->collection->valid());
     }
 
@@ -154,28 +173,29 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownTraversingEmptyCollection()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->makeEmptyCollection();
+        $this->expectException($this->oobExceptionString);
         $this->collection->current();
     }
 
     public function testExceptionThrownMovingToNextElementInEmptyCollection()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->makeEmptyCollection();
+        $this->expectException($this->oobExceptionString);
         $this->collection->next();
     }
 
     public function testExceptionThrownWhenAccessingCurrentKeyOfEmptyCollection()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->makeEmptyCollection();
+        $this->expectException($this->oobExceptionString);
         $this->collection->key();
     }
 
     public function testEmptyingCollection()
     {
-        $this->addFooBarBaz();
-        $this->assertInstanceOf('Fusion\Collection\Contracts\CollectionInterface', $this->collection->clear());
-
         $expected = 0;
+        $this->collection->clear();
         $this->assertEquals($expected, $this->collection->size());
     }
 }
