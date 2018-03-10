@@ -21,7 +21,7 @@ interface CollectionInterface
      *
      * @param mixed $collectable
      *
-     * @return self
+     * @return \Fusion\Collection\Contracts\CollectionInterface
      */
     public function add($collectable): CollectionInterface;
 
@@ -29,7 +29,8 @@ interface CollectionInterface
      * Searches the collection for an identical item and removes it if found.
      *
      * @param mixed $collectable
-     * @return self
+     *
+     * @return \Fusion\Collection\Contracts\CollectionInterface
      */
     public function remove($collectable): CollectionInterface;
 
@@ -40,8 +41,10 @@ interface CollectionInterface
      * OutOfBoundsException if the index doesn't exist.
      *
      * @param int $id
+     *
+     * @return \Fusion\Collection\Contracts\CollectionInterface
+     *
      * @throws \OutOfBoundsException
-     * @return self
      */
     public function removeAt(int $id): CollectionInterface;
 
@@ -52,8 +55,10 @@ interface CollectionInterface
      * an `OutOfBoundsException` if the index doesn't exist.
      *
      * @param int $id
-     * @throws \OutOfBoundsException
+     *
      * @return mixed
+     *
+     * @throws \OutOfBoundsException
      */
     public function findAt($id);
 
@@ -67,7 +72,7 @@ interface CollectionInterface
     /**
      * Clears all items from the collection.
      *
-     * @return CollectionInterface
+     * @return \Fusion\Collection\Contracts\CollectionInterface
      */
     public function clear(): CollectionInterface;
 }
