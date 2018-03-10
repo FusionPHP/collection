@@ -3,4 +3,4 @@ composer.phar
 composer.lock
 /vendor
 sami.phar
-config.php
+sami_config.php
