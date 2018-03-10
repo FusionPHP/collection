@@ -309,4 +309,19 @@ class CollectionTest extends TestCase
 
         $this->assertNull($this->collection[$targetOffset]);
     }
+
+    public function testExceptionThrownUnsettingGivenOffsetAndOffsetIsNotAnInteger()
+    {
+        $this->expectException($this->runtimeExceptionString);
+        $targetOffset = 'quam';
+        unset($this->collection[$targetOffset]);
+    }
+
+    public function testExceptionThrownUnsettingGivenOffsetAndCollectionIsEmpty()
+    {
+        $this->expectException($this->runtimeExceptionString);
+        $this->makeEmptyCollection();
+        $targetOffset = 1;
+        unset($this->collection[$targetOffset]);
+    }
 }

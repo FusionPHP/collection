@@ -191,7 +191,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     {
         if ($this->size() == 0)
         {
-            throw new OutOfBoundsException("Unable to traverse or access items in an clear collection.");
+            throw new OutOfBoundsException("Unable to traverse or access items in an empty collection.");
         }
     }
 
