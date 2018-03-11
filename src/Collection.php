@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Fusion.Collection utility package.
+ * Part of the Fusion.Collection package.
  *
  * @author Jason L. Walker
  * @license MIT
@@ -18,28 +18,25 @@ use OutOfBoundsException;
 use RuntimeException;
 
 /**
- * The basic collection class.
+ * A basic collection class.
+ *
+ * This collection class is capable of aggregating any value that can be stored in a PHP array.
+ * Items in the collection may be accessed by using the appropriate methods or by treating the
+ * instance as an array and accessing the items via an index number. The collection is also
+ * traversable and may be used in `foreach` loops.
+ *
+ * @since 1.0.0
  */
 class Collection implements CollectionInterface, Iterator, ArrayAccess
 {
-    /**
-     * An array holding all collection items.
-     *
-     * @var array
-     */
-    protected $collection = [];
 
-    /**
-     * An integer holding he current element index for iterating purposes.
-     *
-     * @var int
-     */
+    private $collection = [];
     private $currentIndex;
 
     /**
      * Constructor.
      *
-     * Creates a collection with an optional set of initial starter items.
+     * Creates a collection with an optional array of starter items.
      *
      * @param array $items
      */

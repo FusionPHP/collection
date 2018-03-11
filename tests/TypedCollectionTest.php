@@ -14,7 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class TypedCollectionTest extends TestCase
 {
-    public function testSetupTypedCollection()
+    private $invalidArgumentExceptionString = '\InvalidArgumentException';
+
+    public function testSetupTypedCollection(): void
     {
         $starterItems = [
             new CrashTestDummy(),
@@ -28,31 +30,31 @@ class TypedCollectionTest extends TestCase
         $this->assertEquals($expected, $collection->size());
     }
 
-    public function testExceptionThrownAddingInvalidType()
+    public function testExceptionThrownAddingInvalidType(): void
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->invalidArgumentExceptionString);
         $collection = new TypedCollection(CrashTestDummy::class);
         $collection->add('foo');
     }
 
-    public function testExceptionThrownAddingInvalidTypesDuringSetup()
+    public function testExceptionThrownAddingInvalidTypesDuringSetup(): void
     {
-        $this->expectException('\InvalidArgumentException');
-        new TypedCollection(CrashTestDummy::class, ['foo', 'bar']);
+        $this->expectException($this->invalidArgumentExceptionString);
+        new TypedCollection(CrashTestDummy::class, ['foo']);
     }
 
-    public function testExceptionThrownSettingAnOffsetWithAnInvalidType()
+    public function testExceptionThrownSettingAnOffsetWithAnInvalidType(): void
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->invalidArgumentExceptionString);
         $collection = new TypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
 
         $targetOffset = 0;
         $collection[$targetOffset] = 'foo';
     }
 
-    public function testExceptionThrownSettingAnOffsetToNull()
+    public function testExceptionThrownSettingAnOffsetToNull(): void
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->invalidArgumentExceptionString);
         $collection = new TypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
 
         $targetOffset = 0;
@@ -60,27 +62,27 @@ class TypedCollectionTest extends TestCase
         $this->assertInstanceOf(CrashTestDummy::class, $collection[$targetOffset]);
     }
 
-    public function testFullyQualifiedNamesWithLeadingSlashWorks()
+    public function testFullyQualifiedNamesWithLeadingSlashWorks(): void
     {
         $instance = new CrashTestDummy();
         $index = 0;
 
-        $fqcn = '\Fusion\Collection\Tests\CrashTestDummy';
-        $collection = new TypedCollection($fqcn, [$instance]);
-        $this->assertInstanceOf($fqcn, $collection->findAt($index));
+        $qualifiedName = '\Fusion\Collection\Tests\CrashTestDummy';
+        $collection = new TypedCollection($qualifiedName, [$instance]);
+        $this->assertInstanceOf($qualifiedName, $collection->findAt($index));
     }
 
-    public function testFullyQualifiedNamesWithoutLeadingSlashWorks()
+    public function testFullyQualifiedNamesWithoutLeadingSlashWorks(): void
     {
         $instance = new CrashTestDummy();
         $index = 0;
 
-        $fqcn = 'Fusion\Collection\Tests\CrashTestDummy';
-        $collection = new TypedCollection($fqcn, [$instance]);
-        $this->assertInstanceOf($fqcn, $collection->findAt($index));
+        $qualifiedName = 'Fusion\Collection\Tests\CrashTestDummy';
+        $collection = new TypedCollection($qualifiedName, [$instance]);
+        $this->assertInstanceOf($qualifiedName, $collection->findAt($index));
     }
 
-    public function testTestSettingNewAcceptedTypeAtOffset()
+    public function testTestSettingNewAcceptedTypeAtOffset(): void
     {
         $thisDummy = new CrashTestDummy();
         $thatDummy = new CrashTestDummy();
