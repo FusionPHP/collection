@@ -94,4 +94,10 @@ class TypedCollectionTest extends TestCase
         $collection[$targetOffset] = $thatDummy;
         $this->assertSame($thatDummy, $collection[$targetOffset]);
     }
+
+    public function testExceptionThrownIfStringGivenOnConstructIsEmpty()
+    {
+        $this->expectException($this->invalidArgumentExceptionString);
+        new TypedCollection('');
+    }
 }

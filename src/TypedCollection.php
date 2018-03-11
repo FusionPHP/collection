@@ -36,6 +36,11 @@ class TypedCollection extends Collection
      */
     public function __construct(string $acceptedType, array $items = [])
     {
+        if ($acceptedType == '')
+        {
+            throw new InvalidArgumentException('Accepted type string cannot be empty.');
+        }
+
         $this->acceptedType = $acceptedType;
         parent::__construct($items);
     }
