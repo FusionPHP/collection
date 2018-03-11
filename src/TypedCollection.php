@@ -20,8 +20,6 @@ use InvalidArgumentException;
  * This collection class requires a fully qualified class or interface name is given upon
  * initialization. Operations to add an item to the collection will verify that the item being added
  * is of the allowed type or will trigger an exception to be thrown.
- *
- * @since 2.0.0
  */
 class TypedCollection extends Collection
 {

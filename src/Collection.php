@@ -15,7 +15,7 @@ use Fusion\Collection\Contracts\CollectionInterface;
 use ArrayAccess;
 use Iterator;
 use OutOfBoundsException;
-use RuntimeException;
+use InvalidArgumentException;
 
 /**
  * A basic collection class.
@@ -132,7 +132,10 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      * Returns the current element.
      *
      * @link http://php.net/manual/en/iterator.current.php
+     *
      * @return mixed
+     *
+     * @throws \RuntimeException When the collection is empty.
      */
     public function current()
     {
@@ -144,6 +147,8 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      * Move forward to the next element.
      *
      * @link http://php.net/manual/en/iterator.next.php
+     *
+     * @throws \RuntimeException When the collection is empty
      */
     public function next(): void
     {
@@ -155,7 +160,10 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      * Return the key of the current element.
      *
      * @link http://php.net/manual/en/iterator.key.php
+     *
      * @return int
+     *
+     * @throws \RuntimeException When the collection is empty.
      */
     public function key(): int
     {
@@ -167,6 +175,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      * Checks if the current position is valid.
      *
      * @link http://php.net/manual/en/iterator.valid.php
+     *
      * @return bool
      */
     public function valid(): bool
@@ -175,7 +184,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     }
 
     /**
-     * Rewind the collection's position to the first element.
+     * Rewind the collection's position to the first index.
      *
      * @link http://php.net/manual/en/iterator.rewind.php
      */
@@ -188,7 +197,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     {
         if ($this->size() == 0)
         {
-            throw new OutOfBoundsException("Unable to traverse or access items in an empty collection.");
+            throw new OutOfBoundsException("Unable to access items in an empty collection.");
         }
     }
 
@@ -204,16 +213,16 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     }
 
     /**
-     * Checks if an index exists in the collection
+     * Checks if an index exists in the collection.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php
      *
-     * @param int The numerical index to confirm.
+     * @param int The index to check.
      *
      * @return bool
      *
-     * @throws \RuntimeException When `$offset` given is not an integer.
-     * @throws \OutOfBoundsException When accessing any offset of an empty collection
+     * @throws \InvalidArgumentException When `$offset` is not an integer.
+     * @throws \OutOfBoundsException When the `$offset` doesn't exist or if the collection is empty.
      */
     public function offsetExists($offset): bool
     {
@@ -228,19 +237,26 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     {
         if (is_int($offset) === false)
         {
-            $message = sprintf('Collection offset type must be an integer. %s given.', gettype($offset));
-            throw new RuntimeException($message);
+            $message = sprintf(
+                'Collection offset type must be an integer. %s given.',
+                gettype($offset)
+            );
+
+            throw new InvalidArgumentException($message);
         }
     }
 
     /**
-     * Retrieves a value at the given offset in the collection.
+     * Retrieves an item at the given offset in the collection.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetget.php
      *
-     * @param int $offset
+     * @param int $offset The index to retrieve from.
      *
      * @return mixed
+     *
+     * @throws \InvalidArgumentException When `$offset` is not an integer.
+     * @throws \OutOfBoundsException When the `$offset` doesn't exist or if the collection is empty.
      */
     public function offsetGet($offset)
     {
@@ -252,14 +268,15 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     }
 
     /**
-     * Sets a new value in the collection at the given offset.
+     * Sets a new value in the collection at the given `$offset`.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      *
      * @param mixed $offset The offset location in the collection.
      * @param mixed $value The value to set.
-     * @throws \RuntimeException When `$offset` given is not an integer.
-     * @throws \OutOfBoundsException When accessing any offset of an empty collection
+     *
+     * @throws \InvalidArgumentException When `$offset` is not an integer.
+     * @throws \OutOfBoundsException If the collection is empty.
      */
     public function offsetSet($offset, $value): void
     {

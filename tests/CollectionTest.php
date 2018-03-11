@@ -21,8 +21,8 @@ class CollectionTest extends TestCase
      */
     protected $collection;
 
-    private $oobExceptionString = '\OutOfBoundsException';
-    private $runtimeExceptionString = '\RuntimeException';
+    private $outOfBoundsException = \OutOfBoundsException::class;
+    private $invalidArgumentException = \InvalidArgumentException::class;
 
     public function setUp(): void
     {
@@ -115,13 +115,13 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrowLookingForItemOutOfCollectionBounds(): void
     {
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->collection->findAt(30);
     }
 
     public function testExceptionThrownRemovingItemNotInCollectionBounds(): void
     {
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->collection->removeAt(30);
     }
 
@@ -175,21 +175,21 @@ class CollectionTest extends TestCase
     public function testExceptionThrownTraversingEmptyCollection(): void
     {
         $this->makeEmptyCollection();
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->collection->current();
     }
 
     public function testExceptionThrownMovingToNextElementInEmptyCollection(): void
     {
         $this->makeEmptyCollection();
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->collection->next();
     }
 
     public function testExceptionThrownWhenAccessingCurrentKeyOfEmptyCollection(): void
     {
         $this->makeEmptyCollection();
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->collection->key();
     }
 
@@ -208,7 +208,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownIfNonIntegerGivenAsOffsetExistsValue(): void
     {
-        $this->expectException($this->runtimeExceptionString);
+        $this->expectException($this->invalidArgumentException);
         $targetOffset = 'foo';
 
         $this->collection->offsetExists($targetOffset);
@@ -216,7 +216,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownIfAccessingOffsetAndCollectionIsEmpty(): void
     {
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
         $targetOffset = 0;
 
@@ -225,7 +225,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownIfAccessingOffsetThatDoesNotExist(): void
     {
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $targetOffset = 3;
 
         $this->collection[$targetOffset];
@@ -249,7 +249,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownIfNonIntegerGivenAsOffsetGetValue(): void
     {
-        $this->expectException($this->runtimeExceptionString);
+        $this->expectException($this->invalidArgumentException);
         $targetOffset = 'foo';
 
         $this->collection->offsetGet($targetOffset);
@@ -257,7 +257,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownIfGettingOffsetAndCollectionIsEmpty(): void
     {
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
         $targetOffset = 0;
 
@@ -266,7 +266,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownIfGettingOffsetThatDoesNotExist(): void
     {
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $targetOffset = 3;
 
         $this->collection->offsetGet($targetOffset);
@@ -285,7 +285,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownSettingOffsetValueAndOffsetIsNotAnInteger(): void
     {
-        $this->expectException($this->runtimeExceptionString);
+        $this->expectException($this->invalidArgumentException);
         $newValue = 'quam';
         $targetOffset = 'qux';
 
@@ -294,7 +294,7 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownSettingOffsetValueWhenCollectionIsEmpty(): void
     {
-        $this->expectException($this->oobExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
         $newValue = 'quam';
         $targetOffset = 1;
@@ -312,14 +312,14 @@ class CollectionTest extends TestCase
 
     public function testExceptionThrownUnsettingGivenOffsetAndOffsetIsNotAnInteger(): void
     {
-        $this->expectException($this->runtimeExceptionString);
+        $this->expectException($this->invalidArgumentException);
         $targetOffset = 'quam';
         unset($this->collection[$targetOffset]);
     }
 
     public function testExceptionThrownUnsettingGivenOffsetAndCollectionIsEmpty(): void
     {
-        $this->expectException($this->runtimeExceptionString);
+        $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
         $targetOffset = 1;
         unset($this->collection[$targetOffset]);
