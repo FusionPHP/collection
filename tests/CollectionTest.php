@@ -71,13 +71,10 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testRemoveItems(): void
+    public function testRemovingItemReturnsTrue(): void
     {
-        $expected = 3;
-        $this->assertEquals($expected, $this->collection->size());
-
-        $removed = 'bar';
-        $this->collection->remove($removed);
+        $removed = 'foo';
+        $this->assertTrue($this->collection->remove($removed));
 
         $expected = 2;
         $this->assertEquals($expected, $this->collection->size());
@@ -97,13 +94,10 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testRemoveItemNotInCollectionDoesNothing(): void
+    public function testRemoveItemNotInCollectionReturnsFalse(): void
     {
         $removed = 'quam';
-        $this->collection->remove($removed);
-
-        $expected = 3;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertFalse($this->collection->remove($removed));
     }
 
     public function testFindingItemAtId(): void
@@ -113,7 +107,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->findAt(0));
     }
 
-    public function testExceptionThrowLookingForItemOutOfCollectionBounds(): void
+    public function testExceptionThrownLookingForItemOutOfCollectionBounds(): void
     {
         $this->expectException($this->outOfBoundsException);
         $this->collection->findAt(30);

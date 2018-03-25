@@ -56,27 +56,27 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function remove($collectable): CollectionInterface
+    public function remove($collectable): bool
     {
         $position = $this->has($collectable);
 
         if ($position >= 0)
         {
-            $this->removeAt($position);
+            return $this->removeAt($position);
         }
 
-        return $this;
+        return false;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeAt(int $id): CollectionInterface
+    public function removeAt(int $id): bool
     {
         $this->throwExceptionIfIdDoesNotExist($id);
         array_splice($this->collection, $id, 1);
 
-        return $this;
+        return true;
     }
 
     private function throwExceptionIfIdDoesNotExist(int $id): void

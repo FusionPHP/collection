@@ -30,9 +30,9 @@ interface CollectionInterface
      *
      * @param mixed $collectable
      *
-     * @return \Fusion\Collection\Contracts\CollectionInterface
+     * @return bool Returns true if an item was removed or false if not.
      */
-    public function remove($collectable): CollectionInterface;
+    public function remove($collectable): bool;
 
     /**
      * Removes an object at the specified index.
@@ -42,11 +42,11 @@ interface CollectionInterface
      *
      * @param int $id The target index of the item to remove.
      *
-     * @return \Fusion\Collection\Contracts\CollectionInterface
+     * @return bool Return true if an item was removed or false if not.
      *
      * @throws \OutOfBoundsException If the given `$id` does not exist in the collection.
      */
-    public function removeAt(int $id): CollectionInterface;
+    public function removeAt(int $id): bool;
 
     /**
      * Retrieves an item from the collection at the specified index.
