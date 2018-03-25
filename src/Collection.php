@@ -29,14 +29,10 @@ use InvalidArgumentException;
  */
 class Collection implements CollectionInterface, Iterator, ArrayAccess
 {
-
     private $collection = [];
-    private $currentIndex;
 
     /**
-     * Constructor.
-     *
-     * Creates a collection with an optional array of starter items.
+     * Instantiates a collection object with an optional array of starter items.
      *
      * @param array $items
      */
@@ -46,8 +42,6 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
         {
             $this->add($item);
         }
-
-        $this->currentIndex = 0;
     }
 
     /**
@@ -140,7 +134,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     public function current()
     {
         $this->throwExceptionIfCollectionIsEmpty();
-        return $this->collection[$this->currentIndex];
+        return current($this->collection);
     }
 
     /**
@@ -153,7 +147,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     public function next(): void
     {
         $this->throwExceptionIfCollectionIsEmpty();
-        $this->currentIndex++;
+        next($this->collection);
     }
 
     /**
@@ -168,7 +162,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     public function key(): int
     {
         $this->throwExceptionIfCollectionIsEmpty();
-        return $this->currentIndex;
+        return key($this->collection);
     }
 
     /**
@@ -180,7 +174,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      */
     public function valid(): bool
     {
-        return $this->idExists($this->currentIndex);
+        return key($this->collection) !== null;
     }
 
     /**
@@ -190,7 +184,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      */
     public function rewind(): void
     {
-        $this->currentIndex = 0;
+        reset($this->collection);
     }
 
     private function throwExceptionIfCollectionIsEmpty()
@@ -207,8 +201,6 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     public function clear(): CollectionInterface
     {
         $this->collection = [];
-        $this->currentIndex = 0;
-
         return $this;
     }
 
