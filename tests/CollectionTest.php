@@ -83,7 +83,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testAddAndEmptyItems(): void
+    public function testIndexValuesUpdateWhenRemovingItems(): void
     {
         $expected = 3;
         $this->assertEquals($expected, $this->collection->size());
