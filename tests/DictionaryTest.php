@@ -27,166 +27,115 @@ class DictionaryTest extends TestCase
         unset($this->dictionary);
     }
 
-    public function testInsertItemWithStringKey()
+    public function testAddingItemToDictionary()
     {
-        $this->dictionary->insert('foo', 'bar');
-        $this->assertEquals('bar', $this->dictionary->getItem('foo'));
-        $this->assertEquals(1, $this->dictionary->getSize());
+        $this->dictionary->add('foo', 'bar');
+
+        $expected = 1;
+        $this->assertEquals($expected, $this->dictionary->size());
     }
 
-    public function testInsertItemWithIntKey()
+    public function testRemovingItemFromDictionary()
     {
-        $this->dictionary->insert(5, 'foo');
-        $this->assertEquals('foo', $this->dictionary->getItem(5));
-        $this->assertEquals(1, $this->dictionary->getSize());
-    }
+        $this->dictionary->add('foo', 'bar');
 
-    public function testOverwriteItem()
-    {
-        $this->dictionary->insertAt('foo', 'bar');
-        $this->assertEquals('bar', $this->dictionary->getItem('foo'));
-        $this->dictionary->insertAt('foo', 'baz');
-        $this->assertEquals('baz', $this->dictionary->getItem('foo'));
-        $this->assertEquals(1, $this->dictionary->getSize());
-    }
+        $expected = 1;
+        $this->assertEquals($expected, $this->dictionary->size());
 
-    public function testRemovingItemByValue()
-    {
-        $this->dictionary->insert('foo', 'bar');
         $this->dictionary->remove('bar');
-        $this->assertEquals(0, $this->dictionary->getSize());
+
+        $expected = 0;
+        $this->assertEquals($expected, $this->dictionary->size());
     }
 
-    public function testRemovingItemByKey()
+    public function testReplacingExistingItem()
     {
-        $this->dictionary->insert('foo', 'bar');
-        $this->dictionary->removeAt('foo');
-        $this->assertEquals(0, $this->dictionary->getSize());
+        $this->dictionary->add('foo', 'bar');
+        $this->dictionary->replace('foo', 'quam');
+
+        $expected = 'quam';
+        $this->assertEquals($expected, $this->dictionary->find('foo'));
     }
 
-    public function testRemoveMultipleItemsByValue()
-    {
-        $this->dictionary->insert(1, 'bar');
-        $this->dictionary->insert(2, 'bar');
-        $this->dictionary->insert(3, 'bar');
-        $this->dictionary->insert(4, 'baz');
-        $this->dictionary->insert(5, 'qux');
-        $this->assertEquals(5, $this->dictionary->getSize());
-        $this->dictionary->remove('bar');
-        $this->assertEquals(2, $this->dictionary->getSize());
-        $this->assertEquals('baz', $this->dictionary->getItem(4));
-        $this->assertEquals('qux', $this->dictionary->getItem(5));
-    }
-
-    public function testRemoveOnlyRemoveOneReference()
-    {
-        $value = null;
-        for($i = 0; $i < 5; ++$i)
-        {
-            $value = new \stdClass();
-            $this->dictionary->insert($i, $value);
-        }
-        $this->assertEquals(5, $this->dictionary->getSize());
-        $this->dictionary->remove($value);
-        $this->assertEquals(4, $this->dictionary->getSize());
-        $this->expectException('\OutOfBoundsException');
-        $this->dictionary->getItem(4);
-        
-    }
-
-    public function testTraversingDictionary()
-    {
-        $this->dictionary->insert('foo', 'bar')
-                         ->insert('baz', 'bim')
-                         ->insert('bap', 'qux');
-
-        foreach($this->dictionary as $key => $value)
-        {
-            if ($key == 'foo')
-            {
-                $this->assertEquals('bar', $value);
-            }
-
-            if ($key == 'baz')
-            {
-                $this->assertEquals('bim', $value);
-            }
-
-            if ($key == 'bap')
-            {
-                $this->assertEquals('qux', $value);
-            }
-        }
-    }
-
-    public function badKeyDataProvider()
-    {
-        return [
-            [false],
-            [true],
-            [new \stdClass()],
-            [null],
-            [[]],
-            [3.14]
-        ];
-    }
-
-    /**
-     * @dataProvider badKeyDataProvider
-     */
-    public function testInsertWithBadKey($data)
+    public function testExceptionThrownAddingNullItem()
     {
         $this->expectException('\InvalidArgumentException');
-        $this->dictionary->insert($data, 'foo');
+        $this->dictionary->add('foo', null);
     }
 
-    /**
-     * @dataProvider badKeyDataProvider
-     */
-    public function testInsertAtWithBadKey($data)
-    {
-        $this->expectException('\InvalidArgumentException');
-        $this->dictionary->insert($data, 'foo');
-    }
-
-    public function testInsertWithBadItem()
-    {
-        $this->expectException('\InvalidArgumentException');
-        $this->dictionary->insert('foo', null);
-    }
-
-    public function testInsertAtWithBadItem()
-    {
-        $this->expectException('\InvalidArgumentException');
-        $this->dictionary->insertAt('foo', null);
-    }
-
-    /**
-     * @dataProvider  badKeyDataProvider
-     */
-    public function testRemoveAtWithBadKey($data)
-    {
-        $this->expectException('\InvalidArgumentException');
-        $this->dictionary->removeAt($data);
-    }
-
-    public function testRemoveWithBadItem()
+    public function testExceptionThrownTryingToRemoveNullValue()
     {
         $this->expectException('\InvalidArgumentException');
         $this->dictionary->remove(null);
     }
 
-    public function testExceptionOnInsertOverwrite()
-    {
-        $this->expectException('\RuntimeException');
-        $this->dictionary->insert('foo', 'bar');
-        $this->dictionary->insert('foo', 'bar');
-        $this->assertEquals(1, $this->dictionary->getSize());
-    }
-
-    public function testExceptionKeyNotExists()
+    public function testExceptionThrownWhenKeyDoesNotExist()
     {
         $this->expectException('\OutOfBoundsException');
-        $this->dictionary->getItem('foo');
+        $this->dictionary->find('foo');
     }
+
+    public function testIteratingOverDictionary()
+    {
+        $this->dictionary
+            ->add('foo', 'bar')
+            ->add('baz', 'quam')
+            ->add('qux', 'flam');
+
+        foreach ($this->dictionary as $key => $value)
+        {
+            $this->assertTrue($this->dictionary->valid());
+        }
+    }
+
+    public function testExceptionThrownFindingValueWithKeyThatDoesNotExist()
+    {
+        $this->expectException('\OutOfBoundsException');
+        $this->dictionary->find('foo');
+    }
+
+    public function testExceptionThrownAccessingKeyThatDoesNotExist()
+    {
+        $this->expectException('\OutOfBoundsException');
+        $this->dictionary['foo'];
+    }
+
+    public function testGettingValueAtGivenKey()
+    {
+        $key = 'foo';
+        $expected = 'bar';
+        $this->dictionary->add($key, $expected);
+        $this->assertEquals($expected, $this->dictionary[$key]);
+    }
+
+    public function testSettingValueAtOffset()
+    {
+        $key = 'foo';
+        $expected = 'bar';
+        $this->dictionary[$key] = $expected;
+        $this->assertEquals($expected, $this->dictionary->find($key));
+    }
+
+    public function testExceptionThrownGettingOffsetWithNonStringKey()
+    {
+        $this->expectException('\TypeError');
+        $this->dictionary->add('foo', 'bar');
+        $this->dictionary[0];
+    }
+
+    public function testExceptionThrownSettingValueWithNonStringKey()
+    {
+        $this->expectException('\InvalidArgumentException');
+        $this->dictionary[0] = 'bar';
+    }
+
+    public function testRemovingItemAtOffset()
+    {
+        $this->dictionary->add('foo', 'bar');
+        unset($this->dictionary['foo']);
+
+        $expected = 0;
+        $this->assertEquals($expected, $this->dictionary->size());
+    }
+
 }
