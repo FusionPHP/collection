@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Fusion\Collection;
 
+use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
 use ArrayAccess;
 use Iterator;
@@ -27,10 +28,8 @@ use InvalidArgumentException;
  *
  * @since 1.0.0
  */
-class Collection implements CollectionInterface, Iterator, ArrayAccess
+class Collection extends AbstractCollection implements CollectionInterface, Iterator, ArrayAccess
 {
-    private $collection = [];
-
     /**
      * Instantiates a collection object with an optional array of starter items.
      *
