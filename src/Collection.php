@@ -226,10 +226,7 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
      */
     public function offsetExists($offset): bool
     {
-        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        $this->throwExceptionIfIdDoesNotExist($offset);
-
-        return $this->idExists($offset);
+        return array_key_exists($offset, $this->collection);
     }
 
     private function throwExceptionIfOffsetIsNotAnInteger($offset): void
@@ -259,9 +256,7 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
      */
     public function offsetGet($offset)
     {
-        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        $this->throwExceptionIfIdDoesNotExist($offset);
-
+        $this->checkIfOffsetIsAnIntegerAndExists($offset);
         return $this->collection[$offset];
     }
 
@@ -278,10 +273,8 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
      */
     public function offsetSet($offset, $value): void
     {
-        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        $this->throwExceptionIfOffsetDoesNotExist($offset);
+        $this->checkIfOffsetIsAnIntegerAndExists($offset);
         $this->throwExceptionIfValueIsNull($value);
-
         $this->collection[$offset] = $value;
     }
 
@@ -302,9 +295,13 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
      */
     public function offsetUnset($offset): void
     {
-        if ($this->offsetExists($offset))
-        {
-            $this->removeAt($offset);
-        }
+        $this->checkIfOffsetIsAnIntegerAndExists($offset);
+        $this->removeAt($offset);
+    }
+
+    private function checkIfOffsetIsAnIntegerAndExists($offset): void
+    {
+        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
+        $this->throwExceptionIfOffsetDoesNotExist($offset);
     }
 }

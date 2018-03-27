@@ -214,21 +214,25 @@ class CollectionTest extends TestCase
         $this->assertTrue(isset($this->collection[$targetOffset]));
     }
 
-    public function testExceptionThrownIfNonIntegerGivenAsOffsetExistsValue()
+    public function testCheckOffsetOfExistingElementReturnsTrue()
     {
-        $this->expectException($this->invalidArgumentException);
-        $targetOffset = 'foo';
-
-        $this->collection->offsetExists($targetOffset);
+        $this->assertTrue(isset($this->collection[0]));
     }
 
-    public function testExceptionThrownIfAccessingOffsetAndCollectionIsEmpty()
+    public function testCheckOffsetOfMissingElementReturnsFalse()
     {
-        $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
-        $targetOffset = 0;
+        $this->assertFalse(isset($this->collection[0]));
+    }
 
-        $this->collection->offsetExists($targetOffset);
+    public function testCheckingIfEmptyCollectionIssetReturnsTrue()
+    {
+        $this->assertTrue(isset($this->collection));
+    }
+
+    public function testEmptyCallOnCollectionReturnsFalse()
+    {
+        $this->assertFalse(empty($this->collection));
     }
 
     public function testExceptionThrownIfAccessingOffsetThatDoesNotExist()

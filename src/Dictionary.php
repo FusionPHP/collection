@@ -47,6 +47,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
 
     public function find(string $key)
     {
+        $this->throwExceptionIfOffsetDoesNotExist($key);
         $value = null;
 
         if ($this->offsetExists($key))
@@ -214,11 +215,10 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
      */
     public function offsetExists($offset)
     {
-        $this->throwExceptionIfIdDoesNotExist($offset);
         return array_key_exists($offset, $this->collection);
     }
 
-    private function throwExceptionIfIdDoesNotExist(string $id): void
+    private function throwExceptionIfOffsetDoesNotExist(string $id): void
     {
         if ($this->idExists($id) == false)
         {
@@ -245,7 +245,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
      */
     public function offsetGet($offset)
     {
-        $this->throwExceptionIfIdDoesNotExist($offset);
+        $this->throwExceptionIfOffsetDoesNotExist($offset);
         return $this->collection[$offset];
     }
 
