@@ -42,7 +42,7 @@ class DictionaryTest extends TestCase
         $expected = 1;
         $this->assertEquals($expected, $this->dictionary->size());
 
-        $this->dictionary->remove('bar');
+        $this->assertTrue($this->dictionary->remove('bar'));
 
         $expected = 0;
         $this->assertEquals($expected, $this->dictionary->size());
@@ -178,5 +178,11 @@ class DictionaryTest extends TestCase
         $this->assertNull($value);
         $this->assertEquals($expectedSize, $this->dictionary->size());
         $this->assertEquals($expectedValue, $this->dictionary[$offset]);
+    }
+
+    public function testExceptionThrownAccessingOffsetOfEmptyDictionary()
+    {
+        $this->expectException('\OutOfBoundsException');
+        $this->dictionary['foo'];
     }
 }

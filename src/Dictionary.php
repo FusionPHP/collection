@@ -71,16 +71,17 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
     public function remove($item)
     {
         $this->validateItem($item);
+        $result = false;
 
         foreach ($this->dictionary as $key => $value)
         {
             if ($value === $item)
             {
-                $this->removeAt($key);
+                $result = $this->removeAt($key);
             }
         }
 
-        return $this;
+        return $result;
     }
 
     /**
@@ -89,13 +90,15 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
     public function removeAt($key)
     {
         $this->validateKey($key);
+        $result = false;
 
         if ($this->keyExists($key))
         {
             unset($this->dictionary[$key]);
+            $result = true;
         }
 
-        return $this;
+        return $result;
     }
 
     public function size(): int
