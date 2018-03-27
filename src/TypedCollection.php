@@ -66,7 +66,7 @@ class TypedCollection extends Collection
 
     private function throwExceptionIfNotAcceptedType($object): void
     {
-        if (($object instanceof $this->acceptedType) === false)
+        if ($this->notAcceptedType($object))
         {
             $message = sprintf(
                 'Unable to modify collection. Only instances of type "%s" are allowed. Type "%s" given.',
@@ -76,5 +76,10 @@ class TypedCollection extends Collection
 
             throw new InvalidArgumentException($message);
         }
+    }
+
+    private function notAcceptedType($value)
+    {
+        return ($value instanceof $this->acceptedType) === false || is_null($value);
     }
 }

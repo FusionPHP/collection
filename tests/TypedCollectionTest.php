@@ -58,8 +58,7 @@ class TypedCollectionTest extends TestCase
         $collection = new TypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
 
         $targetOffset = 0;
-        unset($collection[$targetOffset]);
-        $this->assertInstanceOf(CrashTestDummy::class, $collection[$targetOffset]);
+        $collection[$targetOffset] = 0;
     }
 
     public function testFullyQualifiedNamesWithLeadingSlashWorks(): void
@@ -95,7 +94,7 @@ class TypedCollectionTest extends TestCase
         $this->assertSame($thatDummy, $collection[$targetOffset]);
     }
 
-    public function testExceptionThrownIfStringGivenOnConstructIsEmpty()
+    public function testExceptionThrownIfStringGivenOnConstructIsEmpty(): void
     {
         $this->expectException($this->invalidArgumentExceptionString);
         new TypedCollection('');

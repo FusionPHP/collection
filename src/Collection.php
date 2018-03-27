@@ -49,8 +49,17 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      */
     public function add($collectable): CollectionInterface
     {
+        $this->throwExceptionIfValueIsNull($collectable);
         array_push($this->collection, $collectable);
         return $this;
+    }
+
+    private function throwExceptionIfValueIsNull($collectable): void
+    {
+        if (is_null($collectable))
+        {
+            throw new InvalidArgumentException('Cannot add null values to the collection.');
+        }
     }
 
     /**
@@ -274,6 +283,7 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
     {
         $this->throwExceptionIfOffsetIsNotAnInteger($offset);
         $this->throwExceptionIfCollectionIsEmpty();
+        $this->throwExceptionIfValueIsNull($value);
 
         $this->collection[$offset] = $value;
     }
@@ -287,6 +297,9 @@ class Collection implements CollectionInterface, Iterator, ArrayAccess
      */
     public function offsetUnset($offset): void
     {
-        $this->offsetSet($offset, null);
+        if ($this->offsetExists($offset))
+        {
+            $this->removeAt($offset);
+        }
     }
 }

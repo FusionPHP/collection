@@ -296,14 +296,6 @@ class CollectionTest extends TestCase
         $this->collection[$targetOffset] = $newValue;
     }
 
-    public function testUnsettingElementAtGivenOffset(): void
-    {
-        $targetOffset = 2;
-        unset($this->collection[$targetOffset]);
-
-        $this->assertNull($this->collection[$targetOffset]);
-    }
-
     public function testExceptionThrownUnsettingGivenOffsetAndOffsetIsNotAnInteger(): void
     {
         $this->expectException($this->invalidArgumentException);
@@ -317,5 +309,46 @@ class CollectionTest extends TestCase
         $this->makeEmptyCollection();
         $targetOffset = 1;
         unset($this->collection[$targetOffset]);
+    }
+
+    public function testExceptionThrownAddingNullItemToCollection(): void
+    {
+        $this->expectException($this->invalidArgumentException);
+        $this->collection->add(null);
+    }
+
+    public function testExceptionThrownSettingNullItemAtOffset(): void
+    {
+        $this->expectException($this->invalidArgumentException);
+        $this->collection->add('foo');
+        $this->collection[0] = null;
+    }
+
+    public function testOffsetUnsetOnValidOffsetRemovesItemFromCollection(): void
+    {
+        $this->makeEmptyCollection();
+        $this->collection->add('foo');
+        $expected = 1;
+        $this->assertEquals($expected, $this->collection->size());
+
+        $offset = 0;
+        unset($this->collection[$offset]);
+        $expected = 0;
+        $this->assertEquals($expected, $this->collection->size());
+    }
+
+    public function testUnsetCastOnValueHasNoEffectOnCollection()
+    {
+        $this->makeEmptyCollection();
+        $this->collection->add('foo');
+        $offset = 0;
+        $expectedSize = 1;
+        $expectedValue = 'foo';
+
+        $value = (unset)$this->collection[$offset];
+
+        $this->assertNull($value);
+        $this->assertEquals($expectedSize, $this->collection->size());
+        $this->assertEquals($expectedValue, $this->collection[$offset]);
     }
 }
