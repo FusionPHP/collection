@@ -354,10 +354,10 @@ class CollectionTest extends TestCase
     public function testUnsetCastOnValueHasNoEffectOnCollection()
     {
         $this->makeEmptyCollection();
-        $this->collection->add('foo');
         $offset = 0;
         $expectedSize = 1;
         $expectedValue = 'foo';
+        $this->collection->add($expectedValue);
 
         $value = (unset)$this->collection[$offset];
 

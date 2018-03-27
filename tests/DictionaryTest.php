@@ -53,8 +53,10 @@ class DictionaryTest extends TestCase
         $this->dictionary->add('foo', 'bar');
         $this->dictionary->replace('foo', 'quam');
 
-        $expected = 'quam';
-        $this->assertEquals($expected, $this->dictionary->find('foo'));
+        $expectedSize = 1;
+        $expectedValue = 'quam';
+        $this->assertEquals($expectedValue, $this->dictionary->find('foo'));
+        $this->assertEquals($expectedSize, $this->dictionary->size());
     }
 
     public function testExceptionThrownAddingNullItem()
@@ -152,4 +154,29 @@ class DictionaryTest extends TestCase
         $this->dictionary[0] = null;
     }
 
+    public function testOffsetUnsetOnValidOffsetRemovesItemFromDictionary()
+    {
+        $this->dictionary->add('foo', 'bar');
+        $expected = 1;
+        $this->assertEquals($expected, $this->dictionary->size());
+
+        $offset = 'foo';
+        unset($this->dictionary[$offset]);
+        $expected = 0;
+        $this->assertEquals($expected, $this->dictionary->size());
+    }
+
+    public function testUnsetCastOnValueHasNoEffectOnDictionary()
+    {
+        $offset = 'key';
+        $expectedSize = 1;
+        $expectedValue = 'bar';
+        $this->dictionary->add($offset, $expectedValue);
+
+        $value = (unset)$this->dictionary[$offset];
+
+        $this->assertNull($value);
+        $this->assertEquals($expectedSize, $this->dictionary->size());
+        $this->assertEquals($expectedValue, $this->dictionary[$offset]);
+    }
 }
