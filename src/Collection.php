@@ -228,7 +228,6 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
     {
         $this->throwExceptionIfOffsetIsNotAnInteger($offset);
         $this->throwExceptionIfIdDoesNotExist($offset);
-        $this->throwExceptionIfCollectionIsEmpty();
 
         return $this->idExists($offset);
     }
@@ -262,7 +261,6 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
     {
         $this->throwExceptionIfOffsetIsNotAnInteger($offset);
         $this->throwExceptionIfIdDoesNotExist($offset);
-        $this->throwExceptionIfCollectionIsEmpty();
 
         return $this->collection[$offset];
     }
@@ -281,10 +279,18 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
     public function offsetSet($offset, $value): void
     {
         $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        $this->throwExceptionIfCollectionIsEmpty();
+        $this->throwExceptionIfOffsetDoesNotExist($offset);
         $this->throwExceptionIfValueIsNull($value);
 
         $this->collection[$offset] = $value;
+    }
+
+    private function throwExceptionIfOffsetDoesNotExist(int $offset)
+    {
+        if ($this->idExists($offset) == false)
+        {
+            throw new OutOfBoundsException("Offset does not exist in the collection.");
+        }
     }
 
     /**

@@ -300,7 +300,7 @@ class CollectionTest extends TestCase
         $this->collection[$targetOffset] = $newValue;
     }
 
-    public function testExceptionThrownSettingOffsetValueWhenCollectionIsEmpty()
+    public function testExceptionThrownSettingOffsetValueWhereOffsetDoesNotExist()
     {
         $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
