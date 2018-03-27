@@ -138,4 +138,18 @@ class DictionaryTest extends TestCase
         $this->assertEquals($expected, $this->dictionary->size());
     }
 
+    public function testExceptionThrownReplacingExistingValueWithNullUsingMethod()
+    {
+        $this->expectException('\InvalidArgumentException');
+        $this->dictionary->add('foo', 'bar');
+        $this->dictionary->replace('foo', null);
+    }
+
+    public function testExceptionThrownReplacingExistingValueWithNullUsingOffset()
+    {
+        $this->expectException('\InvalidArgumentException');
+        $this->dictionary->add('foo', 'bar');
+        $this->dictionary[0] = null;
+    }
+
 }

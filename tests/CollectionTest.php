@@ -24,37 +24,51 @@ class CollectionTest extends TestCase
     private $outOfBoundsException = \OutOfBoundsException::class;
     private $invalidArgumentException = \InvalidArgumentException::class;
 
-    public function setUp(): void
+    public function setUp()
     {
         $this->makeEmptyCollection();
         $this->addFooBarBaz();
     }
-    public function tearDown(): void
+    public function tearDown()
     {
         $this->collection = null;
     }
 
-    private function makeEmptyCollection(): void
+    private function makeEmptyCollection()
     {
         $this->collection = new Collection();
     }
 
-    private function addFooBarBaz(): void
+    private function addFooBarBaz()
     {
         $this->collection->add('foo');
         $this->collection->add('bar');
         $this->collection->add('baz');
     }
 
-    public function testSetupOnConstruct(): void
+    public function testSetupOnConstruct()
     {
-        $this->collection = new Collection([15, 'foo', 3.14, [], PHP_INT_MAX, new \stdClass()]);
+        $this->collection = new Collection([PHP_INT_MAX, 'foo', M_PI, [], fopen('php://memory', 'r'), new \stdClass(), function () {}]);
 
-        $expected = 6;
+        $this->assertTrue(is_int($this->collection[0]));
+        $this->assertTrue(is_string($this->collection[1]));
+        $this->assertTrue(is_float($this->collection[2]));
+        $this->assertTrue(is_array($this->collection[3]));
+        $this->assertTrue(is_resource($this->collection[4]));
+        $this->assertTrue(is_object($this->collection[5]));
+        $this->assertTrue(is_callable($this->collection[6]));
+
+        $expected = 7;
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testAddItems(): void
+    public function testExceptionThrownAddingNullValueDuringContructor()
+    {
+        $this->expectException($this->invalidArgumentException);
+        $this->collection = new Collection([null]);
+    }
+
+    public function testAddItems()
     {
         $foo = 'foo';
         $bar = 'bar';
@@ -71,7 +85,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testRemovingItemReturnsTrue(): void
+    public function testRemovingItemReturnsTrue()
     {
         $removed = 'foo';
         $this->assertTrue($this->collection->remove($removed));
@@ -80,7 +94,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testIndexValuesUpdateWhenRemovingItems(): void
+    public function testIndexValuesUpdateWhenRemovingItems()
     {
         $expected = 3;
         $this->assertEquals($expected, $this->collection->size());
@@ -94,39 +108,39 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testRemoveItemNotInCollectionReturnsFalse(): void
+    public function testRemoveItemNotInCollectionReturnsFalse()
     {
         $removed = 'quam';
         $this->assertFalse($this->collection->remove($removed));
     }
 
-    public function testFindingItemAtId(): void
+    public function testFindingItemAtId()
     {
         $expected = 'foo';
         $this->collection->add($expected);
         $this->assertEquals($expected, $this->collection->findAt(0));
     }
 
-    public function testExceptionThrownLookingForItemOutOfCollectionBounds(): void
+    public function testExceptionThrownLookingForItemOutOfCollectionBounds()
     {
         $this->expectException($this->outOfBoundsException);
         $this->collection->findAt(30);
     }
 
-    public function testExceptionThrownRemovingItemNotInCollectionBounds(): void
+    public function testExceptionThrownRemovingItemNotInCollectionBounds()
     {
         $this->expectException($this->outOfBoundsException);
         $this->collection->removeAt(30);
     }
 
-    public function testAccessCurrentElementPosition(): void
+    public function testAccessCurrentElementPosition()
     {
         $expected = 'foo';
         $this->addFooBarBaz();
         $this->assertEquals($expected, $this->collection->current());
     }
 
-    public function testAccessNextElementPosition(): void
+    public function testAccessNextElementPosition()
     {
         $expected = 'bar';
         $this->addFooBarBaz();
@@ -134,7 +148,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->current());
     }
 
-    public function testAccessCurrentKey(): void
+    public function testAccessCurrentKey()
     {
         $expected = 1;
         $this->addFooBarBaz();
@@ -142,19 +156,19 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->key());
     }
 
-    public function testCurrentElementIsValidReturnsTrue(): void
+    public function testCurrentElementIsValidReturnsTrue()
     {
         $this->addFooBarBaz();
         $this->assertTrue($this->collection->valid());
     }
 
-    public function testCurrentElementIsValidReturnsFalse(): void
+    public function testCurrentElementIsValidReturnsFalse()
     {
         $this->makeEmptyCollection();
         $this->assertFalse($this->collection->valid());
     }
 
-    public function testRewindingElementPosition(): void
+    public function testRewindingElementPosition()
     {
         $expected = 'bar';
         $this->addFooBarBaz();
@@ -166,41 +180,41 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->current());
     }
 
-    public function testExceptionThrownTraversingEmptyCollection(): void
+    public function testExceptionThrownTraversingEmptyCollection()
     {
         $this->makeEmptyCollection();
         $this->expectException($this->outOfBoundsException);
         $this->collection->current();
     }
 
-    public function testExceptionThrownMovingToNextElementInEmptyCollection(): void
+    public function testExceptionThrownMovingToNextElementInEmptyCollection()
     {
         $this->makeEmptyCollection();
         $this->expectException($this->outOfBoundsException);
         $this->collection->next();
     }
 
-    public function testExceptionThrownWhenAccessingCurrentKeyOfEmptyCollection(): void
+    public function testExceptionThrownWhenAccessingCurrentKeyOfEmptyCollection()
     {
         $this->makeEmptyCollection();
         $this->expectException($this->outOfBoundsException);
         $this->collection->key();
     }
 
-    public function testEmptyingCollection(): void
+    public function testEmptyingCollection()
     {
         $expected = 0;
         $this->collection->clear();
         $this->assertEquals($expected, $this->collection->size());
     }
 
-    public function testOffsetExistsInCollection(): void
+    public function testOffsetExistsInCollection()
     {
         $targetOffset = 2;
         $this->assertTrue(isset($this->collection[$targetOffset]));
     }
 
-    public function testExceptionThrownIfNonIntegerGivenAsOffsetExistsValue(): void
+    public function testExceptionThrownIfNonIntegerGivenAsOffsetExistsValue()
     {
         $this->expectException($this->invalidArgumentException);
         $targetOffset = 'foo';
@@ -208,7 +222,7 @@ class CollectionTest extends TestCase
         $this->collection->offsetExists($targetOffset);
     }
 
-    public function testExceptionThrownIfAccessingOffsetAndCollectionIsEmpty(): void
+    public function testExceptionThrownIfAccessingOffsetAndCollectionIsEmpty()
     {
         $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
@@ -217,7 +231,7 @@ class CollectionTest extends TestCase
         $this->collection->offsetExists($targetOffset);
     }
 
-    public function testExceptionThrownIfAccessingOffsetThatDoesNotExist(): void
+    public function testExceptionThrownIfAccessingOffsetThatDoesNotExist()
     {
         $this->expectException($this->outOfBoundsException);
         $targetOffset = 3;
@@ -225,7 +239,7 @@ class CollectionTest extends TestCase
         $this->collection[$targetOffset];
     }
 
-    public function testRetrievingOffsetFromCollection(): void
+    public function testRetrievingOffsetFromCollection()
     {
         $expected = 'foo';
         $targetOffset = 0;
@@ -233,7 +247,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection[$targetOffset]);
     }
 
-    public function testRetrievingOffsetViaArrayAccessNotation(): void
+    public function testRetrievingOffsetViaArrayAccessNotation()
     {
         $expected = 'bar';
         $targetOffset = 1;
@@ -241,7 +255,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection[$targetOffset]);
     }
 
-    public function testExceptionThrownIfNonIntegerGivenAsOffsetGetValue(): void
+    public function testExceptionThrownIfNonIntegerGivenAsOffsetGetValue()
     {
         $this->expectException($this->invalidArgumentException);
         $targetOffset = 'foo';
@@ -249,7 +263,7 @@ class CollectionTest extends TestCase
         $this->collection->offsetGet($targetOffset);
     }
 
-    public function testExceptionThrownIfGettingOffsetAndCollectionIsEmpty(): void
+    public function testExceptionThrownIfGettingOffsetAndCollectionIsEmpty()
     {
         $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
@@ -258,7 +272,7 @@ class CollectionTest extends TestCase
         $this->collection->offsetGet($targetOffset);
     }
 
-    public function testExceptionThrownIfGettingOffsetThatDoesNotExist(): void
+    public function testExceptionThrownIfGettingOffsetThatDoesNotExist()
     {
         $this->expectException($this->outOfBoundsException);
         $targetOffset = 3;
@@ -266,7 +280,7 @@ class CollectionTest extends TestCase
         $this->collection->offsetGet($targetOffset);
     }
 
-    public function testSettingOffsetValueInCollection(): void
+    public function testSettingOffsetValueInCollection()
     {
         $expected = 'baz';
         $targetOffset = 2;
@@ -277,7 +291,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection[$targetOffset]);
     }
 
-    public function testExceptionThrownSettingOffsetValueAndOffsetIsNotAnInteger(): void
+    public function testExceptionThrownSettingOffsetValueAndOffsetIsNotAnInteger()
     {
         $this->expectException($this->invalidArgumentException);
         $newValue = 'quam';
@@ -286,7 +300,7 @@ class CollectionTest extends TestCase
         $this->collection[$targetOffset] = $newValue;
     }
 
-    public function testExceptionThrownSettingOffsetValueWhenCollectionIsEmpty(): void
+    public function testExceptionThrownSettingOffsetValueWhenCollectionIsEmpty()
     {
         $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
@@ -296,14 +310,14 @@ class CollectionTest extends TestCase
         $this->collection[$targetOffset] = $newValue;
     }
 
-    public function testExceptionThrownUnsettingGivenOffsetAndOffsetIsNotAnInteger(): void
+    public function testExceptionThrownUnsettingGivenOffsetAndOffsetIsNotAnInteger()
     {
         $this->expectException($this->invalidArgumentException);
         $targetOffset = 'quam';
         unset($this->collection[$targetOffset]);
     }
 
-    public function testExceptionThrownUnsettingGivenOffsetAndCollectionIsEmpty(): void
+    public function testExceptionThrownUnsettingGivenOffsetAndCollectionIsEmpty()
     {
         $this->expectException($this->outOfBoundsException);
         $this->makeEmptyCollection();
@@ -311,20 +325,20 @@ class CollectionTest extends TestCase
         unset($this->collection[$targetOffset]);
     }
 
-    public function testExceptionThrownAddingNullItemToCollection(): void
+    public function testExceptionThrownAddingNullItemToCollection()
     {
         $this->expectException($this->invalidArgumentException);
         $this->collection->add(null);
     }
 
-    public function testExceptionThrownSettingNullItemAtOffset(): void
+    public function testExceptionThrownSettingNullItemAtOffset()
     {
         $this->expectException($this->invalidArgumentException);
         $this->collection->add('foo');
         $this->collection[0] = null;
     }
 
-    public function testOffsetUnsetOnValidOffsetRemovesItemFromCollection(): void
+    public function testOffsetUnsetOnValidOffsetRemovesItemFromCollection()
     {
         $this->makeEmptyCollection();
         $this->collection->add('foo');

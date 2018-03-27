@@ -40,8 +40,17 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
 
     public function replace(string $key, $value): DictionaryInterface
     {
+        $this->throwExceptionIfValueIsNull($value);
         $this->dictionary[$key] = $value;
         return $this;
+    }
+
+    private function throwExceptionIfValueIsNull($value): void
+    {
+        if (is_null($value))
+        {
+            throw new InvalidArgumentException('Collection value cannot be null.');
+        }
     }
 
     public function find(string $key)
