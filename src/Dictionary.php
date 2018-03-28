@@ -10,23 +10,13 @@ declare(strict_types=1);
 
 namespace Fusion\Collection;
 
+use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\DictionaryInterface;
-use ArrayAccess;
-use Iterator;
 use InvalidArgumentException;
 use OutOfBoundsException;
 
-class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
+class Dictionary extends AbstractCollection implements DictionaryInterface
 {
-    /**
-     * Key/Value pairs of all items in the dictionary.
-     *
-     * Keys MUST be non-clear strings or integers and values MUST NOT be null.
-     *
-     * @var array
-     */
-    protected $dictionary = [];
-
     public function add(string $key, $value): DictionaryInterface
     {
         if ($value == null)
@@ -34,32 +24,25 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
             throw new InvalidArgumentException('Cannot add null values to the dictionary.');
         }
 
-        $this->dictionary[$key] = $value;
+        $this->collection[$key] = $value;
         return $this;
     }
 
     public function replace(string $key, $value): DictionaryInterface
     {
         $this->throwExceptionIfValueIsNull($value);
-        $this->dictionary[$key] = $value;
+        $this->collection[$key] = $value;
         return $this;
-    }
-
-    private function throwExceptionIfValueIsNull($value): void
-    {
-        if (is_null($value))
-        {
-            throw new InvalidArgumentException('Collection value cannot be null.');
-        }
     }
 
     public function find(string $key)
     {
+        $this->throwExceptionIfOffsetDoesNotExist($key);
         $value = null;
 
         if ($this->offsetExists($key))
         {
-            $value = $this->dictionary[$key];
+            $value = $this->collection[$key];
         }
 
         return $value;
@@ -70,10 +53,10 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
      */
     public function remove($item)
     {
-        $this->validateItem($item);
+        $this->throwExceptionIfValueIsNull($item);
         $result = false;
 
-        foreach ($this->dictionary as $key => $value)
+        foreach ($this->collection as $key => $value)
         {
             if ($value === $item)
             {
@@ -89,12 +72,11 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
      */
     public function removeAt($key)
     {
-        $this->validateKey($key);
         $result = false;
 
-        if ($this->keyExists($key))
+        if ($this->offsetExists($key))
         {
-            unset($this->dictionary[$key]);
+            unset($this->collection[$key]);
             $result = true;
         }
 
@@ -103,140 +85,15 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
 
     public function size(): int
     {
-        return count($this->dictionary);
+        return count($this->collection);
     }
 
-    /**
-     * Checks if an item is valid and returns true if it is or false otherwise.
-     *
-     * @param mixed $item The item to check.
-     *
-     * @return bool
-     */
-    protected function isValidItem($item)
+    private function throwExceptionIfOffsetDoesNotExist(string $id): void
     {
-        return ($item !== null) ? true : false;
-    }
-
-    /**
-     * Checks if a key already exists in the dictionary.
-     *
-     * @param string|int $key The key to check.
-     *
-     * @return bool
-     */
-    protected function keyExists($key)
-    {
-        return array_key_exists($key, $this->dictionary);
-    }
-
-    /**
-     * Validate a key or throw an exception.
-     *
-     * @param string|int $key The key to validate.
-     *
-     * @return bool
-     *
-     * @throws \InvalidArgumentException When `$key` is not an integer or
-     *      non-clear string.
-     */
-    protected function validateKey($key)
-    {
-        $this->throwExceptionIfOffsetIsNotAString($key);
-        return true;
-    }
-
-    /**
-     * Validate an item value or throw an exception.
-     *
-     * @param mixed $item The item to validate.
-     *
-     * @return bool
-     *
-     * @throws \InvalidArgumentException When `$item` is null;
-     */
-    protected function validateItem($item)
-    {
-        if (!$this->isValidItem($item))
-        {
-            throw new \InvalidArgumentException('Item must be a non-null value.');
-        }
-
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function current()
-    {
-        return current($this->dictionary);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function next()
-    {
-        return next($this->dictionary);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function key()
-    {
-        return key($this->dictionary);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function valid()
-    {
-        return key($this->dictionary) !== null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rewind()
-    {
-        reset($this->dictionary);
-    }
-
-    /**
-     * Whether a offset exists
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-     *
-     * @param mixed $offset <p>
-     * An offset to check for.
-     * </p>
-     *
-     * @return boolean true on success or false on failure.
-     * </p>
-     * <p>
-     * The return value will be casted to boolean if non-boolean was returned.
-     * @since 5.0.0
-     */
-    public function offsetExists($offset)
-    {
-        $this->throwExceptionIfIdDoesNotExist($offset);
-        return array_key_exists($offset, $this->dictionary);
-    }
-
-    private function throwExceptionIfIdDoesNotExist(string $id): void
-    {
-        if ($this->idExists($id) === false)
+        if ($this->offsetExists($id) == false)
         {
             throw new OutOfBoundsException("The id '$id' doesn't exist in the collection.");
         }
-    }
-
-    private function idExists(string $id): bool
-    {
-        return array_key_exists($id, $this->dictionary);
     }
 
     /**
@@ -253,8 +110,14 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
      */
     public function offsetGet($offset)
     {
-        $this->throwExceptionIfIdDoesNotExist($offset);
-        return $this->dictionary[$offset];
+        $this->checkIfOffsetIsAStringAndExists($offset);
+        return parent::offsetGet($offset);
+    }
+
+    private function checkIfOffsetIsAStringAndExists($offset)
+    {
+        $this->throwExceptionIfOffsetIsNotAString($offset);
+        $this->throwExceptionIfOffsetDoesNotExist($offset);
     }
 
     /**
@@ -272,31 +135,13 @@ class Dictionary implements DictionaryInterface, Iterator, ArrayAccess
      * @return void
      * @since 5.0.0
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->throwExceptionIfOffsetIsNotAString($offset);
-        $this->dictionary[$offset] = $value;
+        parent::offsetSet($offset, $value);
     }
 
-    /**
-     * Offset to unset
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     *
-     * @param mixed $offset <p>
-     * The offset to unset.
-     * </p>
-     *
-     * @return void
-     * @since 5.0.0
-     */
-    public function offsetUnset($offset)
-    {
-        $this->throwExceptionIfOffsetIsNotAString($offset);
-        $this->removeAt($offset);
-    }
-
-    private function throwExceptionIfOffsetIsNotAString($offset)
+    private function throwExceptionIfOffsetIsNotAString($offset): void
     {
         if (is_string($offset) == false)
         {

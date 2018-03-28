@@ -120,7 +120,7 @@ class DictionaryTest extends TestCase
 
     public function testExceptionThrownGettingOffsetWithNonStringKey()
     {
-        $this->expectException('\TypeError');
+        $this->expectException('\InvalidArgumentException');
         $this->dictionary->add('foo', 'bar');
         $this->dictionary[0];
     }
