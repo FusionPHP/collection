@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Fusion\Collection\Tests;
 
 use Fusion\Collection\Collection;
-use Fusion\Collection\Contracts\AbstractCollection;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
