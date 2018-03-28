@@ -12,12 +12,10 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\DictionaryInterface;
-use ArrayAccess;
-use Iterator;
 use InvalidArgumentException;
 use OutOfBoundsException;
 
-class Dictionary extends AbstractCollection implements DictionaryInterface, Iterator, ArrayAccess
+class Dictionary extends AbstractCollection implements DictionaryInterface
 {
     public function add(string $key, $value): DictionaryInterface
     {
@@ -35,14 +33,6 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
         $this->throwExceptionIfValueIsNull($value);
         $this->collection[$key] = $value;
         return $this;
-    }
-
-    private function throwExceptionIfValueIsNull($value): void
-    {
-        if (is_null($value))
-        {
-            throw new InvalidArgumentException('Collection value cannot be null.');
-        }
     }
 
     public function find(string $key)
@@ -63,7 +53,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
      */
     public function remove($item)
     {
-        $this->validateItem($item);
+        $this->throwExceptionIfValueIsNull($item);
         $result = false;
 
         foreach ($this->collection as $key => $value)
@@ -82,10 +72,9 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
      */
     public function removeAt($key)
     {
-        $this->validateKey($key);
         $result = false;
 
-        if ($this->keyExists($key))
+        if ($this->offsetExists($key))
         {
             unset($this->collection[$key]);
             $result = true;
@@ -99,136 +88,12 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
         return count($this->collection);
     }
 
-    /**
-     * Checks if an item is valid and returns true if it is or false otherwise.
-     *
-     * @param mixed $item The item to check.
-     *
-     * @return bool
-     */
-    protected function isValidItem($item)
-    {
-        return ($item !== null) ? true : false;
-    }
-
-    /**
-     * Checks if a key already exists in the dictionary.
-     *
-     * @param string|int $key The key to check.
-     *
-     * @return bool
-     */
-    protected function keyExists($key)
-    {
-        return array_key_exists($key, $this->collection);
-    }
-
-    /**
-     * Validate a key or throw an exception.
-     *
-     * @param string|int $key The key to validate.
-     *
-     * @return bool
-     *
-     * @throws \InvalidArgumentException When `$key` is not an integer or
-     *      non-clear string.
-     */
-    protected function validateKey($key)
-    {
-        $this->throwExceptionIfOffsetIsNotAString($key);
-        return true;
-    }
-
-    /**
-     * Validate an item value or throw an exception.
-     *
-     * @param mixed $item The item to validate.
-     *
-     * @return bool
-     *
-     * @throws \InvalidArgumentException When `$item` is null;
-     */
-    protected function validateItem($item)
-    {
-        if (!$this->isValidItem($item))
-        {
-            throw new \InvalidArgumentException('Item must be a non-null value.');
-        }
-
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function current()
-    {
-        return current($this->collection);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function next()
-    {
-        return next($this->collection);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function key()
-    {
-        return key($this->collection);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function valid()
-    {
-        return key($this->collection) !== null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rewind()
-    {
-        reset($this->collection);
-    }
-
-    /**
-     * Whether a offset exists
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-     *
-     * @param mixed $offset <p>
-     * An offset to check for.
-     * </p>
-     *
-     * @return boolean true on success or false on failure.
-     * </p>
-     * <p>
-     * The return value will be casted to boolean if non-boolean was returned.
-     * @since 5.0.0
-     */
-    public function offsetExists($offset)
-    {
-        return array_key_exists($offset, $this->collection);
-    }
-
     private function throwExceptionIfOffsetDoesNotExist(string $id): void
     {
-        if ($this->idExists($id) == false)
+        if ($this->offsetExists($id) == false)
         {
             throw new OutOfBoundsException("The id '$id' doesn't exist in the collection.");
         }
-    }
-
-    private function idExists(string $id): bool
-    {
-        return array_key_exists($id, $this->collection);
     }
 
     /**
@@ -245,8 +110,14 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
      */
     public function offsetGet($offset)
     {
+        $this->checkIfOffsetIsAStringAndExists($offset);
+        return parent::offsetGet($offset);
+    }
+
+    private function checkIfOffsetIsAStringAndExists($offset)
+    {
+        $this->throwExceptionIfOffsetIsNotAString($offset);
         $this->throwExceptionIfOffsetDoesNotExist($offset);
-        return $this->collection[$offset];
     }
 
     /**
@@ -264,31 +135,13 @@ class Dictionary extends AbstractCollection implements DictionaryInterface, Iter
      * @return void
      * @since 5.0.0
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->throwExceptionIfOffsetIsNotAString($offset);
-        $this->collection[$offset] = $value;
+        parent::offsetSet($offset, $value);
     }
 
-    /**
-     * Offset to unset
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     *
-     * @param mixed $offset <p>
-     * The offset to unset.
-     * </p>
-     *
-     * @return void
-     * @since 5.0.0
-     */
-    public function offsetUnset($offset)
-    {
-        $this->throwExceptionIfOffsetIsNotAString($offset);
-        $this->removeAt($offset);
-    }
-
-    private function throwExceptionIfOffsetIsNotAString($offset)
+    private function throwExceptionIfOffsetIsNotAString($offset): void
     {
         if (is_string($offset) == false)
         {

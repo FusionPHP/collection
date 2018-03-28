@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Fusion\Collection\Tests;
 
 use Fusion\Collection\Collection;
+use Fusion\Collection\Contracts\AbstractCollection;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
@@ -180,27 +181,6 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->current());
     }
 
-    public function testExceptionThrownTraversingEmptyCollection()
-    {
-        $this->makeEmptyCollection();
-        $this->expectException($this->outOfBoundsException);
-        $this->collection->current();
-    }
-
-    public function testExceptionThrownMovingToNextElementInEmptyCollection()
-    {
-        $this->makeEmptyCollection();
-        $this->expectException($this->outOfBoundsException);
-        $this->collection->next();
-    }
-
-    public function testExceptionThrownWhenAccessingCurrentKeyOfEmptyCollection()
-    {
-        $this->makeEmptyCollection();
-        $this->expectException($this->outOfBoundsException);
-        $this->collection->key();
-    }
-
     public function testEmptyingCollection()
     {
         $expected = 0;
@@ -312,21 +292,6 @@ class CollectionTest extends TestCase
         $targetOffset = 1;
 
         $this->collection[$targetOffset] = $newValue;
-    }
-
-    public function testExceptionThrownUnsettingGivenOffsetAndOffsetIsNotAnInteger()
-    {
-        $this->expectException($this->invalidArgumentException);
-        $targetOffset = 'quam';
-        unset($this->collection[$targetOffset]);
-    }
-
-    public function testExceptionThrownUnsettingGivenOffsetAndCollectionIsEmpty()
-    {
-        $this->expectException($this->outOfBoundsException);
-        $this->makeEmptyCollection();
-        $targetOffset = 1;
-        unset($this->collection[$targetOffset]);
     }
 
     public function testExceptionThrownAddingNullItemToCollection()

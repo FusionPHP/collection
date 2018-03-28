@@ -13,7 +13,6 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
-use ArrayAccess;
 use Iterator;
 use OutOfBoundsException;
 use InvalidArgumentException;
@@ -28,7 +27,7 @@ use InvalidArgumentException;
  *
  * @since 1.0.0
  */
-class Collection extends AbstractCollection implements CollectionInterface, Iterator, ArrayAccess
+class Collection extends AbstractCollection implements CollectionInterface, Iterator
 {
     /**
      * Instantiates a collection object with an optional array of starter items.
@@ -51,14 +50,6 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
         $this->throwExceptionIfValueIsNull($collectable);
         array_push($this->collection, $collectable);
         return $this;
-    }
-
-    private function throwExceptionIfValueIsNull($collectable): void
-    {
-        if (is_null($collectable))
-        {
-            throw new InvalidArgumentException('Cannot add null values to the collection.');
-        }
     }
 
     /**
@@ -131,102 +122,12 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
     }
 
     /**
-     * Returns the current element.
-     *
-     * @link http://php.net/manual/en/iterator.current.php
-     *
-     * @return mixed
-     *
-     * @throws \RuntimeException When the collection is empty.
-     */
-    public function current()
-    {
-        $this->throwExceptionIfCollectionIsEmpty();
-        return current($this->collection);
-    }
-
-    /**
-     * Move forward to the next element.
-     *
-     * @link http://php.net/manual/en/iterator.next.php
-     *
-     * @throws \RuntimeException When the collection is empty
-     */
-    public function next(): void
-    {
-        $this->throwExceptionIfCollectionIsEmpty();
-        next($this->collection);
-    }
-
-    /**
-     * Return the key of the current element.
-     *
-     * @link http://php.net/manual/en/iterator.key.php
-     *
-     * @return int
-     *
-     * @throws \RuntimeException When the collection is empty.
-     */
-    public function key(): int
-    {
-        $this->throwExceptionIfCollectionIsEmpty();
-        return key($this->collection);
-    }
-
-    /**
-     * Checks if the current position is valid.
-     *
-     * @link http://php.net/manual/en/iterator.valid.php
-     *
-     * @return bool
-     */
-    public function valid(): bool
-    {
-        return key($this->collection) !== null;
-    }
-
-    /**
-     * Rewind the collection's position to the first index.
-     *
-     * @link http://php.net/manual/en/iterator.rewind.php
-     */
-    public function rewind(): void
-    {
-        reset($this->collection);
-    }
-
-    private function throwExceptionIfCollectionIsEmpty()
-    {
-        if ($this->size() == 0)
-        {
-            throw new OutOfBoundsException("Unable to access items in an empty collection.");
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function clear(): CollectionInterface
     {
         $this->collection = [];
         return $this;
-    }
-
-    /**
-     * Checks if an index exists in the collection.
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-     *
-     * @param int The index to check.
-     *
-     * @return bool
-     *
-     * @throws \InvalidArgumentException When `$offset` is not an integer.
-     * @throws \OutOfBoundsException When the `$offset` doesn't exist or if the collection is empty.
-     */
-    public function offsetExists($offset): bool
-    {
-        return array_key_exists($offset, $this->collection);
     }
 
     private function throwExceptionIfOffsetIsNotAnInteger($offset): void
@@ -257,7 +158,7 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
     public function offsetGet($offset)
     {
         $this->checkIfOffsetIsAnIntegerAndExists($offset);
-        return $this->collection[$offset];
+        return parent::offsetGet($offset);
     }
 
     /**
@@ -274,8 +175,13 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
     public function offsetSet($offset, $value): void
     {
         $this->checkIfOffsetIsAnIntegerAndExists($offset);
-        $this->throwExceptionIfValueIsNull($value);
-        $this->collection[$offset] = $value;
+        parent::offsetSet($offset, $value);
+    }
+
+    private function checkIfOffsetIsAnIntegerAndExists($offset): void
+    {
+        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
+        $this->throwExceptionIfOffsetDoesNotExist($offset);
     }
 
     private function throwExceptionIfOffsetDoesNotExist(int $offset)
@@ -284,24 +190,5 @@ class Collection extends AbstractCollection implements CollectionInterface, Iter
         {
             throw new OutOfBoundsException("Offset does not exist in the collection.");
         }
-    }
-
-    /**
-     * Unset a value in the collection at the given offset.
-     *
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     *
-     * @param mixed The offset to unset.
-     */
-    public function offsetUnset($offset): void
-    {
-        $this->checkIfOffsetIsAnIntegerAndExists($offset);
-        $this->removeAt($offset);
-    }
-
-    private function checkIfOffsetIsAnIntegerAndExists($offset): void
-    {
-        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        $this->throwExceptionIfOffsetDoesNotExist($offset);
     }
 }
