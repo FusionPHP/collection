@@ -13,7 +13,6 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
-use Iterator;
 use OutOfBoundsException;
 use InvalidArgumentException;
 
@@ -27,7 +26,7 @@ use InvalidArgumentException;
  *
  * @since 1.0.0
  */
-class Collection extends AbstractCollection implements CollectionInterface, Iterator
+class Collection extends AbstractCollection implements CollectionInterface
 {
     /**
      * Instantiates a collection object with an optional array of starter items.
