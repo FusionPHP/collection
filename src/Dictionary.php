@@ -48,6 +48,14 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
         return $value;
     }
 
+    private function throwExceptionIfOffsetDoesNotExist(string $id): void
+    {
+        if ($this->offsetExists($id) == false)
+        {
+            throw new OutOfBoundsException("The id '$id' doesn't exist in the collection.");
+        }
+    }
+
     /**
      * @inheritdoc
      */
@@ -86,14 +94,6 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
     public function size(): int
     {
         return count($this->collection);
-    }
-
-    private function throwExceptionIfOffsetDoesNotExist(string $id): void
-    {
-        if ($this->offsetExists($id) == false)
-        {
-            throw new OutOfBoundsException("The id '$id' doesn't exist in the collection.");
-        }
     }
 
     /**
