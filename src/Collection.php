@@ -13,6 +13,7 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
+use Fusion\Collection\Exceptions\CollectionException;
 use OutOfBoundsException;
 use InvalidArgumentException;
 
@@ -81,7 +82,7 @@ class Collection extends AbstractCollection implements CollectionInterface
     {
         if ($this->idExists($id) === false)
         {
-            throw new OutOfBoundsException("The id '$id' doesn't exist in the collection.");
+            throw new CollectionException("The id '$id' doesn't exist in the collection.");
         }
     }
 
@@ -138,7 +139,7 @@ class Collection extends AbstractCollection implements CollectionInterface
                 gettype($offset)
             );
 
-            throw new InvalidArgumentException($message);
+            throw new CollectionException($message);
         }
     }
 
@@ -187,7 +188,7 @@ class Collection extends AbstractCollection implements CollectionInterface
     {
         if ($this->idExists($offset) == false)
         {
-            throw new OutOfBoundsException("Offset does not exist in the collection.");
+            throw new CollectionException("Offset does not exist in the collection.");
         }
     }
 }

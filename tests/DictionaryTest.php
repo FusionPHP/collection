@@ -8,14 +8,16 @@
 
 namespace Fusion\Collection\Tests;
 
-
 use Fusion\Collection\Dictionary;
+use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
 
 class DictionaryTest extends TestCase
 {
     /** @var  Dictionary */
     private $dictionary;
+
+    private $collectionException = CollectionException::class;
 
     public function setUp()
     {
@@ -61,19 +63,19 @@ class DictionaryTest extends TestCase
 
     public function testExceptionThrownAddingNullItem()
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->collectionException);
         $this->dictionary->add('foo', null);
     }
 
     public function testExceptionThrownTryingToRemoveNullValue()
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->collectionException);
         $this->dictionary->remove(null);
     }
 
     public function testExceptionThrownWhenKeyDoesNotExist()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->expectException($this->collectionException);
         $this->dictionary->find('foo');
     }
 
@@ -92,13 +94,13 @@ class DictionaryTest extends TestCase
 
     public function testExceptionThrownFindingValueWithKeyThatDoesNotExist()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->expectException($this->collectionException);
         $this->dictionary->find('foo');
     }
 
     public function testExceptionThrownAccessingKeyThatDoesNotExist()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->expectException($this->collectionException);
         $this->dictionary['foo'];
     }
 
@@ -120,14 +122,14 @@ class DictionaryTest extends TestCase
 
     public function testExceptionThrownGettingOffsetWithNonStringKey()
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->collectionException);
         $this->dictionary->add('foo', 'bar');
         $this->dictionary[0];
     }
 
     public function testExceptionThrownSettingValueWithNonStringKey()
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->collectionException);
         $this->dictionary[0] = 'bar';
     }
 
@@ -142,14 +144,14 @@ class DictionaryTest extends TestCase
 
     public function testExceptionThrownReplacingExistingValueWithNullUsingMethod()
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->collectionException);
         $this->dictionary->add('foo', 'bar');
         $this->dictionary->replace('foo', null);
     }
 
     public function testExceptionThrownReplacingExistingValueWithNullUsingOffset()
     {
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException($this->collectionException);
         $this->dictionary->add('foo', 'bar');
         $this->dictionary[0] = null;
     }
@@ -182,7 +184,7 @@ class DictionaryTest extends TestCase
 
     public function testExceptionThrownAccessingOffsetOfEmptyDictionary()
     {
-        $this->expectException('\OutOfBoundsException');
+        $this->expectException($this->collectionException);
         $this->dictionary['foo'];
     }
 }

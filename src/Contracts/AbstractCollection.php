@@ -8,7 +8,7 @@
 
 namespace Fusion\Collection\Contracts;
 
-use InvalidArgumentException;
+use Fusion\Collection\Exceptions\CollectionException;
 use ArrayAccess;
 use Iterator;
 
@@ -99,7 +99,7 @@ class AbstractCollection implements ArrayAccess, Iterator
     {
         if ($value === null)
         {
-            throw new InvalidArgumentException('Collection operations will not accept null values.');
+            throw new CollectionException('Collection operations will not accept null values.');
         }
     }
 

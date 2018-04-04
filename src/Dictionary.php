@@ -12,8 +12,7 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\DictionaryInterface;
-use InvalidArgumentException;
-use OutOfBoundsException;
+use Fusion\Collection\Exceptions\CollectionException;
 
 class Dictionary extends AbstractCollection implements DictionaryInterface
 {
@@ -21,7 +20,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
     {
         if ($value == null)
         {
-            throw new InvalidArgumentException('Cannot add null values to the dictionary.');
+            throw new CollectionException('Cannot add null values to the dictionary.');
         }
 
         $this->collection[$key] = $value;
@@ -52,7 +51,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
     {
         if ($this->offsetExists($id) == false)
         {
-            throw new OutOfBoundsException("The id '$id' doesn't exist in the collection.");
+            throw new CollectionException("The id '$id' doesn't exist in the collection.");
         }
     }
 
@@ -145,7 +144,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
     {
         if (is_string($offset) == false)
         {
-            throw new InvalidArgumentException('Offset to access must be a string.');
+            throw new CollectionException('Offset to access must be a string.');
         }
     }
 }
