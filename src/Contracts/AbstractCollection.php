@@ -6,6 +6,8 @@
  * Time: 1:26 PM
  */
 
+declare(strict_types=1);
+
 namespace Fusion\Collection\Contracts;
 
 use Fusion\Collection\Exceptions\CollectionException;

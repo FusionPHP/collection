@@ -6,6 +6,8 @@
  * Time: 9:23 AM
  */
 
+declare(strict_types=1);
+
 namespace Fusion\Collection\Contracts;
 
 
