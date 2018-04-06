@@ -41,11 +41,17 @@ class TypedDictionary extends Dictionary
         return $this;
     }
 
-    private function throwExceptionIfNotAcceptedType($value): void
+    private function throwExceptionIfNotAcceptedType($object): void
     {
-        if ($this->notAcceptedType($value))
+        if ($this->notAcceptedType($object))
         {
-            throw new CollectionException('This TypedDictionary instance only accepts objects of type: '. $this->acceptedType);
+            $message = sprintf(
+                'Unable to modify collection. Only instances of type "%s" are allowed. Type "%s" given.',
+                $this->acceptedType,
+                is_object($object) ? get_class($object) : gettype($object)
+            );
+
+            throw new CollectionException($message);
         }
     }
 

@@ -9,12 +9,12 @@
 
 namespace Fusion\Collection\Tests;
 
+use Fusion\Collection\Exceptions\CollectionException;
 use Fusion\Collection\TypedCollection;
 use PHPUnit\Framework\TestCase;
 
 class TypedCollectionTest extends TestCase
 {
-    private $invalidArgumentExceptionString = '\InvalidArgumentException';
 
     public function testSetupTypedCollection(): void
     {
@@ -32,20 +32,20 @@ class TypedCollectionTest extends TestCase
 
     public function testExceptionThrownAddingInvalidType(): void
     {
-        $this->expectException($this->invalidArgumentExceptionString);
+        $this->expectException(CollectionException::class);
         $collection = new TypedCollection(CrashTestDummy::class);
         $collection->add('foo');
     }
 
     public function testExceptionThrownAddingInvalidTypesDuringSetup(): void
     {
-        $this->expectException($this->invalidArgumentExceptionString);
+        $this->expectException(CollectionException::class);
         new TypedCollection(CrashTestDummy::class, ['foo']);
     }
 
     public function testExceptionThrownSettingAnOffsetWithAnInvalidType(): void
     {
-        $this->expectException($this->invalidArgumentExceptionString);
+        $this->expectException(CollectionException::class);
         $collection = new TypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
 
         $targetOffset = 0;
@@ -54,7 +54,7 @@ class TypedCollectionTest extends TestCase
 
     public function testExceptionThrownSettingAnOffsetToNull(): void
     {
-        $this->expectException($this->invalidArgumentExceptionString);
+        $this->expectException(CollectionException::class);
         $collection = new TypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
 
         $targetOffset = 0;
@@ -96,7 +96,7 @@ class TypedCollectionTest extends TestCase
 
     public function testExceptionThrownIfStringGivenOnConstructIsEmpty(): void
     {
-        $this->expectException($this->invalidArgumentExceptionString);
+        $this->expectException(CollectionException::class);
         new TypedCollection('');
     }
 }

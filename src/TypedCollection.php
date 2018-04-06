@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionInterface;
-use InvalidArgumentException;
+use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * A type-specific collection class.
@@ -38,7 +38,7 @@ class TypedCollection extends Collection
     {
         if ($acceptedType == '')
         {
-            throw new InvalidArgumentException('Accepted type string cannot be empty.');
+            throw new CollectionException('Accepted type string cannot be empty.');
         }
 
         $this->acceptedType = $acceptedType;
@@ -74,7 +74,7 @@ class TypedCollection extends Collection
                 is_object($object) ? get_class($object) : gettype($object)
             );
 
-            throw new InvalidArgumentException($message);
+            throw new CollectionException($message);
         }
     }
 
