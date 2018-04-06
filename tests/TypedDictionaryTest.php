@@ -33,4 +33,11 @@ class TypedDictionaryTest extends TestCase
         $dictionary = new TypedDictionary(CrashTestDummy::class, $items);
         $this->assertEquals(2, $dictionary->size());
     }
+
+    public function testExceptionThrownCreatingDictionaryWithBadValue()
+    {
+        $this->expectException(CollectionException::class);
+        $items = ['foo' => new \stdClass()];
+        new TypedDictionary(CrashTestDummy::class, $items);
+    }
 }

@@ -11,11 +11,14 @@ declare(strict_types=1);
 namespace Fusion\Collection;
 
 
+use Fusion\Collection\Contracts\DictionaryInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
 class TypedDictionary extends Dictionary
 {
-    public function __construct(string $fqcn, array $items)
+    private $acceptedType;
+
+    public function __construct(string $fqcn, array $items = [])
     {
         if ($fqcn == '')
         {
@@ -27,6 +30,18 @@ class TypedDictionary extends Dictionary
             throw new CollectionException($message);
         }
 
+        $this->acceptedType = $fqcn;
         parent::__construct($items);
+    }
+
+    public function add(string $key, $value): DictionaryInterface
+    {
+        if (($value instanceof $this->acceptedType) == false)
+        {
+            throw new CollectionException('This TypedDictionary instance only accepts objects of type: '. $this->acceptedType);
+        }
+
+        parent::add($key, $value);
+        return $this;
     }
 }

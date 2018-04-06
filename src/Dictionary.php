@@ -16,6 +16,14 @@ use Fusion\Collection\Exceptions\CollectionException;
 
 class Dictionary extends AbstractCollection implements DictionaryInterface
 {
+    public function __construct(array $items = [])
+    {
+        foreach ($items as $key => $value)
+        {
+            $this->add($key, $value);
+        }
+    }
+
     public function add(string $key, $value): DictionaryInterface
     {
         if ($value == null)
