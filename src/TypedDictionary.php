@@ -18,9 +18,9 @@ class TypedDictionary extends Dictionary
 {
     private $acceptedType;
 
-    public function __construct(string $fqcn, array $items = [])
+    public function __construct(string $acceptedType, array $items = [])
     {
-        if ($fqcn == '')
+        if ($acceptedType == '')
         {
             $message = sprintf(
                 '%s must be initialized with a full qualified class name of the instance type to accept',
@@ -30,7 +30,7 @@ class TypedDictionary extends Dictionary
             throw new CollectionException($message);
         }
 
-        $this->acceptedType = $fqcn;
+        $this->acceptedType = $acceptedType;
         parent::__construct($items);
     }
 

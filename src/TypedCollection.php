@@ -48,10 +48,10 @@ class TypedCollection extends Collection
     /**
      * {@inheritdoc}
      */
-    public function add($collectable): CollectionInterface
+    public function add($item): CollectionInterface
     {
-        $this->throwExceptionIfNotAcceptedType($collectable);
-        parent::add($collectable);
+        $this->throwExceptionIfNotAcceptedType($item);
+        parent::add($item);
         return $this;
     }
 
