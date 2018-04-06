@@ -36,12 +36,27 @@ class TypedDictionary extends Dictionary
 
     public function add(string $key, $value): DictionaryInterface
     {
-        if (($value instanceof $this->acceptedType) == false)
+        $this->throwExceptionIfNotAcceptedType($value);
+        parent::add($key, $value);
+        return $this;
+    }
+
+    private function throwExceptionIfNotAcceptedType($value): void
+    {
+        if ($this->notAcceptedType($value))
         {
             throw new CollectionException('This TypedDictionary instance only accepts objects of type: '. $this->acceptedType);
         }
+    }
 
-        parent::add($key, $value);
-        return $this;
+    private function notAcceptedType($value): bool
+    {
+        return ($value instanceof $this->acceptedType) == false || $value == null;
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        $this->throwExceptionIfNotAcceptedType($value);
+        parent::offsetSet($offset, $value);
     }
 }

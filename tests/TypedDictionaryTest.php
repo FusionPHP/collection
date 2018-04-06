@@ -40,4 +40,35 @@ class TypedDictionaryTest extends TestCase
         $items = ['foo' => new \stdClass()];
         new TypedDictionary(CrashTestDummy::class, $items);
     }
+
+    public function testExceptionThrownSendingNullValue()
+    {
+        $this->expectException(CollectionException::class);
+        $items = ['foo' => null];
+        new TypedDictionary(CrashTestDummy::class, $items);
+    }
+
+    public function testExceptionThrownSettingOffsetWithNullValue()
+    {
+        $this->expectException(CollectionException::class);
+        $dictionary = new TypedDictionary(CrashTestDummy::class);
+        $dictionary['foo'] = new \stdClass();
+    }
+
+    public function testSettingValueAtOffset()
+    {
+        $first = new CrashTestDummy();
+        $second = new CrashTestDummy();
+
+        $dictionary = new TypedDictionary(CrashTestDummy::class);
+        $dictionary['foo'] = $first;
+
+        $this->assertEquals(1, $dictionary->size());
+
+        $dictionary['foo'] = $second;
+
+        $this->assertEquals(1, $dictionary->size());
+        $this->assertSame($second, $dictionary->find('foo'));
+    }
+
 }
