@@ -121,6 +121,6 @@ class Collection extends AbstractCollection implements CollectionInterface
     private function checkIfOffsetIsAnIntegerAndExists($offset): void
     {
         $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        $this->throwExceptionIfOffsetDoesNotExist($offset);
+        parent::throwExceptionIfOffsetDoesNotExist($offset);
     }
 }

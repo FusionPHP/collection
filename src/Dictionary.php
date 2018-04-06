@@ -70,7 +70,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
     private function checkIfOffsetIsAStringAndExists($offset)
     {
         $this->throwExceptionIfOffsetIsNotAString($offset);
-        $this->throwExceptionIfOffsetDoesNotExist($offset);
+        parent::throwExceptionIfOffsetDoesNotExist($offset);
     }
 
     /**
