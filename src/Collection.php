@@ -121,15 +121,6 @@ class Collection extends AbstractCollection implements CollectionInterface
         return count($this->collection);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clear(): CollectionInterface
-    {
-        $this->collection = [];
-        return $this;
-    }
-
     private function throwExceptionIfOffsetIsNotAnInteger($offset): void
     {
         if (is_int($offset) === false)

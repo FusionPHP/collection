@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Fusion\Collection\Contracts;
 
 
-interface DictionaryInterface
+interface DictionaryInterface extends CollectionCoreInterface
 {
     public function add(string $key, $value): DictionaryInterface;
     public function replace(string $key, $value): DictionaryInterface;
@@ -45,6 +45,4 @@ interface DictionaryInterface
      *      non-clear string.
      */
     public function removeAt($key);
-
-    public function size(): int;
 }

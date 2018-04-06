@@ -14,7 +14,7 @@ namespace Fusion\Collection\Contracts;
 /**
  * Defines the interface of the basic functionality for a class that holds a collection of items.
  */
-interface CollectionInterface
+interface CollectionInterface extends CollectionCoreInterface
 {
     /**
      * Adds an item to the collection.
@@ -61,18 +61,4 @@ interface CollectionInterface
      * @throws \OutOfBoundsException If the given `$id` does not exist in the collection.
      */
     public function findAt($id);
-
-    /**
-     * Returns the number of items in the collection.
-     *
-     * @return int
-     */
-    public function size(): int;
-
-    /**
-     * Clears all items from the collection.
-     *
-     * @return \Fusion\Collection\Contracts\CollectionInterface
-     */
-    public function clear(): CollectionInterface;
 }

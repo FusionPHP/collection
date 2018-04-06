@@ -19,6 +19,11 @@ class AbstractCollection implements ArrayAccess, Iterator
     /** @var array */
     protected $collection = [];
 
+    public function clear(): void
+    {
+        $this->collection = [];
+    }
+
     /**
      * Whether a offset exists
      *
