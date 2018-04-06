@@ -80,15 +80,10 @@ class Collection extends AbstractCollection implements CollectionInterface
 
     private function throwExceptionIfIdDoesNotExist(int $id): void
     {
-        if ($this->idExists($id) === false)
+        if ($this->offsetExists($id) == false)
         {
             throw new CollectionException("The id '$id' doesn't exist in the collection.");
         }
-    }
-
-    private function idExists(int $id): bool
-    {
-        return array_key_exists($id, $this->collection);
     }
 
     private function has($collectable): int
@@ -177,7 +172,7 @@ class Collection extends AbstractCollection implements CollectionInterface
 
     private function throwExceptionIfOffsetDoesNotExist(int $offset)
     {
-        if ($this->idExists($offset) == false)
+        if ($this->offsetExists($offset) == false)
         {
             throw new CollectionException("Offset does not exist in the collection.");
         }
