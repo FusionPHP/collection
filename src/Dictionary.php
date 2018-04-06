@@ -26,81 +26,27 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
 
     public function add(string $key, $value): DictionaryInterface
     {
-        if ($value == null)
-        {
-            throw new CollectionException('Cannot add null values to the dictionary.');
-        }
-
-        $this->collection[$key] = $value;
+        $this->throwExceptionIfValueIsNull($value);
+        $this->offsetSet($key, $value);
         return $this;
     }
 
     public function replace(string $key, $value): DictionaryInterface
     {
         $this->throwExceptionIfValueIsNull($value);
-        $this->collection[$key] = $value;
+        $this->offsetSet($key, $value);
         return $this;
     }
 
     public function find(string $key)
     {
-        $this->throwExceptionIfOffsetDoesNotExist($key);
-        $value = null;
-
-        if ($this->offsetExists($key))
-        {
-            $value = $this->collection[$key];
-        }
-
-        return $value;
+        $this->throwExceptionIfIdDoesNotExist($key);
+        return $this->offsetGet($key);
     }
 
-    private function throwExceptionIfOffsetDoesNotExist(string $id): void
+    protected function throwExceptionIfIdDoesNotExist(string $id): void
     {
-        if ($this->offsetExists($id) == false)
-        {
-            throw new CollectionException("The id '$id' doesn't exist in the collection.");
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function remove($item)
-    {
-        $this->throwExceptionIfValueIsNull($item);
-        $result = false;
-
-        foreach ($this->collection as $key => $value)
-        {
-            if ($value === $item)
-            {
-                $result = $this->removeAt($key);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function removeAt($key)
-    {
-        $result = false;
-
-        if ($this->offsetExists($key))
-        {
-            unset($this->collection[$key]);
-            $result = true;
-        }
-
-        return $result;
-    }
-
-    public function size(): int
-    {
-        return count($this->collection);
+        parent::throwExceptionIfOffsetDoesNotExist($id);
     }
 
     /**

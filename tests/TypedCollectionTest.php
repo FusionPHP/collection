@@ -68,7 +68,7 @@ class TypedCollectionTest extends TestCase
 
         $qualifiedName = '\Fusion\Collection\Tests\CrashTestDummy';
         $collection = new TypedCollection($qualifiedName, [$instance]);
-        $this->assertInstanceOf($qualifiedName, $collection->findAt($index));
+        $this->assertInstanceOf($qualifiedName, $collection->find($index));
     }
 
     public function testFullyQualifiedNamesWithoutLeadingSlashWorks(): void
@@ -78,7 +78,7 @@ class TypedCollectionTest extends TestCase
 
         $qualifiedName = 'Fusion\Collection\Tests\CrashTestDummy';
         $collection = new TypedCollection($qualifiedName, [$instance]);
-        $this->assertInstanceOf($qualifiedName, $collection->findAt($index));
+        $this->assertInstanceOf($qualifiedName, $collection->find($index));
     }
 
     public function testTestSettingNewAcceptedTypeAtOffset(): void

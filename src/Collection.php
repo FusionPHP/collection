@@ -14,8 +14,6 @@ namespace Fusion\Collection;
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
 use Fusion\Collection\Exceptions\CollectionException;
-use OutOfBoundsException;
-use InvalidArgumentException;
 
 /**
  * A basic collection class.
@@ -45,80 +43,36 @@ class Collection extends AbstractCollection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function add($collectable): CollectionInterface
+    public function add($value): CollectionInterface
     {
-        $this->throwExceptionIfValueIsNull($collectable);
-        array_push($this->collection, $collectable);
+        $this->throwExceptionIfValueIsNull($value);
+        array_push($this->collection, $value);
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($collectable): bool
+    public function replace(int $key, $value): CollectionInterface
     {
-        $position = $this->has($collectable);
-
-        if ($position >= 0)
-        {
-            return $this->removeAt($position);
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAt(int $id): bool
-    {
-        $this->throwExceptionIfIdDoesNotExist($id);
-        array_splice($this->collection, $id, 1);
-
-        return true;
+        $this->offsetSet($key, $value);
+        return $this;
     }
 
     private function throwExceptionIfIdDoesNotExist(int $id): void
     {
-        if ($this->offsetExists($id) == false)
-        {
-            throw new CollectionException("The id '$id' doesn't exist in the collection.");
-        }
-    }
-
-    private function has($collectable): int
-    {
-        foreach ($this->collection as $key => $item)
-        {
-            if ($collectable === $item)
-            {
-                return $key;
-            }
-        }
-
-        return -1;
+        parent::throwExceptionIfOffsetDoesNotExist($id);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findAt($id)
+    public function find(int $key)
     {
-        $this->throwExceptionIfIdDoesNotExist($id);
-        return $this->collection[$id];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function size(): int
-    {
-        return count($this->collection);
+        $this->throwExceptionIfIdDoesNotExist($key);
+        return $this->offsetGet($key);
     }
 
     private function throwExceptionIfOffsetIsNotAnInteger($offset): void
     {
-        if (is_int($offset) === false)
+        if (is_int($offset) == false)
         {
             $message = sprintf(
                 'Collection offset type must be an integer. %s given.',
@@ -168,13 +122,5 @@ class Collection extends AbstractCollection implements CollectionInterface
     {
         $this->throwExceptionIfOffsetIsNotAnInteger($offset);
         $this->throwExceptionIfOffsetDoesNotExist($offset);
-    }
-
-    private function throwExceptionIfOffsetDoesNotExist(int $offset)
-    {
-        if ($this->offsetExists($offset) == false)
-        {
-            throw new CollectionException("Offset does not exist in the collection.");
-        }
     }
 }

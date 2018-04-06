@@ -22,4 +22,8 @@ interface CollectionCoreInterface
      * Clears all items from the collection.
      */
     public function clear(): void;
+
+    public function remove($item): void;
+
+    public function removeAt($key): void;
 }

@@ -44,7 +44,7 @@ class DictionaryTest extends TestCase
         $expected = 1;
         $this->assertEquals($expected, $this->dictionary->size());
 
-        $this->assertTrue($this->dictionary->remove('bar'));
+        $this->dictionary->remove('bar');
 
         $expected = 0;
         $this->assertEquals($expected, $this->dictionary->size());
@@ -65,12 +65,6 @@ class DictionaryTest extends TestCase
     {
         $this->expectException($this->collectionException);
         $this->dictionary->add('foo', null);
-    }
-
-    public function testExceptionThrownTryingToRemoveNullValue()
-    {
-        $this->expectException($this->collectionException);
-        $this->dictionary->remove(null);
     }
 
     public function testExceptionThrownWhenKeyDoesNotExist()

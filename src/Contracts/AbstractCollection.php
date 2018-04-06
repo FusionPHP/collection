@@ -24,6 +24,37 @@ class AbstractCollection implements ArrayAccess, Iterator
         $this->collection = [];
     }
 
+    public function size(): int
+    {
+        return count($this->collection);
+    }
+
+    public function remove($item): void
+    {
+        foreach ($this->collection as $key => $value)
+        {
+            if ($item === $value)
+            {
+                $this->removeAt($key);
+            }
+        }
+    }
+
+    public function removeAt($key): void
+    {
+        if ($this->offsetExists($key))
+        {
+            if (is_int($key))
+            {
+                array_splice($this->collection, $key, 1);
+            }
+            else if (is_string($key))
+            {
+                unset($this->collection[$key]);
+            }
+        }
+    }
+
     /**
      * Whether a offset exists
      *
@@ -107,6 +138,14 @@ class AbstractCollection implements ArrayAccess, Iterator
         if ($value === null)
         {
             throw new CollectionException('Collection operations will not accept null values.');
+        }
+    }
+
+    protected function throwExceptionIfOffsetDoesNotExist($offset): void
+    {
+        if ($this->offsetExists($offset) == false)
+        {
+            throw new CollectionException("The key $offset does not exist in the collection.");
         }
     }
 
