@@ -12,9 +12,10 @@ namespace Fusion\Collection\Contracts;
 
 use Fusion\Collection\Exceptions\CollectionException;
 use ArrayAccess;
+use Countable;
 use Iterator;
 
-class AbstractCollection implements ArrayAccess, Iterator
+class AbstractCollection implements ArrayAccess, Countable, Iterator
 {
     /** @var array */
     protected $collection = [];
@@ -26,7 +27,7 @@ class AbstractCollection implements ArrayAccess, Iterator
 
     public function size(): int
     {
-        return count($this->collection);
+        return $this->count();
     }
 
     public function remove($item): void
@@ -209,5 +210,20 @@ class AbstractCollection implements ArrayAccess, Iterator
     public function rewind(): void
     {
         reset($this->collection);
+    }
+
+    /**
+     * Count elements of an object
+     *
+     * @link http://php.net/manual/en/countable.count.php
+     * @return int The custom count as an integer.
+     * </p>
+     * <p>
+     * The return value is cast to an integer.
+     * @since 5.1.0
+     */
+    public function count(): int
+    {
+        return count($this->collection);
     }
 }

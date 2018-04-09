@@ -76,6 +76,11 @@ class CollectionTest extends TestCase
         $this->assertEquals($expected, $this->collection->size());
     }
 
+    public function testCollectionSizeWithCountable()
+    {
+        $this->assertEquals(3, count($this->collection));
+    }
+
     public function testReplaceItem()
     {
         $expected = 'quam';

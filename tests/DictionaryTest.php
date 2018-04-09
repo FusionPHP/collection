@@ -37,6 +37,12 @@ class DictionaryTest extends TestCase
         $this->assertEquals($expected, $this->dictionary->size());
     }
 
+    public function testCountingDictionaryWithCountable()
+    {
+        $this->dictionary->add('foo', 'bar');
+        $this->assertEquals(1, count($this->dictionary));
+    }
+
     public function testRemovingItemFromDictionary()
     {
         $this->dictionary->add('foo', 'bar');
@@ -59,6 +65,16 @@ class DictionaryTest extends TestCase
         $expectedValue = 'quam';
         $this->assertEquals($expectedValue, $this->dictionary->find('foo'));
         $this->assertEquals($expectedSize, $this->dictionary->size());
+    }
+
+    public function testReplacingExisitingItemViaOffset()
+    {
+        $this->dictionary->add('foo', 'bar');
+        $expectedValue = 'baz';
+
+        $this->dictionary['foo'] = 'baz';
+
+        $this->assertEquals($expectedValue, $this->dictionary['foo']);
     }
 
     public function testExceptionThrownAddingNullItem()

@@ -26,16 +26,13 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
 
     public function add(string $key, $value): DictionaryInterface
     {
-        $this->throwExceptionIfValueIsNull($value);
         $this->offsetSet($key, $value);
         return $this;
     }
 
     public function replace(string $key, $value): DictionaryInterface
     {
-        $this->throwExceptionIfValueIsNull($value);
-        $this->offsetSet($key, $value);
-        return $this;
+        return $this->add($key, $value);
     }
 
     public function find(string $key)
