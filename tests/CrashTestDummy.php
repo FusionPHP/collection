@@ -1,10 +1,13 @@
 <?php
+
 /**
- * Crash test dummy, for use in the test cases
+ * Part of the Fusion.Collection package test suite.
+ *
+ * @author Jason L. Walker
+ * @license MIT
  */
 
 namespace Fusion\Collection\Tests;
-
 
 class CrashTestDummy
 {

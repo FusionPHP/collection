@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Part of the Fusion.Collection test suite.
+ * Part of the Fusion.Collection package test suite.
  *
  * @author Jason L. Walker
  * @license MIT
  */
-
-declare(strict_types=1);
 
 namespace Fusion\Collection\Tests;
 
