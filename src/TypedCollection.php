@@ -68,8 +68,7 @@ class TypedCollection extends Collection
     public function add($value): CollectionInterface
     {
         $this->throwExceptionIfNotAcceptedType($value);
-        parent::add($value);
-        return $this;
+        return parent::add($value);
     }
 
     /**

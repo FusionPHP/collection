@@ -77,8 +77,7 @@ class TypedDictionary extends Dictionary
     public function add(string $key, $value): DictionaryInterface
     {
         $this->throwExceptionIfNotAcceptedType($value);
-        parent::add($key, $value);
-        return $this;
+        return parent::add($key, $value);
     }
 
     /** {@inheritdoc} */
