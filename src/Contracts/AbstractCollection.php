@@ -1,9 +1,10 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jwalker
- * Date: 3/27/2018
- * Time: 1:26 PM
+ * Part of the Fusion.Collection package.
+ *
+ * @author Jason L. Walker
+ * @license MIT
  */
 
 declare(strict_types=1);

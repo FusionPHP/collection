@@ -1,15 +1,15 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jwalker
- * Date: 4/5/2018
- * Time: 9:24 AM
+ * Part of the Fusion.Collection package.
+ *
+ * @author Jason L. Walker
+ * @license MIT
  */
 
 declare(strict_types=1);
 
 namespace Fusion\Collection;
-
 
 use Fusion\Collection\Contracts\DictionaryInterface;
 use Fusion\Collection\Exceptions\CollectionException;

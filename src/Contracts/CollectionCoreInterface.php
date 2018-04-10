@@ -1,13 +1,15 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jwalker
- * Date: 4/6/2018
- * Time: 11:36 AM
+ * Part of the Fusion.Collection package.
+ *
+ * @author Jason L. Walker
+ * @license MIT
  */
 
-namespace Fusion\Collection\Contracts;
+declare(strict_types=1);
 
+namespace Fusion\Collection\Contracts;
 
 interface CollectionCoreInterface
 {

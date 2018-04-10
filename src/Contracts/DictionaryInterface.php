@@ -1,15 +1,15 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jwalker
- * Date: 4/22/2016
- * Time: 9:23 AM
+ * Part of the Fusion.Collection package.
+ *
+ * @author Jason L. Walker
+ * @license MIT
  */
 
 declare(strict_types=1);
 
 namespace Fusion\Collection\Contracts;
-
 
 interface DictionaryInterface extends CollectionCoreInterface
 {
