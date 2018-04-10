@@ -20,7 +20,7 @@ The library provides two different types of a collection. A basic object, simply
 and a `Dictionary`.  There are two variants of these called `TypedCollection` and `TypedDictionary`
 which are meant for storing instances of specific object types.
 
-###The `Collection` Class
+###The Collection Class
 
 The `Collection` object will hold any value that a PHP array can hold, with the exception of `null` 
 values.
@@ -116,7 +116,7 @@ Feel free to remove items in this way via an `unset()` call with a value's index
 
     unset($collection[3]); //same as calling $collection->removeAt(3);
     
-###The `Dictionary` Class
+###The Dictionary Class
 
 A `Dictionary` is very similar to a `Collection` with the main difference being that a `Dictionary`
 only accepts index values (called keys from here on) as strings. A `Dictionary` will hold any value 
@@ -145,11 +145,11 @@ as with the `Collection` class, this can also be obtained using the `count()` me
 
     $size = count($dictionary); //same as $count = $dictionary->size();
     
-Values can be added to the dictionary with the `add()` method specifying the key to store them under.
+Items can be added to the dictionary with the `add()` method specifying the key to store them under.
 
     $dictionary->add('foo', 'bar');
     
-Values can be replaced at a given key as well.
+Items can be replaced at a given key as well.
 
     $dictionary->replace('foo', 'bam');
     
@@ -164,13 +164,13 @@ and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing 
 
     $dictionary = new Dictionary(['foo1' => 'bar', 'foo2' => 'bam'];
     
-    //Iteration
     for ($i = 1; $i <= count($dictionary); $i++)
     {
         // ... do something with $dictionary['foo' . $i];
     }
     
-    //Traversal
+    // ... or ...
+    
     foreach ($dictionary as $key => $value)
     {
         // ... do something with $key and/or $value
@@ -183,20 +183,16 @@ The values in a `Dictionary` can also be accessed directly via their key offset.
 
 Removing an item directly can be done with `unset()`.
 
-```php
-unset($dictionary['foo']); // same as calling $dictionary->removeAt('foo');
-```
-    
+    unset($dictionary['foo']); // same as calling $dictionary->removeAt('foo');
+
+
 Values can also be replaced directly at their offset and in addition new items can be added directly
 at their offset.
 
-```php
-$dictionary['foo'] = 'bar'; 
-// same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
-```
-    
-    
-###The `TypedCollection` and `TypedDictionary` Classes
+    $dictionary['foo'] = 'bar'; 
+    // same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
+          
+###The TypedCollection and TypedDictionary Classes
 
 In certain cases it may be desired to have a collection or dictionary that stores only object
 references of a specific type. In these cases a `TypedCollection` or `TypedDictionary` may be used.
@@ -205,57 +201,73 @@ Both classes are children of the `Collection` and `Dictionary` classes, respecti
 constructed with an optional set of starter items. However, the only required parameter during
 instantiation is the *fully qualified name* of the class or interface that is acceptable.
 
-```php
-<?php
-
-use Fusion\Collection\TypedCollection;
-
-class Apple { /* ... */ }
-
-$apples = new TypedCollection(Apple::class);
-
-//Only instances of Apple are allowed
-$apples->add(new Apple())
-       ->add(new Apple())
-       ->add(new Apple());
-
-var_dump(count($apples)); //int (3)
-
-// ... or ...
-
-$setOfApples = [new Apple(), new Apple(), new Apple()];
-$apples = new TypedCollection(Apple::class, $setOfApples);
-var_dump(count($apples)); //int (3)
-```
+    <?php
     
+    use Fusion\Collection\TypedCollection;
+    
+    class Apple { /* ... */ }
+    
+    $apples = new TypedCollection(Apple::class);
+    
+    //Only instances of Apple are allowed
+    $apples->add(new Apple())
+           ->add(new Apple())
+           ->add(new Apple());
+    
+    var_dump(count($apples)); //int (3)
+    
+    // ... or ...
+    
+    $setOfApples = [new Apple(), new Apple(), new Apple()];
+    $apples = new TypedCollection(Apple::class, $setOfApples);
+    var_dump(count($apples)); //int (3)
+        
 The `TypedDictionary` variant is similar, however string keys are required.
 
-```php
-<?php
+    <?php
+        
+    namespace App;
+        
+    use Fusion\Collection\TypedDictionary;
     
-namespace App;
+    interface AppleInterface { /* ... */ }
     
-use Fusion\Collection\TypedDictionary;
+    class RedDelicious implements AppleInterface { /* ... */ }
+    class GrannySmith implements AppleInterface { /* ... */ }
+    class Gala implements AppleInterface { /* ... */ }
+    
+    $appleBasket = new TypedDictionary(AppleInterface::class);
+    
+    $appleBasket->add('redDelicious', new RedDelicious())
+                ->add('grannySmith', new GrannySmith())
+                ->add('gala', new Gala());
 
-interface AppleInterface { /* ... */ }
-
-class RedDelicious implements AppleInterface { /* ... */ }
-class GrannySmith implements AppleInterface { /* ... */ }
-class Gala implements AppleInterface { /* ... */ }
-
-$appleBasket = new TypedDictionary(AppleInterface::class);
-
-$appleBasket->add('redDelicious', new RedDelicious())
-            ->add('grannySmith', new GrannySmith())
-            ->add('gala', new Gala());
-```
-
-As with the standard `Collection` and `Dictionary` classes, null values are not allowed.
+As with the standard `Collection` and `Dictionary` classes, `null` values are not allowed.
 
 ###Exception Cases
 
 The library defines the exception `CollectionException`, which is thrown in the following cases:
 
+####`Collection`
+- Adding a `null` value.
+- Replacing an existing value with `null`.
+- Using `find()` with an index that is not in the collection.
+- Accessing an index directly that does not exist.
+- Accessing an index that is not an integer.
 
+####`TypedCollection`
+- Same conditions as `Collection` apply.
+- Adding an instance to the collection that does not match the accepted type.
+
+####`Dictionary`
+- Adding a `null` value.
+- Replacing an existing value with `null`.
+- Using `find()` with a key that is not in the collection.
+- Accessing a key directly that does not exist.
+- Accessing a key that is not a string.
+
+####`TypedDictionary`
+- Same conditions as `Dictionary` apply.
+- Adding an instance to the dictionary that does not match the accepted type.
     
     

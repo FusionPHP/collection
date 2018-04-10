@@ -295,6 +295,12 @@ class CollectionTest extends TestCase
         $this->collection->add(null);
     }
 
+    public function testExceptionThrownReplacingItemWithNull()
+    {
+        $this->expectException(CollectionException::class);
+        $this->collection->replace(0, null);
+    }
+
     public function testExceptionThrownSettingNullItemAtOffset()
     {
         $this->expectException(CollectionException::class);
