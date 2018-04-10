@@ -1,6 +1,9 @@
 {
     "name" : "fusion/collection",
     "description": "A small collection library for PHP 7.1+",
+    "type": "library",
+    "keywords": ["collection"],
+    "homepage": "https://github.com/FusionPHP/collection",
     "authors":
     {
         "name": "Jason L. Walker"
