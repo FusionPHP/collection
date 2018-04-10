@@ -3,7 +3,6 @@
 /**
  * Part of the Fusion.Collection package.
  *
- * @author Jason L. Walker
  * @license MIT
  */
 
@@ -15,24 +14,33 @@ use Fusion\Collection\Contracts\CollectionInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
 /**
- * A type-specific collection class.
+ * An implementation of a type-specific collection.
  *
- * This collection class requires a fully qualified class or interface name is given upon
- * initialization. Operations to add an item to the collection will verify that the item being added
- * is of the allowed type or will trigger an exception to be thrown.
+ * A type-specific collection holds values internally with a numeric index. Upon construction the
+ * consumer of this class must specify the fully qualified name of a class or interface that this
+ * collection will accept.  This collection will only hold values that have this type or a
+ * `CollectionException` will be thrown.
+ *
+ * Type-specific collections are traversable and can be looped or accessed directly using array
+ * index notation.
+ *
+ * @since 1.0.0
  */
 class TypedCollection extends Collection
 {
     private $acceptedType;
 
     /**
-     * Constructor.
+     * Creates a type-specific collection that will allow instances of the `acceptedType`.
      *
-     * Creates a collection that will enforce items added be an instance of the `$acceptedType`.
-     * Optionally, an array of starter items of the `$acceptedType` can also be provided.
+     * Optionally, an array of starter items of the `acceptedType` can also be provided. The
+     * constructor will throw a `CollectionException` if an empty string is provided for
+     * `acceptedType` or if any of the starter items are not an instance of the `acceptedType`.
      *
      * @param string $acceptedType The fully qualified name of instances the collection will accept.
      * @param array $items A set of items to populate the collection with.
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function __construct(string $acceptedType, array $items = [])
     {
@@ -46,17 +54,39 @@ class TypedCollection extends Collection
     }
 
     /**
-     * {@inheritdoc}
+     * Adds a value to the collection.
+     *
+     * This method will throw a `CollectionException` if the value is not an instance of the
+     * `acceptedType`.
+     *
+     * @param mixed $value
+     *
+     * @return \Fusion\Collection\Contracts\CollectionInterface
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function add($item): CollectionInterface
+    public function add($value): CollectionInterface
     {
-        $this->throwExceptionIfNotAcceptedType($item);
-        parent::add($item);
+        $this->throwExceptionIfNotAcceptedType($value);
+        parent::add($value);
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Sets a value at the given offset.
+     *
+     * This method will throw a `CollectionException` if the value is not an instance of the
+     * accepted type, if the offset does not exist, or if the offset is not an integer.
+     *
+     * @see \Fusion\Collection\Collection::offsetSet()
+     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function offsetSet($offset, $value): void
     {
@@ -80,6 +110,6 @@ class TypedCollection extends Collection
 
     private function notAcceptedType($value)
     {
-        return ($value instanceof $this->acceptedType) === false || is_null($value);
+        return ($value instanceof $this->acceptedType) === false;
     }
 }

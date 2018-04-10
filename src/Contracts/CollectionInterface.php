@@ -3,7 +3,6 @@
 /**
  * Part of the Fusion.Collection package.
  *
- * @author Jason L. Walker
  * @license MIT
  */
 
@@ -17,27 +16,44 @@ namespace Fusion\Collection\Contracts;
 interface CollectionInterface extends CollectionCoreInterface
 {
     /**
-     * Adds an item to the collection.
+     * Adds a value to the collection.
      *
-     * @param mixed $collectable
+     * This method will throw a `CollectionException` if the value is `null`.
+     *
+     * @param mixed $value
      *
      * @return \Fusion\Collection\Contracts\CollectionInterface
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function add($value): CollectionInterface;
 
+    /**
+     * Replaces a value in the collection at the given key.
+     *
+     * This method will throw a `CollectionException` if the value give is `null` or if the key
+     * given does not exist in the collection.
+     *
+     * @param int $key
+     * @param mixed $value
+     *
+     * @return \Fusion\Collection\Contracts\CollectionInterface
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
+     */
     public function replace(int $key, $value): CollectionInterface;
 
     /**
-     * Retrieves an item from the collection at the specified index.
+     * Retrieves an item from the collection at the specified key.
      *
-     * Looks in the collection at the specified index, if it exists, and returns the item.  Throws
-     * an `OutOfBoundsException` if the index doesn't exist.
+     * This method will throw a `CollectionException` if the key given does not exist in the
+     * collection.
      *
      * @param int $key
      *
      * @return mixed
      *
-     * @throws \OutOfBoundsException If the given `$id` does not exist in the collection.
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function find(int $key);
 }

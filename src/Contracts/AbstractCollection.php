@@ -3,7 +3,6 @@
 /**
  * Part of the Fusion.Collection package.
  *
- * @author Jason L. Walker
  * @license MIT
  */
 
@@ -16,21 +15,33 @@ use ArrayAccess;
 use Countable;
 use Iterator;
 
-class AbstractCollection implements ArrayAccess, Countable, Iterator
+/**
+ * Implements core functionality for collections.
+ *
+ * @since 1.0.0
+ */
+abstract class AbstractCollection implements CollectionCoreInterface, ArrayAccess, Countable, Iterator
 {
-    /** @var array */
+    /**
+     * The internal collection container.
+     *
+     * @var array
+     */
     protected $collection = [];
 
-    public function clear(): void
-    {
-        $this->collection = [];
-    }
-
+    /** {@inheritdoc} */
     public function size(): int
     {
         return $this->count();
     }
 
+    /** {@inheritdoc} */
+    public function clear(): void
+    {
+        $this->collection = [];
+    }
+
+    /** {@inheritdoc} */
     public function remove($item): void
     {
         foreach ($this->collection as $key => $value)
@@ -42,6 +53,7 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
         }
     }
 
+    /** {@inheritdoc} */
     public function removeAt($key): void
     {
         if ($this->offsetExists($key))
@@ -58,19 +70,13 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Whether a offset exists
+     * Checks if an offset exists in the collection.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php
      *
-     * @param mixed $offset <p>
-     * An offset to check for.
-     * </p>
+     * @param mixed $offset
      *
-     * @return boolean true on success or false on failure.
-     * </p>
-     * <p>
-     * The return value will be casted to boolean if non-boolean was returned.
-     * @since 5.0.0
+     * @return bool
      */
     public function offsetExists($offset)
     {
@@ -78,16 +84,13 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Offset to retrieve
+     * Retrieves a value at the given offset.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetget.php
      *
-     * @param mixed $offset <p>
-     * The offset to retrieve.
-     * </p>
+     * @param mixed $offset
      *
-     * @return mixed Can return all value types.
-     * @since 5.0.0
+     * @return mixed
      */
     public function offsetGet($offset)
     {
@@ -95,19 +98,18 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Offset to set
+     * Sets a value at the given offset.
+     *
+     * This method will throw a `CollectionException` if the offset does not exist.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      *
-     * @param mixed $offset <p>
-     * The offset to assign the value to.
-     * </p>
-     * @param mixed $value <p>
-     * The value to set.
-     * </p>
+     * @param mixed $offset
+     * @param mixed $value
      *
      * @return void
-     * @since 5.0.0
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function offsetSet($offset, $value): void
     {
@@ -116,16 +118,13 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Offset to unset
+     * Removes a value at the given offset.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
      *
-     * @param mixed $offset <p>
-     * The offset to unset.
-     * </p>
+     * @param mixed $offset
      *
      * @return void
-     * @since 5.0.0
      */
     public function offsetUnset($offset): void
     {
@@ -135,6 +134,15 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
         }
     }
 
+    /**
+     * Checks if a given value is `null` and throws an exception if so.
+     *
+     * @param mixed $value
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
+     *
+     * @return void
+     */
     protected function throwExceptionIfValueIsNull($value): void
     {
         if ($value === null)
@@ -143,22 +151,31 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
         }
     }
 
+    /**
+     * Checks if a given offset exists in the collection and throws and exception if it does not.
+     *
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetExists()
+     *
+     * @param mixed $offset
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
+     *
+     * @return void
+     */
     protected function throwExceptionIfOffsetDoesNotExist($offset): void
     {
-        if ($this->offsetExists($offset) == false)
+        if ($this->offsetExists($offset) === false)
         {
-            throw new CollectionException("The key $offset does not exist in the collection.");
+            throw new CollectionException("The key '$offset' does not exist in the collection.");
         }
     }
 
     /**
-     * Returns the current element.
+     * Returns the current element in the collection.
      *
      * @link http://php.net/manual/en/iterator.current.php
      *
      * @return mixed
-     *
-     * @throws \RuntimeException When the collection is empty.
      */
     public function current()
     {
@@ -166,11 +183,11 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Move forward to the next element.
+     * Move forward to the next element in the collection.
      *
      * @link http://php.net/manual/en/iterator.next.php
      *
-     * @throws \RuntimeException When the collection is empty
+     * @return void
      */
     public function next(): void
     {
@@ -178,13 +195,11 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Return the key of the current element.
+     * Return the key of the current element in the collection.
      *
      * @link http://php.net/manual/en/iterator.key.php
      *
      * @return mixed
-     *
-     * @throws \RuntimeException When the collection is empty.
      */
     public function key()
     {
@@ -192,7 +207,7 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Checks if the current position is valid.
+     * Checks if the current element position is valid.
      *
      * @link http://php.net/manual/en/iterator.valid.php
      *
@@ -207,6 +222,8 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
      * Rewind the collection's position to the first index.
      *
      * @link http://php.net/manual/en/iterator.rewind.php
+     *
+     * @return void
      */
     public function rewind(): void
     {
@@ -214,14 +231,11 @@ class AbstractCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Count elements of an object
+     * Returns of count of the elements in a collection.
      *
      * @link http://php.net/manual/en/countable.count.php
-     * @return int The custom count as an integer.
-     * </p>
-     * <p>
-     * The return value is cast to an integer.
-     * @since 5.1.0
+     *
+     * @return int
      */
     public function count(): int
     {

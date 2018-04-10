@@ -3,7 +3,6 @@
 /**
  * Part of the Fusion.Collection package.
  *
- * @author Jason L. Walker
  * @license MIT
  */
 
@@ -13,4 +12,7 @@ namespace Fusion\Collection\Exceptions;
 
 use Exception;
 
+/**
+ * Exception class used to specify collections thrown directly by the Fusion.Collection package.
+ */
 class CollectionException extends Exception { }

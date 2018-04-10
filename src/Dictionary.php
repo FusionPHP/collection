@@ -3,7 +3,6 @@
 /**
  * Part of the Fusion.Collection package.
  *
- * @author Jason L. Walker
  * @license MIT
  */
 
@@ -15,8 +14,31 @@ use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\DictionaryInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
+/**
+ * An implementation of a dictionary collection.
+ *
+ * A dictionary holds values in a key/value pair with the keys consisting of strings and the values
+ * consisting of any value that can be stored in a PHP array that isn't `null`.
+ *
+ * Dictionaries are traversable and can be looped or accessed directly using array index notation.
+ *
+ * @since 1.0.0
+ */
 class Dictionary extends AbstractCollection implements DictionaryInterface
 {
+    /**
+     * Creates a new `Dictionary` instance with an optional set of starter items.
+     *
+     * The initial items must be an associative array with string keys and values that are not
+     * `null`.
+     *
+     * This constructor with throw a `CollectionException` if any of the starter items contain a
+     * `null` value.
+     *
+     * @param array $items
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
+     */
     public function __construct(array $items = [])
     {
         foreach ($items as $key => $value)
@@ -25,66 +47,67 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
         }
     }
 
+    /** {@inheritdoc} */
     public function add(string $key, $value): DictionaryInterface
     {
         $this->offsetSet($key, $value);
         return $this;
     }
 
+    /** {@inheritdoc} */
     public function replace(string $key, $value): DictionaryInterface
     {
         return $this->add($key, $value);
     }
 
+    /** {@inheritdoc} */
     public function find(string $key)
     {
         $this->throwExceptionIfIdDoesNotExist($key);
         return $this->offsetGet($key);
     }
 
+    /** {@inheritdoc} */
     protected function throwExceptionIfIdDoesNotExist(string $id): void
     {
         parent::throwExceptionIfOffsetDoesNotExist($id);
     }
 
     /**
-     * Offset to retrieve
+     * Retrieves a value at the given offset.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     * This method will throw a `CollectionException` if the given offset is not a string or if the
+     * given offset does not exist in the collection.
      *
-     * @param mixed $offset <p>
-     * The offset to retrieve.
-     * </p>
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
      *
-     * @return mixed Can return all value types.
-     * @since 5.0.0
+     * @param mixed $offset
+     *
+     * @return mixed
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function offsetGet($offset)
     {
-        $this->checkIfOffsetIsAStringAndExists($offset);
+        $this->throwExceptionIfOffsetIsNotAString($offset);
+        parent::throwExceptionIfOffsetDoesNotExist($offset);
         return parent::offsetGet($offset);
     }
 
-    private function checkIfOffsetIsAStringAndExists($offset)
-    {
-        $this->throwExceptionIfOffsetIsNotAString($offset);
-        parent::throwExceptionIfOffsetDoesNotExist($offset);
-    }
-
     /**
-     * Offset to set
+     * Sets a value at the given offset.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     * This method will throw a `CollectionException` if the offset is not a string or if the value
+     * is `null`.
      *
-     * @param mixed $offset <p>
-     * The offset to assign the value to.
-     * </p>
-     * @param mixed $value <p>
-     * The value to set.
-     * </p>
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
+     *
+     * @param mixed $offset
+     * @param mixed $value
      *
      * @return void
-     * @since 5.0.0
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function offsetSet($offset, $value): void
     {

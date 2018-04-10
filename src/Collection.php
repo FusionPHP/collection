@@ -3,7 +3,6 @@
 /**
  * Part of the Fusion.Collection package.
  *
- * @author Jason L. Walker
  * @license MIT
  */
 
@@ -16,12 +15,13 @@ use Fusion\Collection\Contracts\CollectionInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
 /**
- * A basic collection class.
+ * An implementation of a collection.
  *
- * This collection class is capable of aggregating any value that can be stored in a PHP array.
- * Items in the collection may be accessed by using the appropriate methods or by treating the
- * instance as an array and accessing the items via an index number. The collection is also
- * traversable and may be used in `foreach` loops.
+ * A collection holds values internally with a numeric index. The values can consist of any value
+ * that can be stored in a PHP array that isn't `null`. The internal index grows and shrink with
+ * the collection as items are removed or added.
+ *
+ * Collections are traversable and can be looped or accessed directly using array index notation.
  *
  * @since 1.0.0
  */
@@ -30,7 +30,11 @@ class Collection extends AbstractCollection implements CollectionInterface
     /**
      * Instantiates a collection object with an optional array of starter items.
      *
+     * If the starting items contain any `null` values, an exception will be thrown.
+     *
      * @param array $items
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function __construct(array $items = [])
     {
@@ -40,9 +44,7 @@ class Collection extends AbstractCollection implements CollectionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** {@inheritdoc} */
     public function add($value): CollectionInterface
     {
         $this->throwExceptionIfValueIsNull($value);
@@ -50,6 +52,7 @@ class Collection extends AbstractCollection implements CollectionInterface
         return $this;
     }
 
+    /** {@inheritdoc} */
     public function replace(int $key, $value): CollectionInterface
     {
         $this->offsetSet($key, $value);
@@ -61,9 +64,7 @@ class Collection extends AbstractCollection implements CollectionInterface
         parent::throwExceptionIfOffsetDoesNotExist($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** {@inheritdoc} */
     public function find(int $key)
     {
         $this->throwExceptionIfIdDoesNotExist($key);
@@ -84,43 +85,47 @@ class Collection extends AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Retrieves an item at the given offset in the collection.
+     * Retrieves a value at the given offset.
      *
+     * This method will throw a `CollectionException` if the offset is not an integer or if the
+     * offset does not exist.
+     *
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
      * @link http://php.net/manual/en/arrayaccess.offsetget.php
      *
-     * @param int $offset The index to retrieve from.
+     * @param mixed $offset
      *
      * @return mixed
      *
-     * @throws \InvalidArgumentException When `$offset` is not an integer.
-     * @throws \OutOfBoundsException When the `$offset` doesn't exist or if the collection is empty.
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function offsetGet($offset)
     {
-        $this->checkIfOffsetIsAnIntegerAndExists($offset);
+        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
+        parent::throwExceptionIfOffsetDoesNotExist($offset);
         return parent::offsetGet($offset);
     }
 
     /**
-     * Sets a new value in the collection at the given `$offset`.
+     * Sets a value at the given offset.
      *
+     * This method will throw a `CollectionException` if the offset does not exist or if the offset
+     * is not an integer.
+     *
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      *
-     * @param mixed $offset The offset location in the collection.
-     * @param mixed $value The value to set.
+     * @param mixed $offset
+     * @param mixed $value
      *
-     * @throws \InvalidArgumentException When `$offset` is not an integer.
-     * @throws \OutOfBoundsException If the collection is empty.
+     * @return void
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
      */
     public function offsetSet($offset, $value): void
     {
-        $this->checkIfOffsetIsAnIntegerAndExists($offset);
-        parent::offsetSet($offset, $value);
-    }
-
-    private function checkIfOffsetIsAnIntegerAndExists($offset): void
-    {
         $this->throwExceptionIfOffsetIsNotAnInteger($offset);
         parent::throwExceptionIfOffsetDoesNotExist($offset);
+        parent::offsetSet($offset, $value);
     }
 }
