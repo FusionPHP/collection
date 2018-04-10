@@ -81,6 +81,12 @@ class TypedDictionary extends Dictionary
         return $this;
     }
 
+    /** {@inheritdoc} */
+    public function replace(string $key, $value): DictionaryInterface
+    {
+        return $this->add($key, $value);
+    }
+
     private function throwExceptionIfNotAcceptedType($object): void
     {
         if ($this->notAcceptedType($object))

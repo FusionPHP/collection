@@ -99,4 +99,31 @@ class TypedCollectionTest extends TestCase
         $this->expectException(CollectionException::class);
         new TypedCollection('');
     }
+
+    public function testExceptionThrownReplacingItemAtOffsetWithNull()
+    {
+        $this->expectException(CollectionException::class);
+        $collection = new TypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
+        $collection->replace(0, null);
+    }
+
+    public function testExceptionThrownReplacingItemAtOffsetWithIncorrectType()
+    {
+        $this->expectException(CollectionException::class);
+        $collection = new TypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
+        $collection->replace(0, new \stdClass());
+    }
+
+    public function testReplacingInstance()
+    {
+        $thisDummy = new CrashTestDummy();
+        $thatDummy = new CrashTestDummy();
+        $targetOffset = 0;
+
+        $collection = new TypedCollection(CrashTestDummy::class, [$thisDummy]);
+        $this->assertSame($thisDummy, $collection->find($targetOffset));
+
+        $collection->replace($targetOffset, $thatDummy);
+        $this->assertSame($thatDummy, $collection->find($targetOffset));
+    }
 }

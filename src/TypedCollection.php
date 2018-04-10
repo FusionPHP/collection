@@ -73,6 +73,25 @@ class TypedCollection extends Collection
     }
 
     /**
+     * Replaces a value in the collection at the given key.
+     *
+     * This method will throw a `CollectionException` if the value give is not an instance of the
+     * `acceptedType`.
+     *
+     * @param int $key
+     * @param mixed $value
+     *
+     * @return \Fusion\Collection\Contracts\CollectionInterface
+     *
+     * @throws \Fusion\Collection\Exceptions\CollectionException
+     */
+    public function replace(int $key, $value): CollectionInterface
+    {
+        $this->throwExceptionIfNotAcceptedType($value);
+        return parent::replace($key, $value);
+    }
+
+    /**
      * Sets a value at the given offset.
      *
      * This method will throw a `CollectionException` if the value is not an instance of the

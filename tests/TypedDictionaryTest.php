@@ -49,6 +49,20 @@ class TypedDictionaryTest extends TestCase
         new TypedDictionary(CrashTestDummy::class, $items);
     }
 
+    public function testExceptionThrownReplacingValueWithNull()
+    {
+        $this->expectException(CollectionException::class);
+        $dictionary = new TypedDictionary(CrashTestDummy::class, ['crash' => new CrashTestDummy()]);
+        $dictionary->replace('crash', null);
+    }
+
+    public function testExceptionThrownReplacingValueWithIncorrectType()
+    {
+        $this->expectException(CollectionException::class);
+        $dictionary = new TypedDictionary(CrashTestDummy::class, ['crash' => new CrashTestDummy()]);
+        $dictionary->replace('crash', new \stdClass());
+    }
+
     public function testExceptionThrownSettingOffsetWithNullValue()
     {
         $this->expectException(CollectionException::class);
