@@ -1,5 +1,10 @@
 {
-    "name" : "crackertastic/fusion.collection",
+    "name" : "fusion/collection",
+    "description": "A small collection library for PHP 7.1+",
+    "authors":
+    {
+        "name": "Jason L. Walker"
+    },
     "license": "MIT",
     "require":
     {
