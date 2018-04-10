@@ -1,12 +1,12 @@
-#Fusion.Collection
+# Fusion.Collection
 
 This package provides a small collection library useful for aggregating data values in an object.
 Stored values can be accessed via methods, loops, or as an array.
 
-##Requirements
+## Requirements
 PHP 7.1 or greater.
 
-##Installation
+## Installation
 
 This package is installed via Composer.  Add the following to your `composer.json` file.
 
@@ -14,13 +14,13 @@ This package is installed via Composer.  Add the following to your `composer.jso
         "fusion/collection": "1.*"
     }
 
-##Usage
+## Usage
 
 The library provides two different types of a collection. A basic object, simply `Collection`, 
 and a `Dictionary`.  There are two variants of these called `TypedCollection` and `TypedDictionary`
 which are meant for storing instances of specific object types.
 
-###The Collection Class
+### The Collection Class
 
 The `Collection` object will hold any value that a PHP array can hold, with the exception of `null` 
 values.
@@ -85,7 +85,7 @@ To empty out a collection simply call the `clear()` method.
     $collection->clear();
     var_dump($collection->size()); //int (0)
 
-####Iteration and Direct Access
+#### Iteration and Direct Access
 
 The `Collection` instances can make use of [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php). This means that you can use a 
@@ -116,7 +116,7 @@ Feel free to remove items in this way via an `unset()` call with a value's index
 
     unset($collection[3]); //same as calling $collection->removeAt(3);
     
-###The Dictionary Class
+### The Dictionary Class
 
 A `Dictionary` is very similar to a `Collection` with the main difference being that a `Dictionary`
 only accepts index values (called keys from here on) as strings. A `Dictionary` will hold any value 
@@ -157,7 +157,7 @@ The `find()`, `remove()`, `removeAt()`, and `clear()` methods in the `Dictionary
 the same as they do under the `Collection` class, with the `find()` and `removeAt()` methods 
 requiring their parameters to be strings instead of integers.
 
-####Iteration and Direct Access
+#### Iteration and Direct Access
 
 The `Dictionary` class also leverages the [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing looping.
@@ -192,7 +192,7 @@ at their offset.
     $dictionary['foo'] = 'bar'; 
     // same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
           
-###The TypedCollection and TypedDictionary Classes
+### The TypedCollection and TypedDictionary Classes
 
 In certain cases it may be desired to have a collection or dictionary that stores only object
 references of a specific type. In these cases a `TypedCollection` or `TypedDictionary` may be used.
@@ -244,30 +244,30 @@ The `TypedDictionary` variant is similar, however string keys are required.
 
 As with the standard `Collection` and `Dictionary` classes, `null` values are not allowed.
 
-###Exception Cases
+### Exception Cases
 
 The library defines the exception `CollectionException`, which is thrown in the following cases:
 
-####`Collection`
+#### `Collection`
 - Adding a `null` value.
 - Replacing an existing value with `null`.
 - Using `find()` with an index that is not in the collection.
 - Accessing an index directly that does not exist.
 - Accessing an index that is not an integer.
 
-####`TypedCollection`
+#### `TypedCollection`
 - Same conditions as `Collection` apply.
-- Adding an instance to the collection that does not match the accepted type.
+- Adding an instance to the collection (or replacing) that does not match the accepted type.
 
-####`Dictionary`
+#### `Dictionary`
 - Adding a `null` value.
 - Replacing an existing value with `null`.
 - Using `find()` with a key that is not in the collection.
 - Accessing a key directly that does not exist.
 - Accessing a key that is not a string.
 
-####`TypedDictionary`
+#### `TypedDictionary`
 - Same conditions as `Dictionary` apply.
-- Adding an instance to the dictionary that does not match the accepted type.
+- Adding an instance to the dictionary (or replacing) that does not match the accepted type.
     
     
