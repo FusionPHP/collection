@@ -89,17 +89,17 @@ To empty out a collection simply call the `clear()` method.
 
 The `Collection` instances can make use of [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php). This means that you can use a 
-collection instance as the subject of a `for` or `foreach`.
+collection as the subject of a `for` or `foreach`.
 
     $collection = new Collection(['foo', 'bar', 'baz']);
     
-    //Iteration
     for (int $i = 0; $i < count($collection); $i++)
     {
         //... do something with $collection[$i];
     }
     
-    //Traversal
+    // ... or ...
+    
     foreach ($collection as $key => $value)
     {
         //... do something with $key and/or $value
@@ -112,7 +112,7 @@ You can also access items and replace items directly via their index if they alr
     var_dump($collection[2]); //string 'baz'
     $collection[2] = 'qux'; //same as calling $collection->replace(2, 'qux');
     
-Feel free to remove items in this way via an `unset()` call with a collection's index number.
+Feel free to remove items in this way via an `unset()` call with a value's index number.
 
     unset($collection[3]); //same as calling $collection->removeAt(3);
     
@@ -145,11 +145,11 @@ as with the `Collection` class, this can also be obtained using the `count()` me
 
     $size = count($dictionary); //same as $count = $dictionary->size();
     
-Items can be added to the dictionary with the `add()` method specifying the key to store them under.
+Values can be added to the dictionary with the `add()` method specifying the key to store them under.
 
     $dictionary->add('foo', 'bar');
     
-Items can be replaced at a given key as well.
+Values can be replaced at a given key as well.
 
     $dictionary->replace('foo', 'bam');
     
@@ -176,20 +176,25 @@ and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing 
         // ... do something with $key and/or $value
     }
 
-The items in a `Dictionary` can also be accessed directly via their key offset.
+The values in a `Dictionary` can also be accessed directly via their key offset.
       
     $dictionary = new Dictionary(['foo' => 'bar', 'baz' => 'bam']);
     var_dump($dictionary['baz']); string 'bam'
 
 Removing an item directly can be done with `unset()`.
 
-    unset($dictionary['foo']); // same as calling $dictionary->removeAt('foo');
+```php
+unset($dictionary['foo']); // same as calling $dictionary->removeAt('foo');
+```
     
-Items can also be replaced directly at their offset and in addition new items can be added directly
+Values can also be replaced directly at their offset and in addition new items can be added directly
 at their offset.
 
-    $dictionary['foo'] = 'bar'; 
-    // same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
+```php
+$dictionary['foo'] = 'bar'; 
+// same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
+```
+    
     
 ###The `TypedCollection` and `TypedDictionary` Classes
 
@@ -200,48 +205,50 @@ Both classes are children of the `Collection` and `Dictionary` classes, respecti
 constructed with an optional set of starter items. However, the only required parameter during
 instantiation is the *fully qualified name* of the class or interface that is acceptable.
 
-    <?php
-    
-    use Fusion\Collection\TypedCollection;
-    
-    namespace App;
-    
-    class Apple { /* ... */ }
-    
-    $apples = new TypedCollection(Apple::class);
-    
-    //Only instances of Apple are allowed
-    $apples->add(new Apple())
-           ->add(new Apple())
-           ->add(new Apple());
-    
-    var_dump(count($apples)); //int (3)
-    
-    // ... or ...
-    
-    $setOfApples = [new Apple(), new Apple(), new Apple()];
-    $apples = new TypedCollection(Apple::class, $setOfApples);
-    var_dump(count($apples)); //int (3)
+```php
+<?php
+
+use Fusion\Collection\TypedCollection;
+
+class Apple { /* ... */ }
+
+$apples = new TypedCollection(Apple::class);
+
+//Only instances of Apple are allowed
+$apples->add(new Apple())
+       ->add(new Apple())
+       ->add(new Apple());
+
+var_dump(count($apples)); //int (3)
+
+// ... or ...
+
+$setOfApples = [new Apple(), new Apple(), new Apple()];
+$apples = new TypedCollection(Apple::class, $setOfApples);
+var_dump(count($apples)); //int (3)
+```
     
 The `TypedDictionary` variant is similar, however string keys are required.
 
-    <?php
-        
-    use Fusion\Collection\TypedDictionary;
-        
-    namespace App;
+```php
+<?php
     
-    interface AppleInterface { /* ... */ }
+namespace App;
     
-    class RedDelicious implements AppleInterface { /* ... */ }
-    class GrannySmith implements AppleInterface { /* ... */ }
-    class Gala implements AppleInterface { /* ... */ }
-    
-    $appleBasket = new TypedDictionary(AppleInterface::class);
-    
-    $appleBasket->add('redDelicious', new RedDelicious())
-                ->add('grannySmith', new GrannySmith())
-                ->add('gala', new Gala());
+use Fusion\Collection\TypedDictionary;
+
+interface AppleInterface { /* ... */ }
+
+class RedDelicious implements AppleInterface { /* ... */ }
+class GrannySmith implements AppleInterface { /* ... */ }
+class Gala implements AppleInterface { /* ... */ }
+
+$appleBasket = new TypedDictionary(AppleInterface::class);
+
+$appleBasket->add('redDelicious', new RedDelicious())
+            ->add('grannySmith', new GrannySmith())
+            ->add('gala', new Gala());
+```
 
 As with the standard `Collection` and `Dictionary` classes, null values are not allowed.
 
