@@ -5,9 +5,12 @@
     "keywords": ["collection"],
     "homepage": "https://github.com/FusionPHP/collection",
     "authors":
-    {
-        "name": "Jason L. Walker"
-    },
+    [
+        {
+            "name": "Jason L. Walker",
+            "role": "Developer"
+        }
+    ],
     "license": "MIT",
     "require":
     {
