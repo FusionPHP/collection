@@ -2,12 +2,12 @@
 <phpunit bootstrap="./vendor/autoload.php">
     <testsuites name="Collection Test Suite">
         <testsuite>
-            <directory>/tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">/src</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
     <logging>
