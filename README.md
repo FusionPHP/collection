@@ -30,9 +30,11 @@ scenario existing keys in the array are ignored.
 
     <?php
     
+    namespace App;
+    
     use Fusion\Collection\Collection;
     
-    namespace App;
+    require '../vendor/autoload.php';
     
     $collection = new Collection(); //empty
     
@@ -93,7 +95,7 @@ collection as the subject of a `for` or `foreach`.
 
     $collection = new Collection(['foo', 'bar', 'baz']);
     
-    for (int $i = 0; $i < count($collection); $i++)
+    for ($i = 0; $i < count($collection); $i++)
     {
         //... do something with $collection[$i];
     }
@@ -127,9 +129,11 @@ scenario existing keys in the array are not ignored, but they must be strings.
 
     <?php
     
+    namespace App;
+    
     use Fusion\Collection\Dictionary;
     
-    namespace App;
+    require '../vendor/autoload.php';
     
     $dictionary = new Dictionary(); //empty
     
@@ -162,7 +166,7 @@ requiring their parameters to be strings instead of integers.
 The `Dictionary` class also leverages the [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing looping.
 
-    $dictionary = new Dictionary(['foo1' => 'bar', 'foo2' => 'bam'];
+    $dictionary = new Dictionary(['foo1' => 'bar', 'foo2' => 'bam']);
     
     for ($i = 1; $i <= count($dictionary); $i++)
     {
@@ -179,7 +183,7 @@ and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing 
 The values in a `Dictionary` can also be accessed directly via their key offset.
       
     $dictionary = new Dictionary(['foo' => 'bar', 'baz' => 'bam']);
-    var_dump($dictionary['baz']); string 'bam'
+    var_dump($dictionary['baz']); //string 'bam'
 
 Removing an item directly can be done with `unset()`.
 
@@ -203,7 +207,11 @@ instantiation is the *fully qualified name* of the class or interface that is ac
 
     <?php
     
+    namespace App;
+    
     use Fusion\Collection\TypedCollection;
+    
+    require '../vendor/autoload.php';
     
     class Apple { /* ... */ }
     
@@ -229,6 +237,8 @@ The `TypedDictionary` variant is similar, however string keys are required.
     namespace App;
         
     use Fusion\Collection\TypedDictionary;
+    
+    require '../vendor/autoload.php';
     
     interface AppleInterface { /* ... */ }
     
