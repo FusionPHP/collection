@@ -73,7 +73,7 @@ class Collection extends AbstractCollection implements CollectionInterface
 
     private function throwExceptionIfOffsetIsNotAnInteger($offset): void
     {
-        if (is_int($offset) == false)
+        if (is_int($offset) === false)
         {
             $message = sprintf(
                 'Collection offset type must be an integer. %s given.',

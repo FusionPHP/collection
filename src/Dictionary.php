@@ -117,7 +117,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
 
     private function throwExceptionIfOffsetIsNotAString($offset): void
     {
-        if (is_string($offset) == false)
+        if (is_string($offset) === false)
         {
             throw new CollectionException('Offset to access must be a string.');
         }
