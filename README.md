@@ -11,11 +11,9 @@ PHP 7.1 or greater.
 
 ## Installation
 
-This package is installed via Composer.  Add the following to your `composer.json` file.
+This package is installed via Composer.
 
-    require: {
-        "fusion-php/collection": "1.*"
-    }
+    composer require fusion-php/collection
 
 ## Usage
 
