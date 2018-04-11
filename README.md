@@ -34,6 +34,8 @@ scenario existing keys in the array are ignored.
     
     use Fusion\Collection\Collection;
     
+    require '../vendor/autoload.php';
+    
     $collection = new Collection(); //empty
     
     // ... or ...
@@ -131,6 +133,8 @@ scenario existing keys in the array are not ignored, but they must be strings.
     
     use Fusion\Collection\Dictionary;
     
+    require '../vendor/autoload.php';
+    
     $dictionary = new Dictionary(); //empty
     
     // ... or ...
@@ -207,6 +211,8 @@ instantiation is the *fully qualified name* of the class or interface that is ac
     
     use Fusion\Collection\TypedCollection;
     
+    require '../vendor/autoload.php';
+    
     class Apple { /* ... */ }
     
     $apples = new TypedCollection(Apple::class);
@@ -231,6 +237,8 @@ The `TypedDictionary` variant is similar, however string keys are required.
     namespace App;
         
     use Fusion\Collection\TypedDictionary;
+    
+    require '../vendor/autoload.php';
     
     interface AppleInterface { /* ... */ }
     
