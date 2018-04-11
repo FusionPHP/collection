@@ -26,7 +26,7 @@ class TypedCollectionTest extends TestCase
         $collection = new TypedCollection(CrashTestDummy::class, $starterItems);
 
         $expected = 3;
-        $this->assertEquals($expected, $collection->size());
+        $this->assertEquals($expected, $collection->count());
     }
 
     public function testExceptionThrownAddingInvalidType(): void

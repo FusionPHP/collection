@@ -18,7 +18,7 @@ class TypedDictionaryTest extends TestCase
     {
         $dictionary = new TypedDictionary(CrashTestDummy::class);
         $dictionary->add('foo', new CrashTestDummy());
-        $this->assertEquals(1, $dictionary->size());
+        $this->assertEquals(1, $dictionary->count());
     }
 
     public function testExceptionThrownCreatingDictionaryWithEmptyStringForClassName()
@@ -31,7 +31,7 @@ class TypedDictionaryTest extends TestCase
     {
         $items = ['foo' => new CrashTestDummy(), 'bar' => new CrashTestDummy()];
         $dictionary = new TypedDictionary(CrashTestDummy::class, $items);
-        $this->assertEquals(2, $dictionary->size());
+        $this->assertEquals(2, $dictionary->count());
     }
 
     public function testExceptionThrownCreatingDictionaryWithBadValue()
@@ -77,11 +77,11 @@ class TypedDictionaryTest extends TestCase
         $dictionary = new TypedDictionary(CrashTestDummy::class);
         $dictionary['foo'] = $first;
 
-        $this->assertEquals(1, $dictionary->size());
+        $this->assertEquals(1, $dictionary->count());
 
         $dictionary['foo'] = $second;
 
-        $this->assertEquals(1, $dictionary->size());
+        $this->assertEquals(1, $dictionary->count());
         $this->assertSame($second, $dictionary->find('foo'));
     }
 

@@ -10,20 +10,15 @@ declare(strict_types=1);
 
 namespace Fusion\Collection\Contracts;
 
+use Countable;
+
 /**
  * Defines common methods for a collection object.
  *
  * @since 1.0.0
  */
-interface CollectionCoreInterface
+interface CollectionCoreInterface extends Countable
 {
-    /**
-     * Returns the count of elements in the collection.
-     *
-     * @return int
-     */
-    public function size(): int;
-
     /**
      * Clears all items from the collection.
      *

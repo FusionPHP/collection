@@ -47,7 +47,7 @@ class CollectionTest extends TestCase
         $this->collection = new Collection([PHP_INT_MAX, 'foo', M_PI, [], fopen('php://memory', 'r'), new \stdClass(), function () {}]);
 
         $expected = 7;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
     }
 
     public function testExceptionThrownAddingNullValueDuringConstructor()
@@ -70,7 +70,7 @@ class CollectionTest extends TestCase
             ->add($baz);
 
         $expected = 3;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
     }
 
     public function testCollectionSizeWithCountable()
@@ -90,27 +90,27 @@ class CollectionTest extends TestCase
         $this->collection->remove('foo');
 
         $expected = 2;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
     }
 
     public function testIndexValuesUpdateWhenRemovingItems()
     {
         $expected = 3;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
 
-        while($this->collection->size() > 0)
+        while($this->collection->count() > 0)
         {
             $this->collection->removeAt(0);
         }
 
         $expected = 0;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
     }
 
     public function testRemoveItemNotInCollectionDoesNotAffectCollectionSize()
     {
         $this->collection->remove('quam');
-        $this->assertEquals(3, $this->collection->size());
+        $this->assertEquals(3, $this->collection->count());
     }
 
     public function testFindingItemAtId()
@@ -177,7 +177,7 @@ class CollectionTest extends TestCase
     {
         $expected = 0;
         $this->collection->clear();
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
     }
 
     public function testOffsetExistsInCollection()
@@ -310,12 +310,12 @@ class CollectionTest extends TestCase
         $this->makeEmptyCollection();
         $this->collection->add('foo');
         $expected = 1;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
 
         $offset = 0;
         unset($this->collection[$offset]);
         $expected = 0;
-        $this->assertEquals($expected, $this->collection->size());
+        $this->assertEquals($expected, $this->collection->count());
     }
 
     public function testUnsetCastOnValueHasNoEffectOnCollection()
@@ -329,7 +329,7 @@ class CollectionTest extends TestCase
         $value = (unset)$this->collection[$offset];
 
         $this->assertNull($value);
-        $this->assertEquals($expectedSize, $this->collection->size());
+        $this->assertEquals($expectedSize, $this->collection->count());
         $this->assertEquals($expectedValue, $this->collection[$offset]);
     }
 }

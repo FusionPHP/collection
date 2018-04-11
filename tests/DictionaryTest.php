@@ -34,7 +34,7 @@ class DictionaryTest extends TestCase
         $this->dictionary->add('foo', 'bar');
 
         $expected = 1;
-        $this->assertEquals($expected, $this->dictionary->size());
+        $this->assertEquals($expected, $this->dictionary->count());
     }
 
     public function testCountingDictionaryWithCountable()
@@ -48,12 +48,12 @@ class DictionaryTest extends TestCase
         $this->dictionary->add('foo', 'bar');
 
         $expected = 1;
-        $this->assertEquals($expected, $this->dictionary->size());
+        $this->assertEquals($expected, $this->dictionary->count());
 
         $this->dictionary->remove('bar');
 
         $expected = 0;
-        $this->assertEquals($expected, $this->dictionary->size());
+        $this->assertEquals($expected, $this->dictionary->count());
     }
 
     public function testReplacingExistingItem()
@@ -64,7 +64,7 @@ class DictionaryTest extends TestCase
         $expectedSize = 1;
         $expectedValue = 'quam';
         $this->assertEquals($expectedValue, $this->dictionary->find('foo'));
-        $this->assertEquals($expectedSize, $this->dictionary->size());
+        $this->assertEquals($expectedSize, $this->dictionary->count());
     }
 
     public function testReplacingExisitingItemViaOffset()
@@ -149,7 +149,7 @@ class DictionaryTest extends TestCase
         unset($this->dictionary['foo']);
 
         $expected = 0;
-        $this->assertEquals($expected, $this->dictionary->size());
+        $this->assertEquals($expected, $this->dictionary->count());
     }
 
     public function testExceptionThrownReplacingExistingValueWithNullUsingMethod()
@@ -170,12 +170,12 @@ class DictionaryTest extends TestCase
     {
         $this->dictionary->add('foo', 'bar');
         $expected = 1;
-        $this->assertEquals($expected, $this->dictionary->size());
+        $this->assertEquals($expected, $this->dictionary->count());
 
         $offset = 'foo';
         unset($this->dictionary[$offset]);
         $expected = 0;
-        $this->assertEquals($expected, $this->dictionary->size());
+        $this->assertEquals($expected, $this->dictionary->count());
     }
 
     public function testUnsetCastOnValueHasNoEffectOnDictionary()
@@ -188,7 +188,7 @@ class DictionaryTest extends TestCase
         $value = (unset)$this->dictionary[$offset];
 
         $this->assertNull($value);
-        $this->assertEquals($expectedSize, $this->dictionary->size());
+        $this->assertEquals($expectedSize, $this->dictionary->count());
         $this->assertEquals($expectedValue, $this->dictionary[$offset]);
     }
 

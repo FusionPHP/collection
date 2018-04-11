@@ -46,13 +46,13 @@ scenario existing keys in the array are ignored.
     $items = ['foo', 'bar', 'baz'];    
     $collection = new Collection($items);
     
-    var_dump($collection->size()); //int (3)
+    var_dump($collection->count()); //int (3)
     
-As seen above, the `size()` method returns an integer with the number of items in the collection.
+As seen above, the `count()` method returns an integer with the number of items in the collection.
 The collection utilizes the [Countable](http://php.net/manual/en/countable.count.php) interface
-allowing you to obtain the collection size via the `count()` method as an alternative means.
+allowing you to obtain the collection size via the PHP `count()` method as an alternative means.
 
-    $size = count($collection); //same as $count = $collection->size();
+    $size = count($collection); //same as $size = $collection->count();
 
 To add items to the collection use the `add()` method passing in the value you wish to store.
     
@@ -72,7 +72,7 @@ of the value to be replaced and the replacement value.
 To remove items from the collection use the `remove()` method passing in the value to remove.
     
     $collection = new Collection(['foo', 'bar', 'baz']);
-    $collection->remove('foo'); //size() == 2
+    $collection->remove('foo'); //count() == 2
 
 With the `remove()` method all values *identical* to the argument given are removed. This means 
 that any duplicates of literal values or objects of the *same* instance are also removed. To remove 
@@ -88,7 +88,7 @@ To empty out a collection simply call the `clear()` method.
 
     $collection = new Collection(['foo', 'bar', 'baz']);
     $collection->clear();
-    var_dump($collection->size()); //int (0)
+    var_dump($collection->count()); //int (0)
 
 #### Iteration and Direct Access
 
@@ -145,12 +145,12 @@ scenario existing keys in the array are not ignored, but they must be strings.
     $items = ['foo' => 'bar', 'baz' => 'bam'];    
     $dictionary = new Dictionary($items);
     
-    var_dump($dictionary->size()); //int (2)
+    var_dump($dictionary->count()); //int (2)
     
-As seen above the `size()` method can be used to gather the number of items in the dictionary and,
-as with the `Collection` class, this can also be obtained using the `count()` method.
+As seen above the `count()` method can be used to gather the number of items in the dictionary and,
+as with the `Collection` class, this can also be obtained using the PHP `count()` method.
 
-    $size = count($dictionary); //same as $count = $dictionary->size();
+    $size = count($dictionary); //same as $size = $dictionary->count();
     
 Items can be added to the dictionary with the `add()` method specifying the key to store them under.
 

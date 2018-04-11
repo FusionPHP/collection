@@ -12,7 +12,6 @@ namespace Fusion\Collection\Contracts;
 
 use Fusion\Collection\Exceptions\CollectionException;
 use ArrayAccess;
-use Countable;
 use Iterator;
 
 /**
@@ -20,7 +19,7 @@ use Iterator;
  *
  * @since 1.0.0
  */
-abstract class AbstractCollection implements CollectionCoreInterface, ArrayAccess, Countable, Iterator
+abstract class AbstractCollection implements CollectionCoreInterface, ArrayAccess, Iterator
 {
     /**
      * The internal collection container.
@@ -28,12 +27,6 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
      * @var array
      */
     protected $collection = [];
-
-    /** {@inheritdoc} */
-    public function size(): int
-    {
-        return $this->count();
-    }
 
     /** {@inheritdoc} */
     public function clear(): void
