@@ -12,9 +12,9 @@ PHP 7.1 or greater.
 ## Installation
 
 This package is installed via Composer.
-
-    composer require fusion-php/collection
-
+```
+composer require fusion-php/collection
+```
 ## Usage
 
 The library provides two different types of a collection. A basic object, simply `Collection`, 
@@ -28,96 +28,104 @@ values.
 
 A `Collection` can be instantiated empty or with an array of starting elements. In the latter 
 scenario existing keys in the array are ignored.
+```php
+<?php
 
-    <?php
-    
-    namespace App;
-    
-    use Fusion\Collection\Collection;
-    
-    require '../vendor/autoload.php';
-    
-    $collection = new Collection(); //empty
-    
-    // ... or ...
-    
-    $items = ['foo', 'bar', 'baz'];    
-    $collection = new Collection($items);
-    
-    var_dump($collection->count()); //int (3)
-    
+namespace App;
+
+use Fusion\Collection\Collection;
+
+require '../vendor/autoload.php';
+
+$collection = new Collection(); //empty
+
+// ... or ...
+
+$items = ['foo', 'bar', 'baz'];    
+$collection = new Collection($items);
+
+var_dump($collection->count()); //int (3)
+```
 As seen above, the `count()` method returns an integer with the number of items in the collection.
 The collection utilizes the [Countable](http://php.net/manual/en/countable.count.php) interface
 allowing you to obtain the collection size via the PHP `count()` method as an alternative means.
-
-    $size = count($collection); //same as $size = $collection->count();
+```php
+$size = count($collection); //same as $size = $collection->count();
+```
 
 To add items to the collection use the `add()` method passing in the value you wish to store.
-    
-    $collection->add(42);
+```php
+$collection->add(42);
+```
     
 Use the `find()` method with an existing index to retrieve a value from the collection.
-
-    $collection = new Collection(['foo', 'bar', 'baz']);
-    var_dump($collection->find(1)); //string 'bar'
+```php
+$collection = new Collection(['foo', 'bar', 'baz']);
+var_dump($collection->find(1)); //string 'bar'
+```
 
 The collection can have values replaced by calling the `replace()` method and providing the index
 of the value to be replaced and the replacement value.
-    
-    $collection = new Collection(['foo', 'bar', 'baz']);
-    $collection->replace(1, 'bam'); //Collection is now ['foo', 'bam', 'baz']
+```php
+$collection = new Collection(['foo', 'bar', 'baz']);
+$collection->replace(1, 'bam'); //Collection is now ['foo', 'bam', 'baz']
+```
 
 To remove items from the collection use the `remove()` method passing in the value to remove.
-    
-    $collection = new Collection(['foo', 'bar', 'baz']);
-    $collection->remove('foo'); //count() == 2
+```php 
+$collection = new Collection(['foo', 'bar', 'baz']);
+$collection->remove('foo'); //count() == 2
+```
 
 With the `remove()` method all values *identical* to the argument given are removed. This means 
 that any duplicates of literal values or objects of the *same* instance are also removed. To remove 
 a specific value use the `removeAt()` method passing in the numerical index of the value's location.
-
-    $collection = new Collection(['foo', 'bar', 'baz']);
-    $collection->removeAt(1); //Collection is now [0 => 'foo', 1 => 'baz');
+```php
+$collection = new Collection(['foo', 'bar', 'baz']);
+$collection->removeAt(1); //Collection is now [0 => 'foo', 1 => 'baz');
+```
     
 Both the `remove()` and `removeAt()` methods will cause the numerical index of the collection to
 update closing any gaps in the index sequence. 
 
 To empty out a collection simply call the `clear()` method.
-
-    $collection = new Collection(['foo', 'bar', 'baz']);
-    $collection->clear();
-    var_dump($collection->count()); //int (0)
+```php
+$collection = new Collection(['foo', 'bar', 'baz']);
+$collection->clear();
+var_dump($collection->count()); //int (0)
+```
 
 #### Iteration and Direct Access
 
 The `Collection` instances can make use of [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php). This means that you can use a 
 collection as the subject of a `for` or `foreach`.
+```php
+$collection = new Collection(['foo', 'bar', 'baz']);
 
-    $collection = new Collection(['foo', 'bar', 'baz']);
-    
-    for ($i = 0; $i < count($collection); $i++)
-    {
-        //... do something with $collection[$i];
-    }
-    
-    // ... or ...
-    
-    foreach ($collection as $key => $value)
-    {
-        //... do something with $key and/or $value
-    }
+for ($i = 0; $i < count($collection); $i++)
+{
+    //... do something with $collection[$i];
+}
 
+// ... or ...
+
+foreach ($collection as $key => $value)
+{
+    //... do something with $key and/or $value
+}
+```
 You can also access items and replace items directly via their index if they already exist.
+```php
+$collection = new Collection(['foo', 'bar', 'baz']);
 
-    $collection = new Collection(['foo', 'bar', 'baz']);
-    
-    var_dump($collection[2]); //string 'baz'
-    $collection[2] = 'qux'; //same as calling $collection->replace(2, 'qux');
-    
+var_dump($collection[2]); //string 'baz'
+$collection[2] = 'qux'; //same as calling $collection->replace(2, 'qux');
+```
 Feel free to remove items in this way via an `unset()` call with a value's index number.
-
-    unset($collection[3]); //same as calling $collection->removeAt(3);
+```php
+unset($collection[3]); //same as calling $collection->removeAt(3);
+```
     
 ### The Dictionary Class
 
@@ -127,36 +135,39 @@ that a PHP array can hold, with the exception of `null` values.
 
 A `Dictionary` can be instantiated empty or with an array of starting elements. In the latter 
 scenario existing keys in the array are not ignored, but they must be strings.
+```php
+<?php
 
-    <?php
-    
-    namespace App;
-    
-    use Fusion\Collection\Dictionary;
-    
-    require '../vendor/autoload.php';
-    
-    $dictionary = new Dictionary(); //empty
-    
-    // ... or ...
-    
-    $items = ['foo' => 'bar', 'baz' => 'bam'];    
-    $dictionary = new Dictionary($items);
-    
-    var_dump($dictionary->count()); //int (2)
-    
+namespace App;
+
+use Fusion\Collection\Dictionary;
+
+require '../vendor/autoload.php';
+
+$dictionary = new Dictionary(); //empty
+
+// ... or ...
+
+$items = ['foo' => 'bar', 'baz' => 'bam'];    
+$dictionary = new Dictionary($items);
+
+var_dump($dictionary->count()); //int (2)
+```
 As seen above the `count()` method can be used to gather the number of items in the dictionary and,
 as with the `Collection` class, this can also be obtained using the PHP `count()` method.
-
-    $size = count($dictionary); //same as $size = $dictionary->count();
+```php
+$size = count($dictionary); //same as $size = $dictionary->count();
+```
     
 Items can be added to the dictionary with the `add()` method specifying the key to store them under.
-
-    $dictionary->add('foo', 'bar');
+```php
+$dictionary->add('foo', 'bar');
+```
     
 Items can be replaced at a given key as well.
-
-    $dictionary->replace('foo', 'bam');
+```php
+$dictionary->replace('foo', 'bam');
+```
     
 The `find()`, `remove()`, `removeAt()`, and `clear()` methods in the `Dictionary` class work exactly
 the same as they do under the `Collection` class, with the `find()` and `removeAt()` methods 
@@ -166,36 +177,37 @@ requiring their parameters to be strings instead of integers.
 
 The `Dictionary` class also leverages the [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing looping.
+```php
+$dictionary = new Dictionary(['foo1' => 'bar', 'foo2' => 'bam']);
 
-    $dictionary = new Dictionary(['foo1' => 'bar', 'foo2' => 'bam']);
-    
-    for ($i = 1; $i <= count($dictionary); $i++)
-    {
-        // ... do something with $dictionary['foo' . $i];
-    }
-    
-    // ... or ...
-    
-    foreach ($dictionary as $key => $value)
-    {
-        // ... do something with $key and/or $value
-    }
+for ($i = 1; $i <= count($dictionary); $i++)
+{
+    // ... do something with $dictionary['foo' . $i];
+}
 
+// ... or ...
+
+foreach ($dictionary as $key => $value)
+{
+    // ... do something with $key and/or $value
+}
+```
 The values in a `Dictionary` can also be accessed directly via their key offset.
-      
-    $dictionary = new Dictionary(['foo' => 'bar', 'baz' => 'bam']);
-    var_dump($dictionary['baz']); //string 'bam'
-
+```php 
+$dictionary = new Dictionary(['foo' => 'bar', 'baz' => 'bam']);
+var_dump($dictionary['baz']); //string 'bam'
+```
 Removing an item directly can be done with `unset()`.
-
-    unset($dictionary['foo']); // same as calling $dictionary->removeAt('foo');
-
+```php
+unset($dictionary['foo']); // same as calling $dictionary->removeAt('foo');
+```
 
 Values can also be replaced directly at their offset and in addition new items can be added directly
 at their offset.
-
-    $dictionary['foo'] = 'bar'; 
-    // same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
+```php
+$dictionary['foo'] = 'bar'; 
+// same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
+```
           
 ### The TypedCollection and TypedDictionary Classes
 
@@ -205,54 +217,54 @@ references of a specific type. In these cases a `TypedCollection` or `TypedDicti
 Both classes are children of the `Collection` and `Dictionary` classes, respectively, and can be
 constructed with an optional set of starter items. However, the only required parameter during
 instantiation is the *fully qualified name* of the class or interface that is acceptable.
+```php
+<?php
 
-    <?php
-    
-    namespace App;
-    
-    use Fusion\Collection\TypedCollection;
-    
-    require '../vendor/autoload.php';
-    
-    class Apple { /* ... */ }
-    
-    $apples = new TypedCollection(Apple::class);
-    
-    //Only instances of Apple are allowed
-    $apples->add(new Apple())
-           ->add(new Apple())
-           ->add(new Apple());
-    
-    var_dump(count($apples)); //int (3)
-    
-    // ... or ...
-    
-    $setOfApples = [new Apple(), new Apple(), new Apple()];
-    $apples = new TypedCollection(Apple::class, $setOfApples);
-    var_dump(count($apples)); //int (3)
-        
+namespace App;
+
+use Fusion\Collection\TypedCollection;
+
+require '../vendor/autoload.php';
+
+class Apple { /* ... */ }
+
+$apples = new TypedCollection(Apple::class);
+
+//Only instances of Apple are allowed
+$apples->add(new Apple())
+       ->add(new Apple())
+       ->add(new Apple());
+
+var_dump(count($apples)); //int (3)
+
+// ... or ...
+
+$setOfApples = [new Apple(), new Apple(), new Apple()];
+$apples = new TypedCollection(Apple::class, $setOfApples);
+var_dump(count($apples)); //int (3)
+```
 The `TypedDictionary` variant is similar, however string keys are required.
+```php
+<?php
+    
+namespace App;
+    
+use Fusion\Collection\TypedDictionary;
 
-    <?php
-        
-    namespace App;
-        
-    use Fusion\Collection\TypedDictionary;
-    
-    require '../vendor/autoload.php';
-    
-    interface AppleInterface { /* ... */ }
-    
-    class RedDelicious implements AppleInterface { /* ... */ }
-    class GrannySmith implements AppleInterface { /* ... */ }
-    class Gala implements AppleInterface { /* ... */ }
-    
-    $appleBasket = new TypedDictionary(AppleInterface::class);
-    
-    $appleBasket->add('redDelicious', new RedDelicious())
-                ->add('grannySmith', new GrannySmith())
-                ->add('gala', new Gala());
+require '../vendor/autoload.php';
 
+interface AppleInterface { /* ... */ }
+
+class RedDelicious implements AppleInterface { /* ... */ }
+class GrannySmith implements AppleInterface { /* ... */ }
+class Gala implements AppleInterface { /* ... */ }
+
+$appleBasket = new TypedDictionary(AppleInterface::class);
+
+$appleBasket->add('redDelicious', new RedDelicious())
+            ->add('grannySmith', new GrannySmith())
+            ->add('gala', new Gala());
+```
 As with the standard `Collection` and `Dictionary` classes, `null` values are not allowed.
 
 ### Exception Cases
