@@ -12,6 +12,7 @@ PHP 7.1 or greater.
 ## Installation
 
 This package is installed via Composer.
+
 ```
 composer require fusion-php/collection
 ```
@@ -28,6 +29,7 @@ values.
 
 A `Collection` can be instantiated empty or with an array of starting elements. In the latter 
 scenario existing keys in the array are ignored.
+
 ```php
 <?php
 
@@ -49,16 +51,19 @@ var_dump($collection->count()); //int (3)
 As seen above, the `count()` method returns an integer with the number of items in the collection.
 The collection utilizes the [Countable](http://php.net/manual/en/countable.count.php) interface
 allowing you to obtain the collection size via the PHP `count()` method as an alternative means.
+
 ```php
 $size = count($collection); //same as $size = $collection->count();
 ```
 
 To add items to the collection use the `add()` method passing in the value you wish to store.
+
 ```php
 $collection->add(42);
 ```
     
 Use the `find()` method with an existing index to retrieve a value from the collection.
+
 ```php
 $collection = new Collection(['foo', 'bar', 'baz']);
 var_dump($collection->find(1)); //string 'bar'
@@ -66,12 +71,14 @@ var_dump($collection->find(1)); //string 'bar'
 
 The collection can have values replaced by calling the `replace()` method and providing the index
 of the value to be replaced and the replacement value.
+
 ```php
 $collection = new Collection(['foo', 'bar', 'baz']);
 $collection->replace(1, 'bam'); //Collection is now ['foo', 'bam', 'baz']
 ```
 
 To remove items from the collection use the `remove()` method passing in the value to remove.
+
 ```php 
 $collection = new Collection(['foo', 'bar', 'baz']);
 $collection->remove('foo'); //count() == 2
@@ -80,6 +87,7 @@ $collection->remove('foo'); //count() == 2
 With the `remove()` method all values *identical* to the argument given are removed. This means 
 that any duplicates of literal values or objects of the *same* instance are also removed. To remove 
 a specific value use the `removeAt()` method passing in the numerical index of the value's location.
+
 ```php
 $collection = new Collection(['foo', 'bar', 'baz']);
 $collection->removeAt(1); //Collection is now [0 => 'foo', 1 => 'baz');
@@ -89,6 +97,7 @@ Both the `remove()` and `removeAt()` methods will cause the numerical index of t
 update closing any gaps in the index sequence. 
 
 To empty out a collection simply call the `clear()` method.
+
 ```php
 $collection = new Collection(['foo', 'bar', 'baz']);
 $collection->clear();
@@ -100,6 +109,7 @@ var_dump($collection->count()); //int (0)
 The `Collection` instances can make use of [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php). This means that you can use a 
 collection as the subject of a `for` or `foreach`.
+
 ```php
 $collection = new Collection(['foo', 'bar', 'baz']);
 
@@ -116,13 +126,16 @@ foreach ($collection as $key => $value)
 }
 ```
 You can also access items and replace items directly via their index if they already exist.
+
 ```php
 $collection = new Collection(['foo', 'bar', 'baz']);
 
 var_dump($collection[2]); //string 'baz'
 $collection[2] = 'qux'; //same as calling $collection->replace(2, 'qux');
 ```
+
 Feel free to remove items in this way via an `unset()` call with a value's index number.
+
 ```php
 unset($collection[3]); //same as calling $collection->removeAt(3);
 ```
@@ -135,6 +148,7 @@ that a PHP array can hold, with the exception of `null` values.
 
 A `Dictionary` can be instantiated empty or with an array of starting elements. In the latter 
 scenario existing keys in the array are not ignored, but they must be strings.
+
 ```php
 <?php
 
@@ -153,18 +167,22 @@ $dictionary = new Dictionary($items);
 
 var_dump($dictionary->count()); //int (2)
 ```
+
 As seen above the `count()` method can be used to gather the number of items in the dictionary and,
 as with the `Collection` class, this can also be obtained using the PHP `count()` method.
+
 ```php
 $size = count($dictionary); //same as $size = $dictionary->count();
 ```
     
 Items can be added to the dictionary with the `add()` method specifying the key to store them under.
+
 ```php
 $dictionary->add('foo', 'bar');
 ```
     
 Items can be replaced at a given key as well.
+
 ```php
 $dictionary->replace('foo', 'bam');
 ```
@@ -177,6 +195,7 @@ requiring their parameters to be strings instead of integers.
 
 The `Dictionary` class also leverages the [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php)
 and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing looping.
+
 ```php
 $dictionary = new Dictionary(['foo1' => 'bar', 'foo2' => 'bam']);
 
@@ -192,18 +211,23 @@ foreach ($dictionary as $key => $value)
     // ... do something with $key and/or $value
 }
 ```
+
 The values in a `Dictionary` can also be accessed directly via their key offset.
-```php 
+
+```php
 $dictionary = new Dictionary(['foo' => 'bar', 'baz' => 'bam']);
 var_dump($dictionary['baz']); //string 'bam'
 ```
+
 Removing an item directly can be done with `unset()`.
+
 ```php
 unset($dictionary['foo']); // same as calling $dictionary->removeAt('foo');
 ```
 
 Values can also be replaced directly at their offset and in addition new items can be added directly
 at their offset.
+
 ```php
 $dictionary['foo'] = 'bar'; 
 // same as calling $dictionary->add('foo', 'bar'); or $dictionary->replace('foo', 'bar');
@@ -217,6 +241,7 @@ references of a specific type. In these cases a `TypedCollection` or `TypedDicti
 Both classes are children of the `Collection` and `Dictionary` classes, respectively, and can be
 constructed with an optional set of starter items. However, the only required parameter during
 instantiation is the *fully qualified name* of the class or interface that is acceptable.
+
 ```php
 <?php
 
@@ -243,7 +268,9 @@ $setOfApples = [new Apple(), new Apple(), new Apple()];
 $apples = new TypedCollection(Apple::class, $setOfApples);
 var_dump(count($apples)); //int (3)
 ```
+
 The `TypedDictionary` variant is similar, however string keys are required.
+
 ```php
 <?php
     
@@ -265,6 +292,7 @@ $appleBasket->add('redDelicious', new RedDelicious())
             ->add('grannySmith', new GrannySmith())
             ->add('gala', new Gala());
 ```
+
 As with the standard `Collection` and `Dictionary` classes, `null` values are not allowed.
 
 ### Exception Cases
@@ -292,5 +320,3 @@ The library defines the exception `CollectionException`, which is thrown in the 
 #### `TypedDictionary`
 - Same conditions as `Dictionary` apply.
 - Adding an instance to the dictionary (or replacing) that does not match the accepted type.
-    
-    
