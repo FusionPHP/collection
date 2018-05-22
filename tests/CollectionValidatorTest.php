@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpVoidFunctionResultUsedInspection */
+<?php
 
 /**
  * Part of the Fusion.Collection package test suite.
