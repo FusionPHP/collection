@@ -35,4 +35,14 @@ class CollectionFactory
     {
         return new TypedCollection($acceptedType, $starterItems, self::getValidator());
     }
+
+    public static function newDictionary(array $starterItems = []): Dictionary
+    {
+        return new Dictionary($starterItems, self::getValidator());
+    }
+
+    public static function newTypedDictionary(string $acceptedType, array $starterItems = []): TypedDictionary
+    {
+        return new TypedDictionary($acceptedType, $starterItems, self::getValidator());
+    }
 }

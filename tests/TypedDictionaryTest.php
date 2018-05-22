@@ -8,15 +8,15 @@
 
 namespace Fusion\Collection\Tests;
 
+use Fusion\Collection\CollectionFactory;
 use Fusion\Collection\Exceptions\CollectionException;
-use Fusion\Collection\TypedDictionary;
 use PHPUnit\Framework\TestCase;
 
 class TypedDictionaryTest extends TestCase
 {
     public function testCreateTypedDictionary()
     {
-        $dictionary = new TypedDictionary(CrashTestDummy::class);
+        $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class);
         $dictionary->add('foo', new CrashTestDummy());
         $this->assertEquals(1, $dictionary->count());
     }
@@ -24,13 +24,13 @@ class TypedDictionaryTest extends TestCase
     public function testExceptionThrownCreatingDictionaryWithEmptyStringForClassName()
     {
         $this->expectException(CollectionException::class);
-        new TypedDictionary('');
+        CollectionFactory::newTypedDictionary('');
     }
 
     public function testCreatingDictionaryWithItems()
     {
         $items = ['foo' => new CrashTestDummy(), 'bar' => new CrashTestDummy()];
-        $dictionary = new TypedDictionary(CrashTestDummy::class, $items);
+        $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class, $items);
         $this->assertEquals(2, $dictionary->count());
     }
 
@@ -38,34 +38,34 @@ class TypedDictionaryTest extends TestCase
     {
         $this->expectException(CollectionException::class);
         $items = ['foo' => new \stdClass()];
-        new TypedDictionary(CrashTestDummy::class, $items);
+        CollectionFactory::newTypedDictionary(CrashTestDummy::class, $items);
     }
 
     public function testExceptionThrownSendingNullValue()
     {
         $this->expectException(CollectionException::class);
         $items = ['foo' => null];
-        new TypedDictionary(CrashTestDummy::class, $items);
+        CollectionFactory::newTypedDictionary(CrashTestDummy::class, $items);
     }
 
     public function testExceptionThrownReplacingValueWithNull()
     {
         $this->expectException(CollectionException::class);
-        $dictionary = new TypedDictionary(CrashTestDummy::class, ['crash' => new CrashTestDummy()]);
+        $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class, ['crash' => new CrashTestDummy()]);
         $dictionary->replace('crash', null);
     }
 
     public function testExceptionThrownReplacingValueWithIncorrectType()
     {
         $this->expectException(CollectionException::class);
-        $dictionary = new TypedDictionary(CrashTestDummy::class, ['crash' => new CrashTestDummy()]);
+        $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class, ['crash' => new CrashTestDummy()]);
         $dictionary->replace('crash', new \stdClass());
     }
 
     public function testExceptionThrownSettingOffsetWithNullValue()
     {
         $this->expectException(CollectionException::class);
-        $dictionary = new TypedDictionary(CrashTestDummy::class);
+        $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class);
         $dictionary['foo'] = new \stdClass();
     }
 
@@ -74,7 +74,7 @@ class TypedDictionaryTest extends TestCase
         $first = new CrashTestDummy();
         $second = new CrashTestDummy();
 
-        $dictionary = new TypedDictionary(CrashTestDummy::class);
+        $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class);
         $dictionary['foo'] = $first;
 
         $this->assertEquals(1, $dictionary->count());

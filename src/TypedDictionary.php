@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Fusion\Collection;
 
+use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Contracts\DictionaryInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
@@ -43,20 +44,11 @@ class TypedDictionary extends Dictionary
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(string $acceptedType, array $items = [])
+    public function __construct(string $acceptedType, array $items = [], CollectionValidationInterface $validator)
     {
-        if ($acceptedType == '')
-        {
-            $message = sprintf(
-                '%s must be constructed with a fully qualified class or interface name of the instance type to accept.',
-                TypedDictionary::class
-            );
-
-            throw new CollectionException($message);
-        }
-
+        $validator->validateNonEmptyAcceptedType($acceptedType);
         $this->acceptedType = $acceptedType;
-        parent::__construct($items);
+        parent::__construct($items, $validator);
     }
 
     /**

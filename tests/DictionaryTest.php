@@ -8,6 +8,7 @@
 
 namespace Fusion\Collection\Tests;
 
+use Fusion\Collection\CollectionFactory;
 use Fusion\Collection\Dictionary;
 use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,7 @@ class DictionaryTest extends TestCase
 
     public function setUp()
     {
-        $this->dictionary = new Dictionary();
+        $this->dictionary = CollectionFactory::newDictionary();
     }
 
     public function tearDown()

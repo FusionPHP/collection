@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\AbstractCollection;
+use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Contracts\DictionaryInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
@@ -39,8 +40,10 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(array $items = [])
+    public function __construct(array $items = [], CollectionValidationInterface $validator)
     {
+        $this->validator = $validator;
+
         foreach ($items as $key => $value)
         {
             $this->add($key, $value);
