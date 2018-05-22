@@ -14,8 +14,14 @@ use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
+/**
+ * Library-provided implementation of the `CollectionValidationInterface`.
+ *
+ * @since 2.0.0
+ */
 class CollectionValidator implements CollectionValidationInterface
 {
+    /** {@inheritdoc} */
     public function validateNonNullValue($value): void
     {
         if ($value === null)
@@ -24,6 +30,7 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
+    /** {@inheritdoc} */
     public function validateOffsetExists($offset, AbstractCollection $collection): void
     {
         if ($collection->offsetExists($offset) === false)
@@ -32,6 +39,7 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
+    /** {@inheritdoc} */
     public function validateIntValue($value): void
     {
         if (is_int($value) === false)
@@ -45,6 +53,7 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
+    /** {@inheritdoc} */
     public function validateStringValue($value): void
     {
         if (is_string($value) === false)
@@ -53,6 +62,7 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
+    /** {@inheritdoc} */
     public function validateNonEmptyAcceptedType(string $acceptedType): void
     {
         if ($acceptedType == '')
@@ -61,6 +71,7 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
+    /** {@inheritdoc} */
     public function validateValueIsAcceptedType($value, string $acceptedType): void
     {
         if ($this->notAcceptedType($value, $acceptedType))
@@ -75,6 +86,7 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
+    /** {@inheritdoc} */
     private function notAcceptedType($value, string $acceptedType)
     {
         return ($value instanceof $acceptedType) === false;
