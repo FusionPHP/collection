@@ -1,19 +1,19 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jwalker
- * Date: 5/22/2018
- * Time: 9:27 AM
+ * Part of the Fusion.Collection package.
+ *
+ * @license MIT
  */
 
-namespace Fusion\Collection;
+declare(strict_types=1);
 
+namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionValidationInterface;
 
 class CollectionFactory
 {
-    /** @var \Fusion\Collection\Contracts\CollectionValidationInterface */
     private static $cachedValidator;
 
     private static function getValidator(): CollectionValidationInterface

@@ -1,9 +1,9 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jwalker
- * Date: 5/22/2018
- * Time: 9:23 AM
+ * Part of the Fusion.Collection package test suite.
+ *
+ * @license MIT
  */
 
 namespace Fusion\Collection\Tests;

@@ -20,11 +20,7 @@ use Iterator;
  */
 abstract class AbstractCollection implements CollectionCoreInterface, ArrayAccess, Iterator
 {
-    /**
-     * The internal collection container.
-     *
-     * @var array
-     */
+    /** @var array */
     protected $collection = [];
 
     /** @var \Fusion\Collection\Contracts\CollectionValidationInterface */
