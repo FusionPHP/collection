@@ -13,7 +13,6 @@ namespace Fusion\Collection;
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
 use Fusion\Collection\Contracts\CollectionValidationInterface;
-use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * An implementation of a collection.
@@ -50,7 +49,7 @@ class Collection extends AbstractCollection implements CollectionInterface
     /** {@inheritdoc} */
     public function add($value): CollectionInterface
     {
-        $this->throwExceptionIfValueIsNull($value);
+        $this->validator->validateNonNullValue($value);
         array_push($this->collection, $value);
         return $this;
     }
@@ -62,29 +61,11 @@ class Collection extends AbstractCollection implements CollectionInterface
         return $this;
     }
 
-    private function throwExceptionIfIdDoesNotExist(int $id): void
-    {
-        parent::throwExceptionIfOffsetDoesNotExist($id);
-    }
-
     /** {@inheritdoc} */
     public function find(int $key)
     {
-        $this->throwExceptionIfIdDoesNotExist($key);
+        $this->validator->validateOffsetExists($key, $this);
         return $this->offsetGet($key);
-    }
-
-    private function throwExceptionIfOffsetIsNotAnInteger($offset): void
-    {
-        if (is_int($offset) === false)
-        {
-            $message = sprintf(
-                'Collection offset type must be an integer. %s given.',
-                gettype($offset)
-            );
-
-            throw new CollectionException($message);
-        }
     }
 
     /**
@@ -104,8 +85,8 @@ class Collection extends AbstractCollection implements CollectionInterface
      */
     public function offsetGet($offset)
     {
-        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        parent::throwExceptionIfOffsetDoesNotExist($offset);
+        $this->validator->validateIntValue($offset);
+        $this->validator->validateOffsetExists($offset, $this);
         return parent::offsetGet($offset);
     }
 
@@ -127,8 +108,8 @@ class Collection extends AbstractCollection implements CollectionInterface
      */
     public function offsetSet($offset, $value): void
     {
-        $this->throwExceptionIfOffsetIsNotAnInteger($offset);
-        parent::throwExceptionIfOffsetDoesNotExist($offset);
+        $this->validator->validateIntValue($offset);
+        $this->validator->validateOffsetExists($offset, $this);
         parent::offsetSet($offset, $value);
     }
 }

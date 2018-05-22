@@ -12,7 +12,6 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionInterface;
 use Fusion\Collection\Contracts\CollectionValidationInterface;
-use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * An implementation of a type-specific collection.
@@ -45,11 +44,8 @@ class TypedCollection extends Collection
      */
     public function __construct(string $acceptedType, array $items = [], CollectionValidationInterface $validator)
     {
-        if ($acceptedType == '')
-        {
-            throw new CollectionException('Accepted type string cannot be empty.');
-        }
-
+        $this->validator = $validator;
+        $this->validator->validateNonEmptyAcceptedType($acceptedType);
         $this->acceptedType = $acceptedType;
         parent::__construct($items, $validator);
     }
@@ -68,7 +64,7 @@ class TypedCollection extends Collection
      */
     public function add($value): CollectionInterface
     {
-        $this->throwExceptionIfNotAcceptedType($value);
+        $this->validator->validateValueIsAcceptedType($value, $this->acceptedType);
         return parent::add($value);
     }
 
@@ -87,7 +83,7 @@ class TypedCollection extends Collection
      */
     public function replace(int $key, $value): CollectionInterface
     {
-        $this->throwExceptionIfNotAcceptedType($value);
+        $this->validator->validateValueIsAcceptedType($value, $this->acceptedType);
         return parent::replace($key, $value);
     }
 
@@ -109,26 +105,7 @@ class TypedCollection extends Collection
      */
     public function offsetSet($offset, $value): void
     {
-        $this->throwExceptionIfNotAcceptedType($value);
+        $this->validator->validateValueIsAcceptedType($value, $this->acceptedType);
         parent::offsetSet($offset, $value);
-    }
-
-    private function throwExceptionIfNotAcceptedType($object): void
-    {
-        if ($this->notAcceptedType($object))
-        {
-            $message = sprintf(
-                'Unable to modify collection. Only instances of type "%s" are allowed. Type "%s" given.',
-                $this->acceptedType,
-                is_object($object) ? get_class($object) : gettype($object)
-            );
-
-            throw new CollectionException($message);
-        }
-    }
-
-    private function notAcceptedType($value)
-    {
-        return ($value instanceof $this->acceptedType) === false;
     }
 }
