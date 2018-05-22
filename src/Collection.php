@@ -12,6 +12,7 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
+use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
 /**
@@ -36,8 +37,10 @@ class Collection extends AbstractCollection implements CollectionInterface
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(array $items = [])
+    public function __construct(array $items = [], CollectionValidationInterface $validator)
     {
+        $this->validator = $validator;
+
         foreach ($items as $item)
         {
             $this->add($item);

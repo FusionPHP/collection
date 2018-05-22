@@ -28,6 +28,9 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
      */
     protected $collection = [];
 
+    /** @var \Fusion\Collection\Contracts\CollectionValidationInterface */
+    protected $validator;
+
     /** {@inheritdoc} */
     public function clear(): void
     {

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionInterface;
+use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 
 /**
@@ -42,7 +43,7 @@ class TypedCollection extends Collection
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(string $acceptedType, array $items = [])
+    public function __construct(string $acceptedType, array $items = [], CollectionValidationInterface $validator)
     {
         if ($acceptedType == '')
         {
@@ -50,7 +51,7 @@ class TypedCollection extends Collection
         }
 
         $this->acceptedType = $acceptedType;
-        parent::__construct($items);
+        parent::__construct($items, $validator);
     }
 
     /**

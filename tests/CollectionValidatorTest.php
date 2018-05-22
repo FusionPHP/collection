@@ -8,7 +8,7 @@
 
 namespace Fusion\Collection\Tests;
 
-use Fusion\Collection\Collection;
+use Fusion\Collection\CollectionFactory;
 use Fusion\Collection\CollectionValidator;
 use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,7 @@ class CollectionValidatorTest extends TestCase
     public function setUp()
     {
         $this->validator = new CollectionValidator();
-        $this->collection = new Collection();
+        $this->collection = CollectionFactory::newCollection();
     }
 
     public function testExceptionThrownWhenValueIsNull()

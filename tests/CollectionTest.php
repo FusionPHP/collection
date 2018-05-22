@@ -9,14 +9,14 @@
 namespace Fusion\Collection\Tests;
 
 use Fusion\Collection\Collection;
+use Fusion\Collection\CollectionFactory;
+use Fusion\Collection\CollectionValidator;
 use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
 {
-    /**
-     * @var \Fusion\Collection\Collection
-     */
+    /** @var \Fusion\Collection\Collection */
     protected $collection;
 
     public function setUp()
@@ -31,7 +31,7 @@ class CollectionTest extends TestCase
 
     private function makeEmptyCollection()
     {
-        $this->collection = new Collection();
+        $this->collection = CollectionFactory::newCollection();
     }
 
     private function addFooBarBaz()
@@ -44,7 +44,10 @@ class CollectionTest extends TestCase
 
     public function testSetupOnConstruct()
     {
-        $this->collection = new Collection([PHP_INT_MAX, 'foo', M_PI, [], fopen('php://memory', 'r'), new \stdClass(), function () {}]);
+        $this->collection = new Collection(
+            [PHP_INT_MAX, 'foo', M_PI, [], fopen('php://memory', 'r'), new \stdClass(), function () {}],
+            new CollectionValidator()
+        );
 
         $expected = 7;
         $this->assertEquals($expected, $this->collection->count());
@@ -53,7 +56,7 @@ class CollectionTest extends TestCase
     public function testExceptionThrownAddingNullValueDuringConstructor()
     {
         $this->expectException(CollectionException::class);
-        $this->collection = new Collection([null]);
+        $this->collection = CollectionFactory::newCollection([null]);
     }
 
     public function testAddItems()
