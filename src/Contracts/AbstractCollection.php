@@ -53,9 +53,12 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
             {
                 array_splice($this->collection, $key, 1);
             }
-            else if (is_string($key))
+            else
             {
-                unset($this->collection[$key]);
+                if (is_string($key))
+                {
+                    unset($this->collection[$key]);
+                }
             }
         }
     }

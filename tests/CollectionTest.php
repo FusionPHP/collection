@@ -24,6 +24,7 @@ class CollectionTest extends TestCase
         $this->makeEmptyCollection();
         $this->addFooBarBaz();
     }
+
     public function tearDown()
     {
         $this->collection = null;
@@ -46,7 +47,16 @@ class CollectionTest extends TestCase
     {
         $this->collection = new Collection(
             new CollectionValidator(),
-            [PHP_INT_MAX, 'foo', M_PI, [], fopen('php://memory', 'r'), new \stdClass(), function () {}]
+            [
+                PHP_INT_MAX,
+                'foo',
+                M_PI,
+                [],
+                fopen('php://memory', 'r'),
+                new \stdClass(),
+                function () {
+                }
+            ]
         );
 
         $expected = 7;
@@ -101,7 +111,7 @@ class CollectionTest extends TestCase
         $expected = 3;
         $this->assertEquals($expected, $this->collection->count());
 
-        while($this->collection->count() > 0)
+        while ($this->collection->count() > 0)
         {
             $this->collection->removeAt(0);
         }

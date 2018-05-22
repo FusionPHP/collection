@@ -29,7 +29,10 @@ class TypedDictionaryTest extends TestCase
 
     public function testCreatingDictionaryWithItems()
     {
-        $items = ['foo' => new CrashTestDummy(), 'bar' => new CrashTestDummy()];
+        $items = [
+            'foo' => new CrashTestDummy(),
+            'bar' => new CrashTestDummy()
+        ];
         $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class, $items);
         $this->assertEquals(2, $dictionary->count());
     }
