@@ -32,11 +32,12 @@ class Collection extends AbstractCollection implements CollectionInterface
      *
      * If the starting items contain any `null` values, an exception will be thrown.
      *
+     * @param \Fusion\Collection\Contracts\CollectionValidationInterface $validator
      * @param array $items
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(array $items = [], CollectionValidationInterface $validator)
+    public function __construct(CollectionValidationInterface $validator, array $items = [])
     {
         $this->validator = $validator;
 

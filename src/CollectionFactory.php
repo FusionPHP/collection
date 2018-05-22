@@ -28,21 +28,21 @@ class CollectionFactory
 
     public static function newCollection(array $starterItems = []): Collection
     {
-        return new Collection($starterItems, self::getValidator());
+        return new Collection(self::getValidator(), $starterItems);
     }
 
     public static function newTypedCollection(string $acceptedType, array $starterItems = []): TypedCollection
     {
-        return new TypedCollection($acceptedType, $starterItems, self::getValidator());
+        return new TypedCollection(self::getValidator(), $acceptedType, $starterItems);
     }
 
     public static function newDictionary(array $starterItems = []): Dictionary
     {
-        return new Dictionary($starterItems, self::getValidator());
+        return new Dictionary(self::getValidator(), $starterItems);
     }
 
     public static function newTypedDictionary(string $acceptedType, array $starterItems = []): TypedDictionary
     {
-        return new TypedDictionary($acceptedType, $starterItems, self::getValidator());
+        return new TypedDictionary(self::getValidator(), $acceptedType, $starterItems);
     }
 }

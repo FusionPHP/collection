@@ -45,8 +45,8 @@ class CollectionTest extends TestCase
     public function testSetupOnConstruct()
     {
         $this->collection = new Collection(
-            [PHP_INT_MAX, 'foo', M_PI, [], fopen('php://memory', 'r'), new \stdClass(), function () {}],
-            new CollectionValidator()
+            new CollectionValidator(),
+            [PHP_INT_MAX, 'foo', M_PI, [], fopen('php://memory', 'r'), new \stdClass(), function () {}]
         );
 
         $expected = 7;

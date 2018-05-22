@@ -35,11 +35,12 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      * This constructor with throw a `CollectionException` if any of the starter items contain a
      * `null` value.
      *
+     * @param \Fusion\Collection\Contracts\CollectionValidationInterface $validator
      * @param array $items
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(array $items = [], CollectionValidationInterface $validator)
+    public function __construct(CollectionValidationInterface $validator, array $items = [])
     {
         $this->validator = $validator;
 

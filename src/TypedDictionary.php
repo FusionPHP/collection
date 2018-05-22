@@ -38,16 +38,17 @@ class TypedDictionary extends Dictionary
      * is provided for `acceptedType` or if any of the starter items are not an instance of the
      * `acceptedType`.
      *
+     * @param \Fusion\Collection\Contracts\CollectionValidationInterface $validator
      * @param string $acceptedType The fully qualified name of instances the collection will accept.
      * @param array $items A set of items to populate the collection with.
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(string $acceptedType, array $items = [], CollectionValidationInterface $validator)
+    public function __construct(CollectionValidationInterface $validator ,string $acceptedType, array $items = [])
     {
         $validator->validateNonEmptyAcceptedType($acceptedType);
         $this->acceptedType = $acceptedType;
-        parent::__construct($items, $validator);
+        parent::__construct($validator, $items);
     }
 
     /**
