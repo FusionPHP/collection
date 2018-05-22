@@ -44,7 +44,7 @@ class TypedDictionary extends Dictionary
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
      */
-    public function __construct(CollectionValidationInterface $validator ,string $acceptedType, array $items = [])
+    public function __construct(CollectionValidationInterface $validator, string $acceptedType, array $items = [])
     {
         $validator->validateNonEmptyAcceptedType($acceptedType);
         $this->acceptedType = $acceptedType;
