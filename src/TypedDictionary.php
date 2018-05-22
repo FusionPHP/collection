@@ -12,7 +12,6 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Contracts\DictionaryInterface;
-use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * An implementation of a type-specific dictionary collection.
@@ -68,7 +67,7 @@ class TypedDictionary extends Dictionary
      */
     public function add(string $key, $value): DictionaryInterface
     {
-        $this->throwExceptionIfNotAcceptedType($value);
+        $this->validator->validateValueIsAcceptedType($value, $this->acceptedType);
         return parent::add($key, $value);
     }
 
@@ -76,25 +75,6 @@ class TypedDictionary extends Dictionary
     public function replace(string $key, $value): DictionaryInterface
     {
         return $this->add($key, $value);
-    }
-
-    private function throwExceptionIfNotAcceptedType($object): void
-    {
-        if ($this->notAcceptedType($object))
-        {
-            $message = sprintf(
-                'Unable to modify collection. Only instances of type "%s" are allowed. Type "%s" given.',
-                $this->acceptedType,
-                is_object($object) ? get_class($object) : gettype($object)
-            );
-
-            throw new CollectionException($message);
-        }
-    }
-
-    private function notAcceptedType($value): bool
-    {
-        return ($value instanceof $this->acceptedType) === false;
     }
 
     /**
@@ -114,7 +94,7 @@ class TypedDictionary extends Dictionary
      */
     public function offsetSet($offset, $value): void
     {
-        $this->throwExceptionIfNotAcceptedType($value);
+        $this->validator->validateValueIsAcceptedType($value, $this->acceptedType);
         parent::offsetSet($offset, $value);
     }
 }

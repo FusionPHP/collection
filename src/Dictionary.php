@@ -13,7 +13,6 @@ namespace Fusion\Collection;
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Contracts\DictionaryInterface;
-use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * An implementation of a dictionary collection.
@@ -66,14 +65,8 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
     /** {@inheritdoc} */
     public function find(string $key)
     {
-        $this->throwExceptionIfIdDoesNotExist($key);
+        $this->validator->validateOffsetExists($key, $this);
         return $this->offsetGet($key);
-    }
-
-    /** {@inheritdoc} */
-    protected function throwExceptionIfIdDoesNotExist(string $id): void
-    {
-        parent::throwExceptionIfOffsetDoesNotExist($id);
     }
 
     /**
@@ -92,8 +85,8 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      */
     public function offsetGet($offset)
     {
-        $this->throwExceptionIfOffsetIsNotAString($offset);
-        parent::throwExceptionIfOffsetDoesNotExist($offset);
+        $this->validator->validateStringValue($offset);
+        $this->validator->validateOffsetExists($offset, $this);
         return parent::offsetGet($offset);
     }
 
@@ -114,15 +107,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      */
     public function offsetSet($offset, $value): void
     {
-        $this->throwExceptionIfOffsetIsNotAString($offset);
+        $this->validator->validateStringValue($offset);
         parent::offsetSet($offset, $value);
-    }
-
-    private function throwExceptionIfOffsetIsNotAString($offset): void
-    {
-        if (is_string($offset) === false)
-        {
-            throw new CollectionException('Offset to access must be a string.');
-        }
     }
 }

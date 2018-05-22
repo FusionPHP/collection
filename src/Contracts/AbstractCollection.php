@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Fusion\Collection\Contracts;
 
-use Fusion\Collection\Exceptions\CollectionException;
 use ArrayAccess;
 use Iterator;
 
@@ -109,7 +108,7 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
      */
     public function offsetSet($offset, $value): void
     {
-        $this->throwExceptionIfValueIsNull($value);
+        $this->validator->validateNonNullValue($value);
         $this->collection[$offset] = $value;
     }
 
@@ -127,42 +126,6 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
         if ($this->offsetExists($offset))
         {
             $this->removeAt($offset);
-        }
-    }
-
-    /**
-     * Checks if a given value is `null` and throws an exception if so.
-     *
-     * @param mixed $value
-     *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
-     *
-     * @return void
-     */
-    protected function throwExceptionIfValueIsNull($value): void
-    {
-        if ($value === null)
-        {
-            throw new CollectionException('Collection operations will not accept null values.');
-        }
-    }
-
-    /**
-     * Checks if a given offset exists in the collection and throws and exception if it does not.
-     *
-     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetExists()
-     *
-     * @param mixed $offset
-     *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
-     *
-     * @return void
-     */
-    protected function throwExceptionIfOffsetDoesNotExist($offset): void
-    {
-        if ($this->offsetExists($offset) === false)
-        {
-            throw new CollectionException("The key '$offset' does not exist in the collection.");
         }
     }
 
