@@ -44,8 +44,7 @@ class TypedCollection extends Collection
      */
     public function __construct(string $acceptedType, array $items = [], CollectionValidationInterface $validator)
     {
-        $this->validator = $validator;
-        $this->validator->validateNonEmptyAcceptedType($acceptedType);
+        $validator->validateNonEmptyAcceptedType($acceptedType);
         $this->acceptedType = $acceptedType;
         parent::__construct($items, $validator);
     }
