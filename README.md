@@ -48,6 +48,7 @@ $collection = new Collection($items);
 
 var_dump($collection->count()); //int (3)
 ```
+
 As seen above, the `count()` method returns an integer with the number of items in the collection.
 The collection utilizes the [Countable](http://php.net/manual/en/countable.count.php) interface
 allowing you to obtain the collection size via the PHP `count()` method as an alternative means.
