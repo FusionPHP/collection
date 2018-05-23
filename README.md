@@ -42,7 +42,7 @@ scenario existing keys in the array are ignored.
 
 namespace App;
 
-use Fusion\Collection\Collection;
+use Fusion\Collection\CollectionFactory;
 
 require '../vendor/autoload.php';
 
