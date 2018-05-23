@@ -25,12 +25,39 @@ class CollectionFactoryTest extends TestCase
         $this->assertInstanceOf(Collection::class, $collection);
     }
 
+    public function testCreatingNewCollectionWithItems()
+    {
+        $collection = CollectionFactory::newCollection(
+            [
+                'foo',
+                'bar'
+            ]
+        );
+
+        $this->assertEquals(2, count($collection));
+        $this->assertInstanceOf(Collection::class, $collection);
+    }
+
     public function testCreatingNewEmptyTypedCollection()
     {
         $collection = CollectionFactory::newTypedCollection(CrashTestDummy::class);
 
         $this->assertEquals(0, count($collection));
         $this->assertInstanceOf(TypedCollection::class, $collection);
+    }
+
+    public function testCreatingNewTypedCollectionWithItems()
+    {
+        $collection = CollectionFactory::newTypedCollection(
+            CrashTestDummy::class,
+            [
+                new CrashTestDummy(),
+                new CrashTestDummy()
+            ]
+        );
+
+        $this->assertEquals(2, count($collection));
+        $this->assertInstanceOf(Collection::class, $collection);
     }
 
     public function testCreatingNewEmptyDictionary()
@@ -41,11 +68,38 @@ class CollectionFactoryTest extends TestCase
         $this->assertInstanceOf(Dictionary::class, $dictionary);
     }
 
+    public function testCreatingDictionaryWithItems()
+    {
+        $dictionary = CollectionFactory::newDictionary(
+            [
+                'foo' => 'bar',
+                'baz' => 'qux'
+            ]
+        );
+
+        $this->assertEquals(2, count($dictionary));
+        $this->assertInstanceOf(Dictionary::class, $dictionary);
+    }
+
     public function testCreatingNewEmptyTypedDictionary()
     {
         $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class);
 
         $this->assertEquals(0, count($dictionary));
         $this->assertInstanceOf(TypedDictionary::class, $dictionary);
+    }
+
+    public function testCreatingTypedDictionaryWithItems()
+    {
+        $dictionary = CollectionFactory::newTypedDictionary(
+            CrashTestDummy::class,
+            [
+                'foo' => new CrashTestDummy(),
+                'bar' => new CrashTestDummy()
+            ]
+        );
+
+        $this->assertEquals(2, count($dictionary));
+        $this->assertInstanceOf(Dictionary::class, $dictionary);
     }
 }
