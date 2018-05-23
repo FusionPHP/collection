@@ -22,6 +22,13 @@ The library provides two different types of a collection. A basic object, simply
 and a `Dictionary`.  There are two variants of these called `TypedCollection` and `TypedDictionary`
 which are meant for storing instances of specific object types.
 
+### Instantiation
+
+Creating any of the collection objects this library provides can be done via constructor or with
+the `CollectionFactory` class. The remainder of this section will assume the usage of the
+`CollectionFactory` class to create collection objects. For information about instantiation via
+constructor please see the [Manual Instantiation](#manual_instantiation) section below.
+
 ### The Collection Class
 
 The `Collection` object will hold any value that a PHP array can hold, with the exception of `null` 
@@ -39,12 +46,12 @@ use Fusion\Collection\Collection;
 
 require '../vendor/autoload.php';
 
-$collection = new Collection(); //empty
+$collection = CollectionFactory::newCollection(); //empty
 
 // ... or ...
 
 $items = ['foo', 'bar', 'baz'];    
-$collection = new Collection($items);
+$collection = CollectionFactory::newCollection($items);
 
 var_dump($collection->count()); //int (3)
 ```
@@ -66,7 +73,7 @@ $collection->add(42);
 Use the `find()` method with an existing index to retrieve a value from the collection.
 
 ```php
-$collection = new Collection(['foo', 'bar', 'baz']);
+$collection = CollectionFactory::newCollection(['foo', 'bar', 'baz']);
 var_dump($collection->find(1)); //string 'bar'
 ```
 
@@ -74,14 +81,14 @@ The collection can have values replaced by calling the `replace()` method and pr
 of the value to be replaced and the replacement value.
 
 ```php
-$collection = new Collection(['foo', 'bar', 'baz']);
+$collection = CollectionFactory::newCollection(['foo', 'bar', 'baz']);
 $collection->replace(1, 'bam'); //Collection is now ['foo', 'bam', 'baz']
 ```
 
 To remove items from the collection use the `remove()` method passing in the value to remove.
 
 ```php 
-$collection = new Collection(['foo', 'bar', 'baz']);
+$collection = CollectionFactory::newCollection(['foo', 'bar', 'baz']);
 $collection->remove('foo'); //count() == 2
 ```
 
@@ -90,7 +97,7 @@ that any duplicates of literal values or objects of the *same* instance are also
 a specific value use the `removeAt()` method passing in the numerical index of the value's location.
 
 ```php
-$collection = new Collection(['foo', 'bar', 'baz']);
+$collection = CollectionFactory::newCollection(['foo', 'bar', 'baz']);
 $collection->removeAt(1); //Collection is now [0 => 'foo', 1 => 'baz');
 ```
     
@@ -100,7 +107,7 @@ update closing any gaps in the index sequence.
 To empty out a collection simply call the `clear()` method.
 
 ```php
-$collection = new Collection(['foo', 'bar', 'baz']);
+$collection = CollectionFactory::newCollection(['foo', 'bar', 'baz']);
 $collection->clear();
 var_dump($collection->count()); //int (0)
 ```
@@ -112,7 +119,7 @@ and [Iterator](http://php.net/manual/en/class.iterator.php). This means that you
 collection as the subject of a `for` or `foreach`.
 
 ```php
-$collection = new Collection(['foo', 'bar', 'baz']);
+$collection = CollectionFactory::newCollection(['foo', 'bar', 'baz']);
 
 for ($i = 0; $i < count($collection); $i++)
 {
@@ -129,7 +136,7 @@ foreach ($collection as $key => $value)
 You can also access items and replace items directly via their index if they already exist.
 
 ```php
-$collection = new Collection(['foo', 'bar', 'baz']);
+$collection = CollectionFactory::newCollection(['foo', 'bar', 'baz']);
 
 var_dump($collection[2]); //string 'baz'
 $collection[2] = 'qux'; //same as calling $collection->replace(2, 'qux');
@@ -155,16 +162,16 @@ scenario existing keys in the array are not ignored, but they must be strings.
 
 namespace App;
 
-use Fusion\Collection\Dictionary;
+use Fusion\Collection\CollectionFactory;
 
 require '../vendor/autoload.php';
 
-$dictionary = new Dictionary(); //empty
+$dictionary = CollectionFactory::newDictionary(); //empty
 
 // ... or ...
 
 $items = ['foo' => 'bar', 'baz' => 'bam'];    
-$dictionary = new Dictionary($items);
+$dictionary = CollectionFactory::newDictionary($items);
 
 var_dump($dictionary->count()); //int (2)
 ```
@@ -198,7 +205,7 @@ The `Dictionary` class also leverages the [ArrayAccess](http://php.net/manual/en
 and [Iterator](http://php.net/manual/en/class.iterator.php) interfaces allowing looping.
 
 ```php
-$dictionary = new Dictionary(['foo1' => 'bar', 'foo2' => 'bam']);
+$dictionary = CollectionFactory::newDictionary(['foo1' => 'bar', 'foo2' => 'bam']);
 
 for ($i = 1; $i <= count($dictionary); $i++)
 {
@@ -216,7 +223,7 @@ foreach ($dictionary as $key => $value)
 The values in a `Dictionary` can also be accessed directly via their key offset.
 
 ```php
-$dictionary = new Dictionary(['foo' => 'bar', 'baz' => 'bam']);
+$dictionary = CollectionFactory::newDictionary(['foo' => 'bar', 'baz' => 'bam']);
 var_dump($dictionary['baz']); //string 'bam'
 ```
 
@@ -248,13 +255,13 @@ instantiation is the *fully qualified name* of the class or interface that is ac
 
 namespace App;
 
-use Fusion\Collection\TypedCollection;
+use Fusion\Collection\CollectionFactory;
 
 require '../vendor/autoload.php';
 
 class Apple { /* ... */ }
 
-$apples = new TypedCollection(Apple::class);
+$apples = CollectionFactory::newTypedCollection(Apple::class);
 
 //Only instances of Apple are allowed
 $apples->add(new Apple())
@@ -266,7 +273,7 @@ var_dump(count($apples)); //int (3)
 // ... or ...
 
 $setOfApples = [new Apple(), new Apple(), new Apple()];
-$apples = new TypedCollection(Apple::class, $setOfApples);
+$apples = CollectionFactory::newTypedCollection(Apple::class, $setOfApples);
 var_dump(count($apples)); //int (3)
 ```
 
@@ -277,7 +284,7 @@ The `TypedDictionary` variant is similar, however string keys are required.
     
 namespace App;
     
-use Fusion\Collection\TypedDictionary;
+use Fusion\Collection\CollectionFactory;
 
 require '../vendor/autoload.php';
 
@@ -287,7 +294,7 @@ class RedDelicious implements AppleInterface { /* ... */ }
 class GrannySmith implements AppleInterface { /* ... */ }
 class Gala implements AppleInterface { /* ... */ }
 
-$appleBasket = new TypedDictionary(AppleInterface::class);
+$appleBasket = CollectionFactory::newTypedDictionary(AppleInterface::class);
 
 $appleBasket->add('redDelicious', new RedDelicious())
             ->add('grannySmith', new GrannySmith())
@@ -301,6 +308,7 @@ As with the standard `Collection` and `Dictionary` classes, `null` values are no
 The library defines the exception `CollectionException`, which is thrown in the following cases:
 
 #### `Collection`
+
 - Adding a `null` value.
 - Replacing an existing value with `null`.
 - Using `find()` with an index that is not in the collection.
@@ -308,10 +316,12 @@ The library defines the exception `CollectionException`, which is thrown in the 
 - Accessing an index that is not an integer.
 
 #### `TypedCollection`
+
 - Same conditions as `Collection` apply.
 - Adding an instance to the collection (or replacing) that does not match the accepted type.
 
 #### `Dictionary`
+
 - Adding a `null` value.
 - Replacing an existing value with `null`.
 - Using `find()` with a key that is not in the collection.
@@ -319,5 +329,42 @@ The library defines the exception `CollectionException`, which is thrown in the 
 - Accessing a key that is not a string.
 
 #### `TypedDictionary`
+
 - Same conditions as `Dictionary` apply.
 - Adding an instance to the dictionary (or replacing) that does not match the accepted type.
+
+### <a name="manual_instantiation"></a>Manual Instantiation
+
+Each of the collection objects in this library can be instantiated manually using their constructor
+versus the `CollectionFactory` class. The constructor signatures are similar to those found in the
+factory versions with the exception of an added parameter, an instance of the 
+`CollectionValidationInterface`, which takes care of integrity checks for collection operations.
+
+Each of the constructor signatures are as follows:
+
+- `Collection`: `__construct(CollectionValidationInterface $validator, array $items = []);`
+- `Dictionary`: `__construct(CollectionValidationInterface $validator, array $items = []);`
+- `TypedCollection`: `__construct(CollectionValidationInterface $validator, string $acceptedType, array $items = []);`
+- `TypedDictionary`: `__construct(CollectionValidationInterface $validator, string $acceptedType, array $items = []);`
+
+The library provides an implementation of the `CollectionValidationInterface` in the form of the
+`CollectionValidator` class. Below is the alternative method of creating collection objects:
+
+```php
+<?php
+
+namespace App;
+
+use Fusion\Collection\Collection;
+use Fusion\Collection\CollectionValidator;
+
+require '../vendor/autoload.php';
+
+$validator = new CollectionValidator();
+$collection = new Collection($validator, ['foo', 'bar', 'baz']);
+
+var_dump(count($collection)); //int (3)
+```
+
+The above pattern holds true for the remaining collection objects. Simply create an instance of the
+`CollectionValidationInterface` and pass it as the first parameter to the constructor.
