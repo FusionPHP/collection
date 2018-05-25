@@ -10,6 +10,11 @@ declare(strict_types=1);
 
 namespace Fusion\Collection\Contracts;
 
+/**
+ * Defines the interface of the basic functionality for a class that holds a dictionary of items.
+ *
+ * @since 1.0.0
+ */
 interface DictionaryInterface extends CollectionCoreInterface
 {
     /**

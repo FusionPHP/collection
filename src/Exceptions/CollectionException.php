@@ -14,6 +14,8 @@ use Exception;
 
 /**
  * Exception class used to specify collections thrown directly by the Fusion.Collection package.
+ *
+ * @since 1.0.0
  */
 class CollectionException extends Exception
 {

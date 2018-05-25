@@ -12,6 +12,8 @@ namespace Fusion\Collection\Contracts;
 
 /**
  * Defines the interface of the basic functionality for a class that holds a collection of items.
+ *
+ * @since 1.0.0
  */
 interface CollectionInterface extends CollectionCoreInterface
 {

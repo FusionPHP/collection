@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Fusion\Collection\Contracts;
 
 /**
- * Interface CollectionValidationInterface
+ * Defines common methods used by collections to validate the integrity of input and operations.
  *
  * @since 2.0.0
  */
