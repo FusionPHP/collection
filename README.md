@@ -342,10 +342,10 @@ factory versions with the exception of an added parameter, an instance of the
 
 Each of the constructor signatures are as follows:
 
-- `Collection`: `__construct(CollectionValidationInterface $validator, array $items = []);`
-- `Dictionary`: `__construct(CollectionValidationInterface $validator, array $items = []);`
-- `TypedCollection`: `__construct(CollectionValidationInterface $validator, string $acceptedType, array $items = []);`
-- `TypedDictionary`: `__construct(CollectionValidationInterface $validator, string $acceptedType, array $items = []);`
+- `Collection::__construct(CollectionValidationInterface $validator, array $items = []);`
+- `Dictionary::__construct(CollectionValidationInterface $validator, array $items = []);`
+- `TypedCollection::__construct(CollectionValidationInterface $validator, string $acceptedType, array $items = []);`
+- `TypedDictionary::__construct(CollectionValidationInterface $validator, string $acceptedType, array $items = []);`
 
 The library provides an implementation of the `CollectionValidationInterface` in the form of the
 `CollectionValidator` class. Below is the alternative method of creating collection objects:
