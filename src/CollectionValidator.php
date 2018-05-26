@@ -86,7 +86,6 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
-    /** {@inheritdoc} */
     private function notAcceptedType($value, string $acceptedType)
     {
         return ($value instanceof $acceptedType) === false;
