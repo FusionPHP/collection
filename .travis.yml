@@ -6,7 +6,7 @@ before_script:
   - composer self-update
   - composer install
 script:
-  - vendor/bin/phpunit -c phpunit.xml -dxdebug.mode=coverage --coverage-clover=coverage.clover
+  - vendor/bin/phpunit -c phpunit.xml -dxdebug.coverage_enabled=1 -dxdebug.mode=coverage --coverage-clover
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
