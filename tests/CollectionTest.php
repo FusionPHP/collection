@@ -20,7 +20,7 @@ class CollectionTest extends TestCase
     /** @var Collection */
     protected Collection $collection;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->makeEmptyCollection();
         $this->addFooBarBaz();

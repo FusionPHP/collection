@@ -24,7 +24,7 @@ class CollectionValidatorTest extends TestCase
     /** @var Collection */
     private Collection $collection;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->validator = new CollectionValidator();
         $this->collection = CollectionFactory::newCollection();
@@ -36,21 +36,9 @@ class CollectionValidatorTest extends TestCase
         $this->validator->validateNonNullValue(null);
     }
 
-    public function testNoExceptionThrownWhenValueIsNotNull()
-    {
-        $this->validator->validateNonNullValue('foo');
-    }
-
     public function testExceptionThrownWhenOffsetDoesNotExist()
     {
         $this->expectException(CollectionException::class);
-        $this->validator->validateOffsetExists(1, $this->collection);
-    }
-
-    public function testNoExceptionThrownWhenOffsetExists()
-    {
-        $this->collection->add('foo');
-        $this->collection->add('bar');
         $this->validator->validateOffsetExists(1, $this->collection);
     }
 
@@ -60,20 +48,10 @@ class CollectionValidatorTest extends TestCase
         $this->validator->validateIntValue('foo');
     }
 
-    public function testNoExceptionThrownWhenOffsetIsAnInteger()
-    {
-        $this->validator->validateIntValue(1);
-    }
-
     public function testExceptionThrownWhenOffsetIsNotAString()
     {
         $this->expectException(CollectionException::class);
         $this->validator->validateStringValue(1);
-    }
-
-    public function testNoExceptionThrownWhenOffsetIsAString()
-    {
-        $this->validator->validateStringValue('foo');
     }
 
     public function testExceptionThrownWhenAcceptedTypeIsEmpty()
@@ -82,19 +60,9 @@ class CollectionValidatorTest extends TestCase
         $this->validator->validateNonEmptyAcceptedType('');
     }
 
-    public function testNoExceptionThrownWhenAcceptedTypeIsPopulated()
-    {
-        $this->validator->validateNonEmptyAcceptedType('foo');
-    }
-
     public function testExceptionThrownWhenValueIsNotAcceptedType()
     {
         $this->expectException(CollectionException::class);
         $this->validator->validateValueIsAcceptedType(new stdClass(), CrashTestDummy::class);
-    }
-
-    public function testNoExceptionThrownWhenValueIsAcceptedType()
-    {
-        $this->validator->validateValueIsAcceptedType(new CrashTestDummy(), CrashTestDummy::class);
     }
 }

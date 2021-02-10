@@ -1,6 +1,6 @@
 {
     "name" : "fusion-php/collection",
-    "description": "A small collection library for PHP 7.1+",
+    "description": "A small collection library for PHP 7.4+",
     "type": "library",
     "keywords": ["collection"],
     "homepage": "https://github.com/FusionPHP/collection",
@@ -14,11 +14,11 @@
     "license": "MIT",
     "require":
     {
-        "php" : ">=7.1"
+        "php" : ">=7.4"
     },
     "require-dev":
     {
-        "phpunit/phpunit": "^7"
+        "phpunit/phpunit": "^9"
     },
     "autoload":
     {

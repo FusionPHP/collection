@@ -20,12 +20,12 @@ class DictionaryTest extends TestCase
 
     private string $collectionException = CollectionException::class;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->dictionary = CollectionFactory::newDictionary();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->dictionary);
     }

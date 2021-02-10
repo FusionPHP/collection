@@ -20,7 +20,7 @@ use Fusion\Collection\Exceptions\CollectionException;
  */
 class CollectionFactory
 {
-    private static CollectionValidationInterface $cachedValidator;
+    private static ?CollectionValidationInterface $cachedValidator = null;
 
     private static function getValidator(): CollectionValidationInterface
     {

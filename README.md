@@ -7,7 +7,7 @@ This package provides a small collection library useful for aggregating data val
 Stored values can be accessed via methods, loops, or as an array.
 
 ## Requirements
-PHP 7.1 or greater.
+PHP 7.4 or greater.
 
 ## Installation
 
