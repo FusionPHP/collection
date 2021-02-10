@@ -1,5 +1,4 @@
 .idea
 composer.phar
 /vendor
-sami.phar
-sami_config.php
+coverage.clover
