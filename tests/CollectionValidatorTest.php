@@ -8,19 +8,21 @@
 
 namespace Fusion\Collection\Tests;
 
+use Fusion\Collection\Collection;
 use Fusion\Collection\CollectionFactory;
 use Fusion\Collection\CollectionValidator;
+use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class CollectionValidatorTest extends TestCase
 {
-    /** @var \Fusion\Collection\Contracts\CollectionValidationInterface */
+    /** @var CollectionValidationInterface */
     private $validator;
 
-    /** @var \Fusion\Collection\Collection */
-    private $collection;
+    /** @var Collection */
+    private Collection $collection;
 
     public function setUp()
     {

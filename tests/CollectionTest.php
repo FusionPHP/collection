@@ -17,18 +17,13 @@ use stdClass;
 
 class CollectionTest extends TestCase
 {
-    /** @var \Fusion\Collection\Collection */
-    protected $collection;
+    /** @var Collection */
+    protected Collection $collection;
 
     public function setUp()
     {
         $this->makeEmptyCollection();
         $this->addFooBarBaz();
-    }
-
-    public function tearDown()
-    {
-        $this->collection = null;
     }
 
     private function makeEmptyCollection()

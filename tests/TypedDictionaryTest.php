@@ -11,6 +11,7 @@ namespace Fusion\Collection\Tests;
 use Fusion\Collection\CollectionFactory;
 use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class TypedDictionaryTest extends TestCase
 {
@@ -40,7 +41,7 @@ class TypedDictionaryTest extends TestCase
     public function testExceptionThrownCreatingDictionaryWithBadValue()
     {
         $this->expectException(CollectionException::class);
-        $items = ['foo' => new \stdClass()];
+        $items = ['foo' => new stdClass()];
         CollectionFactory::newTypedDictionary(CrashTestDummy::class, $items);
     }
 
@@ -62,14 +63,14 @@ class TypedDictionaryTest extends TestCase
     {
         $this->expectException(CollectionException::class);
         $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class, ['crash' => new CrashTestDummy()]);
-        $dictionary->replace('crash', new \stdClass());
+        $dictionary->replace('crash', new stdClass());
     }
 
     public function testExceptionThrownSettingOffsetWithNullValue()
     {
         $this->expectException(CollectionException::class);
         $dictionary = CollectionFactory::newTypedDictionary(CrashTestDummy::class);
-        $dictionary['foo'] = new \stdClass();
+        $dictionary['foo'] = new stdClass();
     }
 
     public function testSettingValueAtOffset()

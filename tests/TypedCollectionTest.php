@@ -11,6 +11,7 @@ namespace Fusion\Collection\Tests;
 use Fusion\Collection\CollectionFactory;
 use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class TypedCollectionTest extends TestCase
 {
@@ -110,7 +111,7 @@ class TypedCollectionTest extends TestCase
     {
         $this->expectException(CollectionException::class);
         $collection = CollectionFactory::newTypedCollection(CrashTestDummy::class, [new CrashTestDummy()]);
-        $collection->replace(0, new \stdClass());
+        $collection->replace(0, new stdClass());
     }
 
     public function testReplacingInstance()

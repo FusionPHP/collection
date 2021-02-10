@@ -68,7 +68,7 @@ class DictionaryTest extends TestCase
         $this->assertEquals($expectedSize, $this->dictionary->count());
     }
 
-    public function testReplacingExisitingItemViaOffset()
+    public function testReplacingExistingItemViaOffset()
     {
         $this->dictionary->add('foo', 'bar');
         $expectedValue = 'baz';
