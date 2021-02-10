@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Fusion\Collection\Contracts;
 
+use Fusion\Collection\Exceptions\CollectionException;
+
 /**
  * Defines the interface of the basic functionality for a class that holds a dictionary of items.
  *
@@ -25,9 +27,9 @@ interface DictionaryInterface extends CollectionCoreInterface
      * @param string $key
      * @param $value
      *
-     * @return \Fusion\Collection\Contracts\DictionaryInterface
+     * @return DictionaryInterface
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function add(string $key, $value): DictionaryInterface;
 
@@ -39,9 +41,9 @@ interface DictionaryInterface extends CollectionCoreInterface
      * @param string $key
      * @param $value
      *
-     * @return \Fusion\Collection\Contracts\DictionaryInterface
+     * @return DictionaryInterface
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function replace(string $key, $value): DictionaryInterface;
 
@@ -54,7 +56,7 @@ interface DictionaryInterface extends CollectionCoreInterface
      *
      * @return mixed
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function find(string $key);
 }

@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Fusion\Collection\Contracts;
 
+use Fusion\Collection\Exceptions\CollectionException;
+
 /**
  * Defines common methods used by collections to validate the integrity of input and operations.
  *
@@ -22,7 +24,7 @@ interface CollectionValidationInterface
      *
      * @param $value
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function validateNonNullValue($value): void;
 
@@ -31,9 +33,9 @@ interface CollectionValidationInterface
      * `CollectionException` otherwise.
      *
      * @param $offset
-     * @param \Fusion\Collection\Contracts\AbstractCollection $collection
+     * @param AbstractCollection $collection
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function validateOffsetExists($offset, AbstractCollection $collection): void;
 
@@ -42,7 +44,7 @@ interface CollectionValidationInterface
      *
      * @param $value
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function validateIntValue($value): void;
 
@@ -51,7 +53,7 @@ interface CollectionValidationInterface
      *
      * @param $value
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function validateStringValue($value): void;
 
@@ -61,7 +63,7 @@ interface CollectionValidationInterface
      *
      * @param string $acceptedType
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function validateNonEmptyAcceptedType(string $acceptedType): void;
 
@@ -72,7 +74,7 @@ interface CollectionValidationInterface
      * @param $value
      * @param string $acceptedType
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function validateValueIsAcceptedType($value, string $acceptedType): void;
 }

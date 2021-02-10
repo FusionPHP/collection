@@ -13,6 +13,7 @@ namespace Fusion\Collection;
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionInterface;
 use Fusion\Collection\Contracts\CollectionValidationInterface;
+use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * An implementation of a collection.
@@ -32,10 +33,10 @@ class Collection extends AbstractCollection implements CollectionInterface
      *
      * If the starting items contain any `null` values, an exception will be thrown.
      *
-     * @param \Fusion\Collection\Contracts\CollectionValidationInterface $validator
+     * @param CollectionValidationInterface $validator
      * @param array $items
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function __construct(CollectionValidationInterface $validator, array $items = [])
     {
@@ -78,7 +79,7 @@ class Collection extends AbstractCollection implements CollectionInterface
      *
      * @return mixed
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @link http://php.net/manual/en/arrayaccess.offsetget.php
      *
      * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
@@ -101,7 +102,7 @@ class Collection extends AbstractCollection implements CollectionInterface
      *
      * @return void
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      *

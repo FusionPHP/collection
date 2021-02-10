@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionValidationInterface;
+use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * Factory class to ease instantiation of collection and dictionary objects.
@@ -19,7 +20,7 @@ use Fusion\Collection\Contracts\CollectionValidationInterface;
  */
 class CollectionFactory
 {
-    private static $cachedValidator;
+    private static CollectionValidationInterface $cachedValidator;
 
     private static function getValidator(): CollectionValidationInterface
     {
@@ -35,9 +36,9 @@ class CollectionFactory
      *
      * @param array $starterItems
      *
-     * @return \Fusion\Collection\Collection
+     * @return Collection
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\Collection::__construct()
      *
      */
@@ -52,9 +53,9 @@ class CollectionFactory
      * @param string $acceptedType
      * @param array $starterItems
      *
-     * @return \Fusion\Collection\TypedCollection
+     * @return TypedCollection
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\TypedCollection::__construct()
      *
      */
@@ -68,9 +69,9 @@ class CollectionFactory
      *
      * @param array $starterItems
      *
-     * @return \Fusion\Collection\Dictionary
+     * @return Dictionary
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\Dictionary::__construct()
      *
      */
@@ -85,8 +86,8 @@ class CollectionFactory
      * @param string $acceptedType
      * @param array $starterItems
      *
-     * @return \Fusion\Collection\TypedDictionary
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @return TypedDictionary
+     * @throws CollectionException
      * @see \Fusion\Collection\TypedDictionary::__construct()
      *
      */

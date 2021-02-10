@@ -80,7 +80,7 @@ class CollectionValidator implements CollectionValidationInterface
         }
     }
 
-    private function notAcceptedType($value, string $acceptedType)
+    private function notAcceptedType($value, string $acceptedType): bool
     {
         return ($value instanceof $acceptedType) === false;
     }

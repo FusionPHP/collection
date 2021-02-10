@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Fusion\Collection\Contracts;
 
 use ArrayAccess;
+use Fusion\Collection\Exceptions\CollectionException;
 use Iterator;
 
 /**
@@ -21,10 +22,10 @@ use Iterator;
 abstract class AbstractCollection implements CollectionCoreInterface, ArrayAccess, Iterator
 {
     /** @var array */
-    protected $collection = [];
+    protected array $collection = [];
 
-    /** @var \Fusion\Collection\Contracts\CollectionValidationInterface */
-    protected $validator;
+    /** @var CollectionValidationInterface */
+    protected CollectionValidationInterface $validator;
 
     /** {@inheritdoc} */
     public function clear(): void
@@ -48,8 +49,10 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
         if ($this->offsetExists($key)) {
             if (is_int($key)) {
                 array_splice($this->collection, $key, 1);
-            } else if (is_string($key)) {
-                unset($this->collection[$key]);
+            } else {
+                if (is_string($key)) {
+                    unset($this->collection[$key]);
+                }
             }
         }
     }
@@ -63,7 +66,7 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
      *
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->collection);
     }
@@ -94,7 +97,7 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
      *
      * @return void
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function offsetSet($offset, $value): void
     {

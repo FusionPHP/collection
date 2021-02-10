@@ -12,6 +12,7 @@ namespace Fusion\Collection;
 
 use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Contracts\DictionaryInterface;
+use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * An implementation of a type-specific dictionary collection.
@@ -28,7 +29,7 @@ use Fusion\Collection\Contracts\DictionaryInterface;
  */
 class TypedDictionary extends Dictionary
 {
-    private $acceptedType;
+    private string $acceptedType;
 
     /**
      * Creates a new `TypedDictionary` instance with an optional set of starter items.
@@ -38,11 +39,11 @@ class TypedDictionary extends Dictionary
      * is provided for `acceptedType` or if any of the starter items are not an instance of the
      * `acceptedType`.
      *
-     * @param \Fusion\Collection\Contracts\CollectionValidationInterface $validator
+     * @param CollectionValidationInterface $validator
      * @param string $acceptedType The fully qualified name of instances the collection will accept.
      * @param array $items A set of items to populate the collection with.
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function __construct(CollectionValidationInterface $validator, string $acceptedType, array $items = [])
     {
@@ -60,9 +61,9 @@ class TypedDictionary extends Dictionary
      * @param string $key
      * @param $value
      *
-     * @return \Fusion\Collection\Contracts\DictionaryInterface
+     * @return DictionaryInterface
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\Dictionary::add()
      *
      */
@@ -89,7 +90,7 @@ class TypedDictionary extends Dictionary
      *
      * @return void
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\Dictionary::offsetSet()
      *
      */

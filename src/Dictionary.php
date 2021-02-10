@@ -13,6 +13,7 @@ namespace Fusion\Collection;
 use Fusion\Collection\Contracts\AbstractCollection;
 use Fusion\Collection\Contracts\CollectionValidationInterface;
 use Fusion\Collection\Contracts\DictionaryInterface;
+use Fusion\Collection\Exceptions\CollectionException;
 
 /**
  * An implementation of a dictionary collection.
@@ -35,10 +36,10 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      * This constructor with throw a `CollectionException` if any of the starter items contain a
      * `null` value.
      *
-     * @param \Fusion\Collection\Contracts\CollectionValidationInterface $validator
+     * @param CollectionValidationInterface $validator
      * @param array $items
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function __construct(CollectionValidationInterface $validator, array $items = [])
     {
@@ -79,7 +80,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      *
      * @return mixed
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
      *
      */
@@ -101,7 +102,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      *
      * @return void
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
      *
      */

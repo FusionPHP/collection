@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Fusion\Collection\Contracts;
 
+use Fusion\Collection\Exceptions\CollectionException;
+
 /**
  * Defines the interface of the basic functionality for a class that holds a collection of items.
  *
@@ -24,9 +26,9 @@ interface CollectionInterface extends CollectionCoreInterface
      *
      * @param mixed $value
      *
-     * @return \Fusion\Collection\Contracts\CollectionInterface
+     * @return CollectionInterface
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function add($value): CollectionInterface;
 
@@ -39,9 +41,9 @@ interface CollectionInterface extends CollectionCoreInterface
      * @param int $key
      * @param mixed $value
      *
-     * @return \Fusion\Collection\Contracts\CollectionInterface
+     * @return CollectionInterface
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function replace(int $key, $value): CollectionInterface;
 
@@ -55,7 +57,7 @@ interface CollectionInterface extends CollectionCoreInterface
      *
      * @return mixed
      *
-     * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function find(int $key);
 }
