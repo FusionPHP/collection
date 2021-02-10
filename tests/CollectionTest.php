@@ -13,6 +13,7 @@ use Fusion\Collection\CollectionFactory;
 use Fusion\Collection\CollectionValidator;
 use Fusion\Collection\Exceptions\CollectionException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class CollectionTest extends TestCase
 {
@@ -53,7 +54,7 @@ class CollectionTest extends TestCase
                 M_PI,
                 [],
                 fopen('php://memory', 'r'),
-                new \stdClass(),
+                new stdClass(),
                 function () {
                 }
             ]
@@ -111,8 +112,7 @@ class CollectionTest extends TestCase
         $expected = 3;
         $this->assertEquals($expected, $this->collection->count());
 
-        while ($this->collection->count() > 0)
-        {
+        while ($this->collection->count() > 0) {
             $this->collection->removeAt(0);
         }
 

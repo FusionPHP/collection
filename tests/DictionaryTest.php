@@ -16,9 +16,9 @@ use PHPUnit\Framework\TestCase;
 class DictionaryTest extends TestCase
 {
     /** @var  Dictionary */
-    private $dictionary;
+    private Dictionary $dictionary;
 
-    private $collectionException = CollectionException::class;
+    private string $collectionException = CollectionException::class;
 
     public function setUp()
     {
@@ -97,8 +97,7 @@ class DictionaryTest extends TestCase
             ->add('baz', 'quam')
             ->add('qux', 'flam');
 
-        foreach ($this->dictionary as $key => $value)
-        {
+        foreach ($this->dictionary as $key => $value) {
             $this->assertTrue($this->dictionary->valid());
         }
     }
