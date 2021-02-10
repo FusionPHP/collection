@@ -24,8 +24,7 @@ class CollectionValidator implements CollectionValidationInterface
     /** {@inheritdoc} */
     public function validateNonNullValue($value): void
     {
-        if ($value === null)
-        {
+        if ($value === null) {
             throw new CollectionException('Collection operations will not accept null values.');
         }
     }
@@ -33,8 +32,7 @@ class CollectionValidator implements CollectionValidationInterface
     /** {@inheritdoc} */
     public function validateOffsetExists($offset, AbstractCollection $collection): void
     {
-        if ($collection->offsetExists($offset) === false)
-        {
+        if ($collection->offsetExists($offset) === false) {
             throw new CollectionException("The key or index '$offset' does not exist in the collection.");
         }
     }
@@ -42,8 +40,7 @@ class CollectionValidator implements CollectionValidationInterface
     /** {@inheritdoc} */
     public function validateIntValue($value): void
     {
-        if (is_int($value) === false)
-        {
+        if (is_int($value) === false) {
             $message = sprintf(
                 'Collection offset type must be an integer. %s given.',
                 gettype($value)
@@ -56,8 +53,7 @@ class CollectionValidator implements CollectionValidationInterface
     /** {@inheritdoc} */
     public function validateStringValue($value): void
     {
-        if (is_string($value) === false)
-        {
+        if (is_string($value) === false) {
             throw new CollectionException('Offset to access must be a string.');
         }
     }
@@ -65,8 +61,7 @@ class CollectionValidator implements CollectionValidationInterface
     /** {@inheritdoc} */
     public function validateNonEmptyAcceptedType(string $acceptedType): void
     {
-        if ($acceptedType == '')
-        {
+        if ($acceptedType == '') {
             throw new CollectionException('Accepted type string cannot be empty.');
         }
     }
@@ -74,8 +69,7 @@ class CollectionValidator implements CollectionValidationInterface
     /** {@inheritdoc} */
     public function validateValueIsAcceptedType($value, string $acceptedType): void
     {
-        if ($this->notAcceptedType($value, $acceptedType))
-        {
+        if ($this->notAcceptedType($value, $acceptedType)) {
             $message = sprintf(
                 'Unable to modify collection. Only instances of type "%s" are allowed. Type "%s" given.',
                 $acceptedType,

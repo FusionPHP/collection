@@ -93,15 +93,15 @@ class TypedCollection extends Collection
      * This method will throw a `CollectionException` if the value is not an instance of the
      * accepted type, if the offset does not exist, or if the offset is not an integer.
      *
-     * @see \Fusion\Collection\Collection::offsetSet()
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
-     *
      * @param mixed $offset
      * @param mixed $value
      *
      * @return void
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Collection::offsetSet()
+     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     *
      */
     public function offsetSet($offset, $value): void
     {

@@ -57,14 +57,14 @@ class TypedDictionary extends Dictionary
      * This method will throw a `CollectionException` if the value given is not an instance of the
      * `acceptedType`.
      *
-     * @see \Fusion\Collection\Dictionary::add()
-     *
      * @param string $key
      * @param $value
      *
      * @return \Fusion\Collection\Contracts\DictionaryInterface
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Dictionary::add()
+     *
      */
     public function add(string $key, $value): DictionaryInterface
     {
@@ -84,14 +84,14 @@ class TypedDictionary extends Dictionary
      * This method will throw a `CollectionException` if the offset is not a string or if the value
      * is not an instance of the `acceptedType`.
      *
-     * @see \Fusion\Collection\Dictionary::offsetSet()
-     *
      * @param mixed $offset
      * @param mixed $value
      *
      * @return void
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Dictionary::offsetSet()
+     *
      */
     public function offsetSet($offset, $value): void
     {

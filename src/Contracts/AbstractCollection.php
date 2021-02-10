@@ -35,10 +35,8 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
     /** {@inheritdoc} */
     public function remove($item): void
     {
-        foreach ($this->collection as $key => $value)
-        {
-            if ($item === $value)
-            {
+        foreach ($this->collection as $key => $value) {
+            if ($item === $value) {
                 $this->removeAt($key);
             }
         }
@@ -47,18 +45,11 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
     /** {@inheritdoc} */
     public function removeAt($key): void
     {
-        if ($this->offsetExists($key))
-        {
-            if (is_int($key))
-            {
+        if ($this->offsetExists($key)) {
+            if (is_int($key)) {
                 array_splice($this->collection, $key, 1);
-            }
-            else
-            {
-                if (is_string($key))
-                {
-                    unset($this->collection[$key]);
-                }
+            } else if (is_string($key)) {
+                unset($this->collection[$key]);
             }
         }
     }
@@ -122,8 +113,7 @@ abstract class AbstractCollection implements CollectionCoreInterface, ArrayAcces
      */
     public function offsetUnset($offset): void
     {
-        if ($this->offsetExists($offset))
-        {
+        if ($this->offsetExists($offset)) {
             $this->removeAt($offset);
         }
     }

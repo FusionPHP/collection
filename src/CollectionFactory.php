@@ -23,8 +23,7 @@ class CollectionFactory
 
     private static function getValidator(): CollectionValidationInterface
     {
-        if (self::$cachedValidator === null || (self::$cachedValidator instanceof CollectionValidationInterface) === false)
-        {
+        if (self::$cachedValidator === null || (self::$cachedValidator instanceof CollectionValidationInterface) === false) {
             self::$cachedValidator = new CollectionValidator();
         }
 
@@ -34,13 +33,13 @@ class CollectionFactory
     /**
      * Creates a new `Collection` with an optional set of starter items.
      *
-     * @see \Fusion\Collection\Collection::__construct()
-     *
      * @param array $starterItems
      *
      * @return \Fusion\Collection\Collection
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Collection::__construct()
+     *
      */
     public static function newCollection(array $starterItems = []): Collection
     {
@@ -50,14 +49,14 @@ class CollectionFactory
     /**
      * Creates a new `TypedCollection` with an optional set of starter items.
      *
-     * @see \Fusion\Collection\TypedCollection::__construct()
-     *
      * @param string $acceptedType
      * @param array $starterItems
      *
      * @return \Fusion\Collection\TypedCollection
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\TypedCollection::__construct()
+     *
      */
     public static function newTypedCollection(string $acceptedType, array $starterItems = []): TypedCollection
     {
@@ -67,13 +66,13 @@ class CollectionFactory
     /**
      * Creates a new `Dictionary` with an optional set of starter items.
      *
-     * @see \Fusion\Collection\Dictionary::__construct()
-     *
      * @param array $starterItems
      *
      * @return \Fusion\Collection\Dictionary
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Dictionary::__construct()
+     *
      */
     public static function newDictionary(array $starterItems = []): Dictionary
     {
@@ -83,13 +82,13 @@ class CollectionFactory
     /**
      * Creates a new `TypedDictionary` with an optional set of starter items.
      *
-     * @see \Fusion\Collection\TypedDictionary::__construct()
-     *
      * @param string $acceptedType
      * @param array $starterItems
      *
      * @return \Fusion\Collection\TypedDictionary
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\TypedDictionary::__construct()
+     *
      */
     public static function newTypedDictionary(string $acceptedType, array $starterItems = []): TypedDictionary
     {

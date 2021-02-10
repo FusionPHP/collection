@@ -44,8 +44,7 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
     {
         $this->validator = $validator;
 
-        foreach ($items as $key => $value)
-        {
+        foreach ($items as $key => $value) {
             $this->add($key, $value);
         }
     }
@@ -76,13 +75,13 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      * This method will throw a `CollectionException` if the given offset is not a string or if the
      * given offset does not exist in the collection.
      *
-     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
-     *
      * @param mixed $offset
      *
      * @return mixed
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
+     *
      */
     public function offsetGet($offset)
     {
@@ -97,14 +96,14 @@ class Dictionary extends AbstractCollection implements DictionaryInterface
      * This method will throw a `CollectionException` if the offset is not a string or if the value
      * is `null`.
      *
-     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
-     *
      * @param mixed $offset
      * @param mixed $value
      *
      * @return void
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
+     *
      */
     public function offsetSet($offset, $value): void
     {

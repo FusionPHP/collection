@@ -41,8 +41,7 @@ class Collection extends AbstractCollection implements CollectionInterface
     {
         $this->validator = $validator;
 
-        foreach ($items as $item)
-        {
+        foreach ($items as $item) {
             $this->add($item);
         }
     }
@@ -75,14 +74,14 @@ class Collection extends AbstractCollection implements CollectionInterface
      * This method will throw a `CollectionException` if the offset is not an integer or if the
      * offset does not exist.
      *
-     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
-     *
      * @param mixed $offset
      *
      * @return mixed
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     *
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetGet()
      */
     public function offsetGet($offset)
     {
@@ -97,15 +96,15 @@ class Collection extends AbstractCollection implements CollectionInterface
      * This method will throw a `CollectionException` if the offset does not exist or if the offset
      * is not an integer.
      *
-     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
-     *
      * @param mixed $offset
      * @param mixed $value
      *
      * @return void
      *
      * @throws \Fusion\Collection\Exceptions\CollectionException
+     * @see \Fusion\Collection\Contracts\AbstractCollection::offsetSet()
+     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     *
      */
     public function offsetSet($offset, $value): void
     {
