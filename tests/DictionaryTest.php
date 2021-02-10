@@ -179,20 +179,6 @@ class DictionaryTest extends TestCase
         $this->assertEquals($expected, $this->dictionary->count());
     }
 
-    public function testUnsetCastOnValueHasNoEffectOnDictionary()
-    {
-        $offset = 'key';
-        $expectedSize = 1;
-        $expectedValue = 'bar';
-        $this->dictionary->add($offset, $expectedValue);
-
-        $value = (unset)$this->dictionary[$offset];
-
-        $this->assertNull($value);
-        $this->assertEquals($expectedSize, $this->dictionary->count());
-        $this->assertEquals($expectedValue, $this->dictionary[$offset]);
-    }
-
     public function testExceptionThrownAccessingOffsetOfEmptyDictionary()
     {
         $this->expectException($this->collectionException);
