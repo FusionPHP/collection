@@ -1,12 +1,15 @@
 language: php
 php:
-  - 7.4
-  - 8.0
+  - 7.4.15
+  - 8.0.1
+env:
+    global:
+      - XDEBUG_MODE=coverage
 before_script:
   - composer self-update
   - composer install
 script:
-  - vendor/bin/phpunit -c phpunit.xml -dzend_extenstion=xdebug -dxdebug.coverage_enabled=1 -dxdebug.mode=coverage --coverage-clover coverage.clover
+  - vendor/bin/phpunit -c phpunit.xml -dxdebug.coverage_enabled=1 -dxdebug.mode=coverage --coverage-clover coverage.clover
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
