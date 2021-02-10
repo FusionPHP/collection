@@ -1,7 +1,7 @@
 # Fusion.Collection
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/FusionPHP/collection/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/FusionPHP/collection/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/FusionPHP/collection/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/FusionPHP/collection/?branch=master)
-[![Build Status](https://travis-ci.org/FusionPHP/collection.svg?branch=master)](https://travis-ci.org/FusionPHP/collection)
+[![Build Status](https://travis-ci.com/FusionPHP/collection.svg?branch=master)](https://travis-ci.com/FusionPHP/collection)
 
 This package provides a small collection library useful for aggregating data values in an object.
 Stored values can be accessed via methods, loops, or as an array.
