@@ -20,15 +20,9 @@ use Fusion\Collection\Exceptions\CollectionException;
  */
 class CollectionFactory
 {
-    private static ?CollectionValidationInterface $cachedValidator = null;
-
     private static function getValidator(): CollectionValidationInterface
     {
-        if (self::$cachedValidator === null || (self::$cachedValidator instanceof CollectionValidationInterface) === false) {
-            self::$cachedValidator = new CollectionValidator();
-        }
-
-        return self::$cachedValidator;
+        return new CollectionValidator();
     }
 
     /**
